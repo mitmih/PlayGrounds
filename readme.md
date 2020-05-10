@@ -12,7 +12,7 @@
 
     Подготовка основы для будущего сервера: +`sudo`-пользователь, –`root`-доступ, ssh-ключи и `sshd` сервис, `ufw`.
 
-2. [Запуск VPN-сервера WireGuard](https://github.com/mitmih/PlayGrounds/blob/master/VPS/02_wireguard_vpn_server.md)
+2. [Запуск WireGuard vpn-сервиса](https://github.com/mitmih/PlayGrounds/blob/master/VPS/02_wireguard_vpn_server.md)
 
     Настройка собственного wg-сервера, Windows / Linux / Android клиентов.
 
