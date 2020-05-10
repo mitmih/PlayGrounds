@@ -175,7 +175,38 @@ P.S. Вместо использования готовых файлов `root`'
 ```console
 root@my-vps:~$ su - adam
 adam@my-vps:~$ ssh-keygen -o -a 100 -t ed25519
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (/home/adam/.ssh/id_ed25519):
+Created directory '/home/adam/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/adam/.ssh/id_ed25519
+Your public key has been saved in /home/adam/.ssh/id_ed25519.pub
+The key fingerprint is:
+SHA256:w5GRExrDAWAWHw0Br4aPWc8yymPJm5meDWdYDh4+G90 adam@my-vps.hosted-by-vdsina.ru
+The key's randomart image is:
++--[ED25519 256]--+
+|  *+=*+.oo       |
+| o o .o+oo       |
+|    o . o.       |
+| . .   . .       |
+|.o+.    S        |
+|o*Bo.    .       |
+|+B==oE           |
+|.*&o             |
+|+Xo.             |
++----[SHA256]-----+
 adam@my-vps:~$ ssh-copy-id adam@my-vps.hosted-by-vdsina.ru
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/adam/.ssh/id_ed25519.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+adam@my-vps.hosted-by-vdsina.ru's password:
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'adam@my-vps.hosted-by-vdsina.ru'"
+and check to make sure that only the key(s) you wanted were added.
+
 adam@my-vps:~$ chmod 600 ~/.ssh/authorized_keys
 ```
 
