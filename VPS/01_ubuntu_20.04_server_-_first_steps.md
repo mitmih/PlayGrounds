@@ -48,10 +48,10 @@
 Воспользуемся консольной программой [`plink.exe`](https://the.earth.li/~sgtatham/putty/latest/w32/plink.exe) для подключения к нашему серверу с использованием файла закрытого ssh-ключа
 
 ```cmd
-start "ssh" PLINK.EXE -ssh v000000.hosted-by-vdsina.ru -i vdsina.ru.ppk
+start "ssh" PLINK.EXE -ssh my-vps.hosted-by-vdsina.ru -i vdsina.ru.ppk
 ```
 
-где `v000000.hosted-by-vdsina.ru` - имя нашего виртуального сервера
+где `my-vps.hosted-by-vdsina.ru` - имя нашего виртуального сервера
 
 1. сохраним в кэш открытый ключ нашего сервера
 
@@ -61,7 +61,7 @@ start "ssh" PLINK.EXE -ssh v000000.hosted-by-vdsina.ru -i vdsina.ru.ppk
 
 ![PuTTY Key Generator 32bit Release 0.73](01_ubuntu_20.04_server_-_first_steps_01_2.png)
 
-Поздравляем! `root@v000000:~#` - приглашение bash, оболочки по умолчанию в Ubuntu 20.04 - означает успешный вход на сервер. Теперь можно приступать к его настройке.
+Поздравляем! `root@my-vps:~#` - приглашение bash, оболочки по умолчанию в Ubuntu 20.04 - означает успешный вход на сервер. Теперь можно приступать к его настройке.
 
 P.S. Вместо консольной `plink.exe` для ssh-подключений можно, например, воспользоваться GUI-утилитой [`KiTTY`](http://www.9bis.net/kitty/files/kitty_nocompress.exe), которая не требует установки и имеет множество различных настроек.
 
@@ -73,7 +73,7 @@ P.S. Вместо консольной `plink.exe` для ssh-подключен
 Для этого выполним команду:
 
 ```console
-adduser adam
+root@my-vps:~$ adduser adam
 ```
 
 В процессе нужно будет установить пароль и ответить ещё на несколько вопросов.
@@ -81,23 +81,23 @@ adduser adam
 Далее внесём его в группу `sudo`, что позволит запускать команды с повышенными привелегиями:
 
 ```console
-usermod -aG sudo adam
+root@my-vps:~$ usermod -aG sudo adam
 ```
 
 Проверим работу новой учётной записи, подменив `root`'-а на `adam`'-а:
 
 ```console
-root@v000000:~$ su - adam
-adam@v000000:~$ whoami
+root@my-vps:~$ su - adam
+adam@my-vps:~$ whoami
 adam
-adam@v000000:~$ sudo whoami
+adam@my-vps:~$ sudo whoami
 root
 ```
 
 В случае ошибки, можно удалить пользователя вместе с его домашним каталогом и начать заново:
 
 ```console
-root@v000000:~$ deluser --remove-home adam
+root@my-vps:~$ deluser --remove-home adam
 ```
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Включаем брандмауэр](#step3)</a>
@@ -105,31 +105,41 @@ root@v000000:~$ deluser --remove-home adam
 Проверим регистрацию приложения `OpenSSH`:
 
 ```console
-root@v000000:~$ ufw app list
+root@my-vps:~$ ufw app list
 ```
 
 Разрешим приложению работу через брандмауэр:
 
-    ufw allow OpenSSH
+```console
+root@my-vps:~$ ufw allow OpenSSH
+```
 
 включим брандмауэр:
 
-    ufw enable
+```console
+root@my-vps:~$ ufw enable
+```
 
 и проверим текущее состояние:
 
-    ufw status
+```console
+root@my-vps:~$ ufw status
+```
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step4">[Шаг 4 - включаем ssh-доступ для нового пользователя](#step4)</a>
 
 Когда мы запустили сервер, определив ssh-ключ для доступа, он был сохранён в домашней папке `root`'-а в файле `~/.ssh/authorized_keys`, посмотреть который можно
 
-    cat ~/.ssh/authorized_keys
+```console
+root@my-vps:~$ cat ~/.ssh/authorized_keys
+```
 
 Самый простой способ организовать ssh-доступ для `adam`'-а - скопировать, сохранив права доступа, структуру `/root/.ssh` в его домашний каталог, используюя `rsync`:
 
-    rsync --archive --chown=adam:adam /root/.ssh /home/adam
+```console
+root@my-vps:~$ rsync --archive --chown=adam:adam /root/.ssh /home/adam
+```
 
  **Примечание:** команда `rsync` по-разному обрабатывает источники и приемники с завершающим слэшем и без завершающего слэша. При использовании команды убедитесь, что исходный каталог `/root/.ssh` не содержит завершающий слэш (убедитесь, что вы не используете `/root/.ssh/`).
 
@@ -139,18 +149,24 @@ root@v000000:~$ ufw app list
 
 P.S. Вместо использования готовых файлов `root`'-а можно пойти другим путём - сгенерировать новую пару ключей:
 
-    su - adam
-    ssh-keygen -o -a 100 -t ed25519
-    ssh-copy-id adam@v000000.hosted-by-vdsina.ru
-    chmod 600 ~/.ssh/authorized_keys
+```console
+root@my-vps:~$ su - adam
+adam@my-vps:~$ ssh-keygen -o -a 100 -t ed25519
+adam@my-vps:~$ ssh-copy-id adam@my-vps.hosted-by-vdsina.ru
+adam@my-vps:~$ chmod 600 ~/.ssh/authorized_keys
+```
 
 Сохраните закрытый ключ на свой ПК - например, используя [WinSCP](https://winscp.net/download/WinSCP-5.17.5-Portable.zip) или выведя его на экран:
 
-    cat ~/.ssh/id_ed25519
+```console
+adam@my-vps:~$ cat ~/.ssh/id_ed25519
+```
 
 а затем удалите закрытый ключ с сервера:
 
-    rm -f ~/.ssh/id_ed25519
+```console
+adam@my-vps:~$ rm -f ~/.ssh/id_ed25519
+```
 
 Сервер использует только публичную часть ключевой пары, а закрытую - ssh-клиент, с помощью которого вы к нему подключаетесь.
 
@@ -159,31 +175,43 @@ P.S. Вместо использования готовых файлов `root`'
 
 Дальнейшие настройки выполним, войдя на сервер под пользователем `adam`, которого мы добавили на 2-ом шаге. Сначала, на всякий случай, сделаем резервную копию оригинального файла конфига:
 
-    sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
+```console
+adam@my-vps:~$ sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
+```
 
 и уберём у неё доступ на запись:
 
-    sudo chmod a-w /etc/ssh/sshd_config.backup
+```console
+adam@my-vps:~$ sudo chmod a-w /etc/ssh/sshd_config.backup
+```
 
 Отредактируем текущий конфиг:
 
-    sudo nano /etc/ssh/sshd_config
+```console
+adam@my-vps:~$ sudo nano /etc/ssh/sshd_config
+```
 
 (используйте комбинацию `alt + shift + 3`, чтобы включить в редакторе `nano` отображение номеров строк)
 
-    PermitRootLogin no
-    PubkeyAuthentication yes
-    PasswordAuthentication no
-    PermitEmptyPasswords no
+```properties
+PermitRootLogin no
+PubkeyAuthentication yes
+PasswordAuthentication no
+PermitEmptyPasswords no
+```
 
 Перезапустим службу `sshd`:
 
-    sudo systemctl restart sshd.service
+```console
+adam@my-vps:~$ sudo systemctl restart sshd.service
+```
 
 Поздравляем, вы настроили хорошую основу для вашего нового сервера! Теперь он готов для дальнейшей установки необходимых сервисов и приложений.
 
 P.S. не забывайте регулярно обновлять ваш сервер
 
-    sudo apt update && sudo apt upgrade -y
+```console
+adam@my-vps:~$ sudo apt update && sudo apt upgrade -y
+```
 
 ## [ <kbd>↑</kbd> ](#up)
