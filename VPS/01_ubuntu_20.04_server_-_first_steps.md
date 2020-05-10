@@ -1,6 +1,6 @@
-# [ <kbd>←</kbd> ](https://github.com/mitmih/PlayGrounds/blob/master/readme.md)
+# [ <kbd>←</kbd> ](https://github.com/mitmih/PlayGrounds/blob/master/readme.md) <a name="up">[PlayGrounds ReadMe](#up)</a>
 
-# [ <kbd>↑</kbd> ](#up) <a name="up">[Первичная настройка сервера на базе Ubuntu 20.04](#up)</a>
+# [ <kbd>↑</kbd> ](#up) <a name="h1">[Первичная настройка сервера на базе Ubuntu 20.04](#h1)</a>
 
 Изначально, сразу после запуска новый сервер на Ubuntu 20.04 будет доступен пользователю `root` через `ssh` по паролю. Это не безопасно по следующим причинам:
 
