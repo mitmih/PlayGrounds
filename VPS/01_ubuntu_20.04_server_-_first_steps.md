@@ -48,10 +48,10 @@
 Воспользуемся консольной программой [`plink.exe`](https://the.earth.li/~sgtatham/putty/latest/w32/plink.exe) для подключения к нашему серверу с использованием файла закрытого ssh-ключа
 
 ```cmd
-start "ssh" PLINK.EXE -ssh my-vps.hosted-by-vdsina.ru -i vdsina.ru.ppk
+start "ssh" PLINK.EXE -ssh v000000.hosted-by-vdsina.ru -i vdsina.ru.ppk
 ```
 
-где `my-vps.hosted-by-vdsina.ru` - имя нашего виртуального сервера
+где `v000000.hosted-by-vdsina.ru` - имя нашего виртуального сервера, далее вместо `v000000` будет использоваться `my-vps`
 
 1. сохраним в кэш открытый ключ нашего сервера
 
@@ -61,7 +61,7 @@ start "ssh" PLINK.EXE -ssh my-vps.hosted-by-vdsina.ru -i vdsina.ru.ppk
 
 ![PuTTY Key Generator 32bit Release 0.73](01_ubuntu_20.04_server_-_first_steps_01_2.png)
 
-Поздравляем! `root@my-vps:~#` - приглашение bash, оболочки по умолчанию в Ubuntu 20.04 - означает успешный вход на сервер. Теперь можно приступать к его настройке.
+Поздравляем! `root@v000000:~#` - приглашение bash, оболочки по умолчанию в Ubuntu 20.04 - означает успешный вход на сервер. Теперь можно приступать к его настройке.
 
 P.S. Вместо консольной `plink.exe` для ssh-подключений можно, например, воспользоваться GUI-утилитой [`KiTTY`](http://www.9bis.net/kitty/files/kitty_nocompress.exe), которая не требует установки и имеет множество различных настроек.
 
