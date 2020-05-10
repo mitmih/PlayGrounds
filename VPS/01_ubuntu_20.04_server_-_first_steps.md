@@ -207,26 +207,24 @@ Number of key(s) added: 1
 Now try logging into the machine, with:   "ssh 'adam@my-vps.hosted-by-vdsina.ru'"
 and check to make sure that only the key(s) you wanted were added.
 
-adam@my-vps:~$ chmod 600 ~/.ssh/authorized_keys
+adam@my-vps:~$ chmod 600 ~/.ssh/{authorized_keys, id_ed25519.pub}
 ```
 
-Сохраните закрытый ключ на свой ПК, например:
+Теперь сохраните этот *закрытый* - `id_ed25519` - ключ пользователя `adam` на свой ПК, с которого вы собираетесь подключаться к серверу по `ssh`:
 
-* можно зайти на сервер через [WinSCP](https://winscp.net/download/WinSCP-5.17.5-Portable.zip) и скопировать файл ключа
+* либо зайдите на сервер через [WinSCP](https://winscp.net/download/WinSCP-5.17.5-Portable.zip) и скопируйте себе файл ключа
 
-* или вывести ключ на экран и скопировать в буфер обмена:
+* либо выведите его в консоль и скопируйте в буфер обмена:
 
 ```console
 adam@my-vps:~$ cat ~/.ssh/id_ed25519
 ```
-
-а затем удалите закрытый ключ с сервера:
+Сервер использует публичный ключ пользователя, записанный в `~/.ssh/authorized_keys`. Закрытый ключ использует ssh-клиент, с помощью которого вы подключаетесь к серверу, поэтому его необходимо удалить с сервера:
 
 ```console
 adam@my-vps:~$ rm -f ~/.ssh/id_ed25519
 ```
 
-Сервер использует только публичную часть ключевой пары, а закрытую - ssh-клиент, с помощью которого вы к нему подключаетесь.
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step5">[Шаг 5 - Настройка службы `sshd`](#step5)</a>
