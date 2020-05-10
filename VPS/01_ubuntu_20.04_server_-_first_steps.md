@@ -47,7 +47,9 @@
 
 Воспользуемся консольной программой [`plink.exe`](https://the.earth.li/~sgtatham/putty/latest/w32/plink.exe) для подключения к нашему серверу с использованием файла закрытого ssh-ключа
 
-    start "ssh" PLINK.EXE -ssh v000000.hosted-by-vdsina.ru -i vdsina.ru.ppk
+```shell
+start "ssh" PLINK.EXE -ssh v000000.hosted-by-vdsina.ru -i vdsina.ru.ppk
+```
 
 где `v000000.hosted-by-vdsina.ru` - имя нашего виртуального сервера
 
