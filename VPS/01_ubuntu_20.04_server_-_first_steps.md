@@ -47,7 +47,7 @@
 
 Воспользуемся консольной программой [`plink.exe`](https://the.earth.li/~sgtatham/putty/latest/w32/plink.exe) для подключения к нашему серверу с использованием файла закрытого ssh-ключа
 
-```console
+```cmd
 start "ssh" PLINK.EXE -ssh v000000.hosted-by-vdsina.ru -i vdsina.ru.ppk
 ```
 
@@ -72,30 +72,41 @@ P.S. Вместо консольной `plink.exe` для ssh-подключен
 
 Для этого выполним команду:
 
-    adduser adam
+```console
+adduser adam
+```
 
 В процессе нужно будет установить пароль и ответить ещё на несколько вопросов.
 
 Далее внесём его в группу `sudo`, что позволит запускать команды с повышенными привелегиями:
 
-    usermod -aG sudo adam
+```console
+usermod -aG sudo adam
+```
 
 Проверим работу новой учётной записи, подменив `root`'-а на `adam`'-а:
 
-    su - adam
-    whoami                          # must be adam
-    sudo whoami                     # test sudo access, output must be root
+```console
+root@v000000:~$ su - adam
+adam@v000000:~$ whoami
+adam
+adam@v000000:~$ sudo whoami
+root
+```
 
 В случае ошибки, можно удалить пользователя вместе с его домашним каталогом и начать заново:
 
-    sudo deluser --remove-home adam
-
+```console
+root@v000000:~$ deluser --remove-home adam
+```
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Включаем брандмауэр](#step3)</a>
 
 Проверим регистрацию приложения `OpenSSH`:
 
-    ufw app list
+```console
+root@v000000:~$ ufw app list
+```
 
 Разрешим приложению работу через брандмауэр:
 
