@@ -4,9 +4,9 @@
 
 Практика происходила на арендованных [у хостинга vdsina.ru](https://vdsina.ru/?partner=yfr2sd6574) виртуальных серверах.
 
-## HowTo по настройке Ubuntu 20.04 vps-серверов
+## Итак, начнём с Ubuntu 20.04
 
-1. [Первичная настройка сервера на базе Ubuntu 20.04](https://github.com/mitmih/PlayGrounds/blob/master/VPS/01_ubuntu_20.04_server_-_first_steps.md)
+1. [Первичная настройка vps-сервера](https://github.com/mitmih/PlayGrounds/blob/master/VPS/01_ubuntu_20.04_server_-_first_steps.md)
 
     Настройка нового sudo-пользователя, ssh, ufw.
 
