@@ -13,5 +13,5 @@
 2. [Запуск WireGuard VPN-сервера на Ubuntu 20.04](https://github.com/mitmih/PlayGrounds/blob/master/VPS/02_wireguard_vpn_server.md)
 
     Описана настройка собственного wg-сервера, Windows и Linux клиентов.
-    
+
     Найдено решение отложенной до нескольких минут установки соединения после перезагрузки сервера.
