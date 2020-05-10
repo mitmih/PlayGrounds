@@ -25,9 +25,9 @@
 
 ### Подготовка ключей в ОС Windows
 
-Воспользуемся программой [`PuTTY Key Generator 32bit Release 0.73`](https://puttygen.com/download.php?val=46)
+Воспользуемся программой [`PuTTY Key Generator`](https://puttygen.com/download.php?val=46 "32-bit release 0.73")
 
-![PuTTY Key Generator 32bit Release 0.73](01_ubuntu_20.04_server_-_first_steps_01_1.png)
+![PuTTY Key Generator 32bit Release 0.73](01_ubuntu_20.04_server_-_first_steps_01_1.png "PuTTY Key Generator 32-bit release 0.73")
 
 1. выбираем алгоритм `Ed25519`
 
@@ -63,7 +63,7 @@ start "ssh" PLINK.EXE -ssh v000000.hosted-by-vdsina.ru -i vdsina.ru.ppk
 
 3. указываем парольную фразу, которую мы установили на закрытую часть ключа в п.4
 
-![PuTTY Key Generator 32bit Release 0.73](01_ubuntu_20.04_server_-_first_steps_01_2.png)
+![PLINK 32-bit release 0.73](01_ubuntu_20.04_server_-_first_steps_01_2.png "подключение к серверу через PLINK (32-bit release 0.73)")
 
 Поздравляем! `root@v000000:~#` - приглашение bash, оболочки по умолчанию в Ubuntu 20.04 - означает успешный вход на сервер. Теперь можно приступать к его настройке.
 
