@@ -78,6 +78,23 @@ P.S. Вместо консольной `plink.exe` для ssh-подключен
 
 ```console
 root@my-vps:~$ adduser adam
+Adding user `adam' ...
+Adding new group `adam' (1000) ...
+Adding new user `adam' (1000) with group `adam' ...
+Creating home directory `/home/adam' ...
+Copying files from `/etc/skel' ...
+New password:
+Retype new password:
+passwd: password updated successfully
+Changing the user information for adam
+Enter the new value, or press ENTER for the default
+        Full Name []:
+        Room Number []:
+        Work Phone []:
+        Home Phone []:
+        Other []:
+Is the information correct? [Y/n]
+root@my-vps:~$ 
 ```
 
 В процессе нужно будет установить пароль и ответить ещё на несколько вопросов.
@@ -162,7 +179,11 @@ adam@my-vps:~$ ssh-copy-id adam@my-vps.hosted-by-vdsina.ru
 adam@my-vps:~$ chmod 600 ~/.ssh/authorized_keys
 ```
 
-Сохраните закрытый ключ на свой ПК - например, используя [WinSCP](https://winscp.net/download/WinSCP-5.17.5-Portable.zip) или выведя его на экран:
+Сохраните закрытый ключ на свой ПК, например:
+
+* можно зайти на сервер через [WinSCP](https://winscp.net/download/WinSCP-5.17.5-Portable.zip) и скопировать файл ключа
+
+* или вывести ключ на экран и скопировать в буфер обмена:
 
 ```console
 adam@my-vps:~$ cat ~/.ssh/id_ed25519
