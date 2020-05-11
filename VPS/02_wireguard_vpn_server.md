@@ -253,7 +253,8 @@ PersistentKeepalive = 19
 * `PublicKey = ` (4) - указываем публичный ключ сервера, полученный на [первом шаге](#step1)
     
     ```console
-    sudo cat /etc/wireguard/publickey
+    adam@my-vps:~$ sudo cat /etc/wireguard/publickey
+    yMXfyyT9m3fkoUTnW/mOMaq/WspQoOZyL02oUftwDkI=
     ```
 
 * `AllowedIPs = 0.0.0.0/0, ::/0` - весь трафик клиента пойдет через туннель
