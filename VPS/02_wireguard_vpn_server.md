@@ -1,10 +1,10 @@
 # [ <kbd>←</kbd> PlayGrounds ReadMe](https://github.com/mitmih/PlayGrounds/blob/master/readme.md) <a name="up">[](#up)</a>
 
-# [ <kbd>↑</kbd> ](#up) <a name="h1">[Запуск vpn-сервиса WireGuard на базе Ubuntu 20.04](#h1)</a>
+# [ <kbd>↑</kbd> ](#up) <a name="h1">[Запуск vpn-сервиса WireGuard на базе Ubuntu 20.04](#h1 '"Туннельный синдром"')</a>
 
 VPN - Virtual Private Network - Виртуальная Частная Сеть - множество технологий, с помощью которых вы можете поверх публичной сети, как правило -Интернет, построить свою *логическую (виртуальную)* сеть.
 
-Наверное, вы уже столкнулись с одной из таких технологий, когда провайдер организовал вам доступ в Сеть: очень часто абонентов подключают по технологии PPPoE или L2TP.
+Наверное, вы уже столкнулись с одной из таких технологий, когда провайдер предоставил вам доступ в Интернет: обычно абонентов подключают по технологии PPPoE или L2TP.
 
 Работа в VPN, в зависимости от качества каналов связи конечно, не будет для вас заметно отличаться от работы в домашней или офисной *физической* сети.
 
@@ -14,15 +14,17 @@ VPN - Virtual Private Network - Виртуальная Частная Сеть -
 
 * также это хороший способ организовать безопасно подкючить к корпоративной сети удалённых сотрудников в условиях, например, гостиничного WiFi
 
-* обычне пользователи могут с помощью VPN [сэкономить при покупках](https://habr.com/ru/company/hidemy_name/blog/404017/)
+* обычные пользователи могут с помощью VPN [сэкономить при покупках](https://habr.com/ru/company/hidemy_name/blog/404017/)
 
 * или покупать товары в тех зарубежных магазинах, которые не продают, если заходить на их сайты напрямую
 
+Последняя пара пунктов работает следующим образом: когда пользователь использует зарубежный VPN-сервер для выхода в Сеть, то сайты видят IP VPN-сервера, а не настоящий, выданный провайдером адрес.
+
 Самые простые способы - бесплатные VPN-сервисы - часто оказываются и самыми ненадёжными в плане конфеденциальности, [зарабатывая на ваших личных данных.](https://habr.com/ru/company/hidemy_name/blog/450416/)
 
-Более сложный, и в тоже время надёжный способ заключается в организации собственного WireGuard / Outline / OpenVPN сервиса, который позволит перенаправить через себя весь наш трафик, попутно выполняя его шифрование.
+Более сложный, и в тоже время надёжный способ - организовать собственный WireGuard / Outline / OpenVPN / etc сервис, который вы будете полностью контролировать.
 
-[WireGuard](https://www.wireguard.com/performance/#results) - новый и успешно развивающийся проект, производительный и простой в настройке. Рецепт приготовления сервиса по шагам:
+[WireGuard](https://www.wireguard.com/performance/#results) - новый и успешно развивающийся проект, производительный и простой в настройке. Рецепт приготовления vpn-сервиса на его основе состоит из следующих этапов:
 
 * [ставим WireGuard, готовим ключи](#step1)
 
@@ -32,12 +34,13 @@ VPN - Virtual Private Network - Виртуальная Частная Сеть -
 
 * [пробуем туннель "на вкус"](#step4)
 
-* [step5](#step5)
+* ["Всегда готов!" - автозапуск WireGuard](#step5)
 
-<!--
-* [step6](#step6)
+* ["скороварка" - готовим туннель быстрее](#step6)
 
-* [step7](#step7) -->
+* [step7](#step7)
+
+* [step8](#step8)
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step1">[Шаг 1 - Устанавливаем WireGuard, разбираемся с серверными ключами шифрования](#step1)</a>
@@ -142,7 +145,7 @@ AllowedIPs = 10.0.0.2/32
 
 * `ListenPort = 514` - UDP-порт, по которому интерфейс сервера со своей стороны устанавливает соединения с клиентами
 
-* `SaveConfig = true` - сохранять в конфиг текущие настройки `wg0` при выключении - позволяет серверу подстраиваться под клиентов
+* `SaveConfig = true` - сохранять текущую конфигурацию в файл при выключении  `wg0` - позволяет серверу подстраиваться под клиентов
 
 * `PostUp = ...` и `PostDown = ...` - команды, которые выполняются при включении и выключении интерфейса `wg0`
 
@@ -317,7 +320,7 @@ Control-C
 
 ![Проверка работы туннеля со стороны клиента](02_wireguard_vpn_server_04_1.png "Проверка работы туннеля со стороны клиента")
 
-Чтобы аналогично проверить доступность клиента с сервера, предварительно разрешите в брандмауэре клиента icmp-запросы или отключите его на время проверки:
+Чтобы также проверить обратное направление - доступность клиента с сервера - в брандмауэре разрешите Windows отвечать на icmp-запросы: откройте `Панель управления\Система и безопасность\Брандмауэр Защитника Windows`, перейдите в `Дополнительные параметры\Правила для входящих подключений` и включите правило `Общий доступ к файлам и принтерам (эхо-запрос - входящий трафик ICMPv4)` для профиля `Общий`.
 
 ```console
 adam@my-vps:~$ ping 10.0.0.2
@@ -332,7 +335,7 @@ PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 rtt min/avg/max/mdev = 68.743/68.984/69.120/0.143 ms
 ```
 
-Также убедимся, что наш трафик идёт через туннель, выполнив трассировку:
+Убедимся, что наш трафик идёт через туннель, выполнив трассировку с клиента:
 
 ```cmd
 TRACERT.EXE -w 500 google.com
@@ -351,7 +354,24 @@ TRACERT.EXE -w 500 google.com
 
 Трассировка завершена.
 ```
-Поздравляем, туннель приготовлен как следует, выключаем интерфейсы с обеих сторон и переходим к следующему шагу - Wireguard как сервис:
+
+Также можно посмотреть текущую информацию во время работы WireGuard:
+
+```console
+adam@my-vps:~$ sudo wg
+interface: wg0
+  public key: <открытый ключ сервера>
+  private key: (hidden)
+  listening port: 514
+
+peer: <открытый ключ клиента>
+  endpoint: <внешний_IP_клиента>:514
+  allowed ips: 10.0.0.2/32
+  latest handshake: 7 seconds ago
+  transfer: 149.31 KiB received, 195.32 KiB sent
+```
+
+Поздравляем, туннель приготовлен как следует, двигаемся дальше. Выключим пока WireGuard-интерфейсы с обеих сторон:
 
 ```console
 adam@my-vps:~$ sudo wg-quick down wg0
@@ -360,14 +380,166 @@ adam@my-vps:~$ sudo wg-quick down wg0
 [#] iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o ens3 -j MASQUERADE
 ```
 
-## [ <kbd>↑</kbd> ](#up) <a name="step5">[Шаг 5 - Включаем WireGuard в качестве сервиса](#step5)</a>
+WireGuard выключился, UDP-порт 514 закрыт:
 
 
+```console
+adam@my-vps:~$ sudo ss -nltup
+Netid   State    Recv-Q   Send-Q     Local Address:Port     Peer Address:Port   Process
+udp     UNCONN   0        0          127.0.0.53%lo:53            0.0.0.0:*       users:(("systemd-resolve",pid=392,fd=12))
+tcp     LISTEN   0        4096       127.0.0.53%lo:53            0.0.0.0:*       users:(("systemd-resolve",pid=392,fd=13))
+tcp     LISTEN   0        128              0.0.0.0:22            0.0.0.0:*       users:(("sshd",pid=1237,fd=3))
+tcp     LISTEN   0        128                 [::]:22               [::]:*       users:(("sshd",pid=1237,fd=4))
 
+```
+
+## [ <kbd>↑</kbd> ](#up) <a name="step5">[Шаг 5 - Включаем WireGuard в качестве системного сервиса](#step5)</a>
+
+Ручное управление интерфейсом на сервере уже работает. Но что, если понадобился vpn, а вы забыли его включить после очередной перезагрузки сервера, да ещё и ssh-клиента нет под рукой?
+
+Включаем автоматический запуск сервиса при старте операционной системы:
+
+```console
+adam@my-vps:~$ sudo systemctl enable wg-quick@wg0.service
+Created symlink /etc/systemd/system/multi-user.target.wants/wg-quick@wg0.service → /lib/systemd/system/wg-quick@.service.
+```
+
+Запускаем сервис:
+
+```console
+adam@my-vps:~$ sudo systemctl start wg-quick@wg0.service
+```
+
+Проверяем статус работы сервиса:
+
+```console
+adam@my-vps:~$ sudo systemctl status wg-quick@wg0.service
+● wg-quick@wg0.service - WireGuard via wg-quick(8) for wg0
+     Loaded: loaded (/lib/systemd/system/wg-quick@.service; enabled; vendor preset: enabled)
+     Active: active (exited) since Mon 2020-05-11 04:21:33 MSK; 6s ago
+       Docs: man:wg-quick(8)
+             man:wg(8)
+             https://www.wireguard.com/
+             https://www.wireguard.com/quickstart/
+             https://git.zx2c4.com/wireguard-tools/about/src/man/wg-quick.8
+             https://git.zx2c4.com/wireguard-tools/about/src/man/wg.8
+    Process: 3784 ExecStart=/usr/bin/wg-quick up wg0 (code=exited, status=0/SUCCESS)
+   Main PID: 3784 (code=exited, status=0/SUCCESS)
+
+May 11 04:21:33 my-vps.hosted-by-vdsina.ru systemd[1]: Starting WireGuard via wg-quick(8) for wg0...
+May 11 04:21:33 my-vps.hosted-by-vdsina.ru wg-quick[3784]: [#] ip link add wg0 type wireguard
+May 11 04:21:33 my-vps.hosted-by-vdsina.ru wg-quick[3784]: [#] wg setconf wg0 /dev/fd/63
+May 11 04:21:33 my-vps.hosted-by-vdsina.ru wg-quick[3784]: [#] ip -4 address add 10.0.0.1/24 dev wg0
+May 11 04:21:33 my-vps.hosted-by-vdsina.ru wg-quick[3784]: [#] ip link set mtu 1420 up dev wg0
+May 11 04:21:33 my-vps.hosted-by-vdsina.ru wg-quick[3784]: [#] iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POS>
+May 11 04:21:33 my-vps.hosted-by-vdsina.ru systemd[1]: Finished WireGuard via wg-quick(8) for wg0.
+```
+
+Перезагружае сервер для проверки запуска сервиса:
+
+```console
+adam@my-vps:~$ sudo reboot
+```
+
+И, хотя vps-сервер перезагрузился за считанные секунды, vpn-соединение восстанавливается только спустя несколько долгих минут... Если для вас это не критично, пропускайте следующий шаг.
+
+> P.S. Остановите сервис прежде, чем начнёте менять конфигурацию WireGuard:
+>
+> ```console
+> adam@my-vps:~$ sudo systemctl stop wg-quick@wg0.service
+>```
+> Это связано с параметром `SaveConfig = true` - WireGuard будет сохранять актуальные настройки в файл конфигурации при каждой остановке, таким образом ручные изменения окажутся потеряны.
+
+
+## [ <kbd>↑</kbd> ](#up) <a name="step6">[Шаг 6 - Ускоряем восстановление туннеля после перезагрузки сервера](#step6)</a>
+
+Задержка конечно при каждой перезагрузке будет разной, но, тем не менее, заметной. В поисках причины поможет `dmesg`:
+
+```console
+adam@my-vps:~$ dmesg
+...
+[  307.674338] random: crng init done
+[  307.674353] random: 7 urandom warning(s) missed due to ratelimiting
+...
+```
+
+Туннель восстановился **после** инициализации генератора псевдослучайных чисел (ГПСЧ)! Что вполне логично, ведь генератор напрямую задействуется в процессах криптографии. Но почему же он инициализировался так долго?
+
+Дело вот в чём: чтобы выдать качественную, в криптографическом смысле, непредсказуемую последовательность случайных чисел, генератор должен накопить достаточно шума, энтропии, из небольшого набора источников (активность диска, клавиатуры, движения мышки и проч.), которых ещё меньше в случае vps-сервера.
+
+> В [ядре 5.3 была проблема блокировки процесса загрузки системы](https://lwn.net/Articles/802360/), пока не соберётся достаточно шума.
+
+Текущее количество доступных случайных байт можно узнать командой:
+
+```console
+adam@my-vps:~$ cat /proc/sys/kernel/random/entropy_avail
+137
+```
+
+Кстати, когда вы подключаетесь к серверу по ssh, тоже расходуюте случайные байты из пула энтропии.
+
+В качестве выхода рекомендуют установить [программный генератор псевдослучайных чисел](http://www.issihosts.com/haveged/) использующий адаптацию алгоритма [HAVEGE](http://www.irisa.fr/caps/projects/hipsor/ "HArdware Volatile Entropy Gathering and Expansion"):
+
+```console
+adam@my-vps:~$ sudo apt install haveged rng-tools -y
+adam@my-vps:~$ cat /proc/sys/kernel/random/entropy_avail
+2497
+```
+
+Пакет `rng-tools` поможет оценить качество последовательностей `haveged`-генератора:
+```console
+adam@my-vps:~$ cat /dev/random | rngtest -c 1000
+rngtest 5
+Copyright (c) 2004 by Henrique de Moraes Holschuh
+This is free software; see the source for copying conditions.  There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+rngtest: starting FIPS tests...
+rngtest: bits received from input: 20000032
+rngtest: FIPS 140-2 successes: 1000
+rngtest: FIPS 140-2 failures: 0
+rngtest: FIPS 140-2(2001-10-10) Monobit: 0
+rngtest: FIPS 140-2(2001-10-10) Poker: 0
+rngtest: FIPS 140-2(2001-10-10) Runs: 0
+rngtest: FIPS 140-2(2001-10-10) Long run: 0
+rngtest: FIPS 140-2(2001-10-10) Continuous run: 0
+rngtest: input channel speed: (min=1.292; avg=15.214; max=9536.743)Mibits/s
+rngtest: FIPS tests speed: (min=84.396; avg=135.684; max=141.285)Mibits/s
+rngtest: Program run time: 1395486 microseconds
+```
+
+<!-- haveged -n 1g -f /dev/null -->
+
+Перезагрузите сервер снова, не отключая клиента, и вы сразу заметите разницу, соединение восстановилось почти одновременно с загрузкой сервера!
+
+```cmd
+>ping -t 10.0.0.1
+
+Обмен пакетами с 10.0.0.1 по с 32 байтами данных:
+Ответ от 10.0.0.1: число байт=32 время=69мс TTL=64
+Превышен интервал ожидания для запроса.
+Превышен интервал ожидания для запроса.
+Превышен интервал ожидания для запроса.
+Превышен интервал ожидания для запроса.
+Ответ от 10.0.0.1: число байт=32 время=68мс TTL=64
+Ответ от 10.0.0.1: число байт=32 время=68мс TTL=64
+Ответ от 10.0.0.1: число байт=32 время=68мс TTL=64
+Ответ от 10.0.0.1: число байт=32 время=69мс TTL=64
+
+Статистика Ping для 10.0.0.1:
+    Пакетов: отправлено = 9, получено = 5, потеряно = 4
+    (44% потерь)
+Приблизительное время приема-передачи в мс:
+    Минимальное = 68мсек, Максимальное = 69 мсек, Среднее = 68 мсек
+Control-C
+^C
+```
+
+
+## [ <kbd>↑</kbd> ](#up) <a name="step7">[Шаг 7 - Linux-клиент](#step7)</a>
+
+
+## [ <kbd>↑</kbd> ](#up) <a name="step8">[Шаг 8 - Android-клиент](#step8)</a>
 <!--
 ![alt text](image.png "description")
-```console
-adam@my-vps:~$ 
-```
 ## [ <kbd>↑</kbd> ](#up) <a name="step0">[](#step0)</a>
 -->
