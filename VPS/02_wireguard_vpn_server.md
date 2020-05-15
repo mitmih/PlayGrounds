@@ -501,7 +501,7 @@ adam@my-vps:~$ dmesg
 > 111:       entropy_avail
 > 112-              This read-only file gives the available entropy, in bits.  This will be a number in the range 0 to 4096.
 > 113-
-```
+> ```
 
 </details>
 
