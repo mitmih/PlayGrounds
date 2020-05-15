@@ -496,17 +496,11 @@ adam@my-vps:~$ dmesg
 Доступное количество случайных бит можно узнать из специального файла:
 </summary>
 
-```console
-adam@my-vps:~$ man 4 random | grep -in entropy_avail  -A 3
-111:       entropy_avail
-112-              This read-only file gives the available entropy, in bits.  This will be a number in the range 0 to 4096.
-113-
-114-       poolsize
---
-143:              Retrieve the entropy count of the input pool, the contents will be the same as the entropy_avail file under
-144-              proc.  The result will be stored in the int pointed to by the argument.
-145-
-146-       RNDADDTOENTCNT
+> ```console
+> adam@my-vps:~$ man 4 random | grep -ine 'entropy_avail$'  -A 2
+> 111:       entropy_avail
+> 112-              This read-only file gives the available entropy, in bits.  This will be a number in the range 0 to 4096.
+> 113-
 ```
 
 </details>
