@@ -10,15 +10,15 @@
 
 В этом руководстве мы пошагово настроим vps-сервер "с нуля":
 
-* [сгенерируем пару (открытый / закрытый) ключей по алгоритму `Ed25519` и запустим новый сервер с `root`-доступом по открытому ключу](#step1)
+1. [сгенерируем пару (открытый / закрытый) ключей по алгоритму `Ed25519` и запустим новый сервер с `root`-доступом по открытому ключу](#step1)
 
-* [добавим нового пользователя `adam` и сделаем его `sudo`-пользователем](#step2)
+2. [добавим нового пользователя `adam` и сделаем его `sudo`-пользователем](#step2)
 
-* [включим брандмауэр `ufw` и разрешим работу `OpenSSH`](#step3)
+3. [включим брандмауэр `ufw` и разрешим работу `OpenSSH`](#step3)
 
-* [настроим `adam`'у ssh-доступ по ключу](#step4)
+4. [настроим `adam`'у ssh-доступ по ключу](#step4)
 
-* [изменим конфигурацию службы `sshd` - запретим вход по паролю для всех, вход для `root`, в том числе с авторизацией по ключу](#step5)
+5. [изменим конфигурацию службы `sshd` - запретим вход по паролю для всех, вход для `root`, в том числе с авторизацией по ключу](#step5)
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step1">[Шаг 1 - Подготовка SSH-ключей, установка виртуального сервера](#step1)</a>
@@ -72,6 +72,12 @@ P.S. Вместо консольной `plink.exe` для ssh-подключен
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step2">[Шаг 2 - Добавляем нового пользователя](#step2)</a>
 
+Первым делом обновляем список источников пакетов и сами пакеты:
+
+```console
+root@my-vps:~# apt update && apt upgrade -y
+```
+
 Пока мы вошли в систему под `root` - суперпользователем - но, в дальнейшем, всю работу на сервере будем выполнять из-под ограниченной учётной записи `adam`, в том числе и требующую прав администратора ОС.
 
 Для этого выполним команду:
@@ -121,6 +127,7 @@ root
 root@my-vps:~$ deluser --remove-home adam
 ```
 
+
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Включаем брандмауэр](#step3)</a>
 
 Проверим регистрацию приложения `OpenSSH`:
@@ -146,6 +153,29 @@ root@my-vps:~$ ufw enable
 ```console
 root@my-vps:~$ ufw status
 ```
+
+> "Приложения" / "ufw app" - файлы `conf/ini`-синтаксиса в каталоге `/etc/ufw/applications.d/` с описанием и портами/протоколами, необходимыми для работы программы.
+> 
+> Например, добавим в список новое приложение `WireGuard`:
+> 
+> ```console
+> root@my-vps:~$ nano /etc/ufw/applications.d/wireguard-server
+> ```
+> 
+> содержание файла:
+> 
+> ```properties
+> [WireGuard]
+> title=WireGuard VPN service
+> description=modern fast kernel-level vpn service
+> ports=514/udp
+> ```
+> 
+> Перезагрузим брандмауэр, чтобы перечитать список приложений
+> 
+> ```console
+> root@my-vps:~$ ufw reload
+> ```
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step4">[Шаг 4 - включаем ssh-доступ для нового пользователя](#step4)</a>
@@ -196,6 +226,11 @@ The key's randomart image is:
 |.*&o             |
 |+Xo.             |
 +----[SHA256]-----+
+```
+
+Теперь добавим публичную часть нового ключа в список разрешённых ключей:
+
+```console
 adam@my-vps:~$ ssh-copy-id adam@my-vps.hosted-by-vdsina.ru
 /usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/adam/.ssh/id_ed25519.pub"
 /usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
@@ -206,7 +241,19 @@ Number of key(s) added: 1
 
 Now try logging into the machine, with:   "ssh 'adam@my-vps.hosted-by-vdsina.ru'"
 and check to make sure that only the key(s) you wanted were added.
+```
 
+> Чтобы ключ был добавлен успешно, потребуется вводить пароль пользователя, т.е. авторизация по паролю *не должна быть запрещена*. Проверьте параметр и исправьте ~~no~~ на yes
+> 
+> ```console
+> cat /etc/ssh/sshd_config | grep -i passwordauth
+> PasswordAuthentication no
+> ```
+
+
+и ограничим доступ к файлам (любого кроме `root`-а)
+
+```console
 adam@my-vps:~$ chmod 600 ~/.ssh/{authorized_keys, id_ed25519.pub}
 ```
 
@@ -225,10 +272,34 @@ adam@my-vps:~$ cat ~/.ssh/id_ed25519
 adam@my-vps:~$ rm -f ~/.ssh/id_ed25519
 ```
 
-
 ## [ <kbd>↑</kbd> ](#up) <a name="step5">[Шаг 5 - Настройка службы `sshd`](#step5)</a>
 
-Дальнейшие настройки выполним, войдя на сервер под пользователем `adam`, которого мы добавили на 2-ом шаге. Сначала, на всякий случай, сделаем резервную копию оригинального файла конфига:
+Дальнейшие настройки выполним, войдя на сервер под пользователем `adam`, которого мы добавили на 2-ом шаге.
+
+> Если, при запуске программ под `sudo`, вы столкнулись с ошибкой `sudo: unable to resolve host my-vps.local: Name or service not known`
+> 
+> Добавьте my-vps.local в `/etc/hosts`
+> 
+> ```console
+> adam@my-vps:~$ printf "\n127.0.1.1 $(cat /etc/hostname)\n" | sudo tee -a /etc/hosts
+> 
+> 127.0.1.1 my-vps.local
+> ```
+> 
+> Проверьте файл `/etc/nsswitch.conf` на наличие строки (`files` на первом месте):
+> 
+> ```console
+> adam@my-vps:~$ cat /etc/nsswitch.conf | grep -i host
+> hosts:          files dns
+> ```
+> 
+> Перезапустите службу
+> 
+> ```console
+> adam@my-vps:~$ sudo systemctl restart systemd-resolved.service
+> ```
+
+Сначала, на всякий случай, сделаем резервную копию оригинального файла конфига:
 
 ```console
 adam@my-vps:~$ sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
@@ -254,6 +325,23 @@ PubkeyAuthentication yes
 PasswordAuthentication no
 PermitEmptyPasswords no
 ```
+
+<details>
+<summary> Просмотреть текущие параметры можно так:
+</summary>
+
+```console
+adam@my-vps:~$ grep -ine '^[[:alpha:]]' /etc/ssh/sshd_config
+13:Include /etc/ssh/sshd_config.d/*.conf
+34:PermitRootLogin yes
+63:ChallengeResponseAuthentication no
+86:UsePAM yes
+91:X11Forwarding yes
+95:PrintMotd no
+113:AcceptEnv LANG LC_*
+116:Subsystem   sftp    /usr/lib/openssh/sftp-server
+```
+</details>
 
 Перезапустим службу `sshd`:
 
