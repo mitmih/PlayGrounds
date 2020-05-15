@@ -326,14 +326,25 @@ PasswordAuthentication no
 PermitEmptyPasswords no
 ```
 
-<details>
-<summary> Просмотреть текущие параметры можно так:
-</summary>
+Проверим изменения относительно оригинального конфига:
+
+```console
+diff -W 80 -y --suppress-common-lines /etc/ssh/sshd_config.backup /etc/ssh/sshd_config
+PermitRootLogin yes                   | PermitRootLogin no
+#PubkeyAuthentication yes             | PubkeyAuthentication yes
+#PasswordAuthentication yes           | PasswordAuthentication no
+#PermitEmptyPasswords no              | PermitEmptyPasswords no
+```
+
+И посмотрим *текущие* настройки
 
 ```console
 adam@my-vps:~$ grep -ine '^[[:alpha:]]' /etc/ssh/sshd_config
 13:Include /etc/ssh/sshd_config.d/*.conf
-34:PermitRootLogin yes
+34:PermitRootLogin no
+39:PubkeyAuthentication yes
+58:PasswordAuthentication no
+59:PermitEmptyPasswords no
 63:ChallengeResponseAuthentication no
 86:UsePAM yes
 91:X11Forwarding yes
@@ -341,7 +352,6 @@ adam@my-vps:~$ grep -ine '^[[:alpha:]]' /etc/ssh/sshd_config
 113:AcceptEnv LANG LC_*
 116:Subsystem   sftp    /usr/lib/openssh/sftp-server
 ```
-</details>
 
 Перезапустим службу `sshd`:
 
