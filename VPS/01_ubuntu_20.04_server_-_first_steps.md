@@ -159,7 +159,7 @@ root@my-vps:~$ ufw status
 Как добавить программу в список `ufw`:
 </summary>
 
-> "Приложения" / "ufw app" - файлы в каталоге `/etc/ufw/applications.d/` с описанием и портами/протоколами в стиле `conf/ini`, необходимыми для работы программы.
+> "Приложения" / "ufw app" - файлы в каталоге `/etc/ufw/applications.d/` с описанием и портами/протоколами в стиле `conf/ini`, необходимыми для работы программы через брандмауэр.
 > 
 > Например, добавим в список новое приложение `WireGuard`:
 > 
@@ -340,7 +340,7 @@ PermitEmptyPasswords no
 Проверим изменения относительно оригинального конфига:
 
 ```console
-diff -W 80 -y --suppress-common-lines /etc/ssh/sshd_config.backup /etc/ssh/sshd_config
+adam@my-vps:~$ diff -W 80 -y --suppress-common-lines /etc/ssh/sshd_config.backup /etc/ssh/sshd_config
 PermitRootLogin yes                   | PermitRootLogin no
 #PubkeyAuthentication yes             | PubkeyAuthentication yes
 #PasswordAuthentication yes           | PasswordAuthentication no
