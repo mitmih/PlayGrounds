@@ -200,8 +200,8 @@ net.ipv4.ip_forward=1
 ```console
 adam@my-vps:~$ sudo sysctl -p
 net.ipv4.ip_forward = 1
-net.ipv6.conf.all.forwarding = 1
 ```
+<!-- net.ipv6.conf.all.forwarding = 1 -->
 
 <!--     
     # https://forum.keenetic.net/topic/7868-перенаправление-траффика-в-wg0/
