@@ -154,6 +154,11 @@ root@my-vps:~$ ufw enable
 root@my-vps:~$ ufw status
 ```
 
+<details>
+<summary>
+Как добавить программу в список `ufw`:
+</summary>
+
 > "Приложения" / "ufw app" - файлы `conf/ini`-синтаксиса в каталоге `/etc/ufw/applications.d/` с описанием и портами/протоколами, необходимыми для работы программы.
 > 
 > Например, добавим в список новое приложение `WireGuard`:
@@ -176,6 +181,8 @@ root@my-vps:~$ ufw status
 > ```console
 > root@my-vps:~$ ufw reload
 > ```
+
+</details>
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step4">[Шаг 4 - включаем ssh-доступ для нового пользователя](#step4)</a>
@@ -204,8 +211,6 @@ root@my-vps:~$ rsync --archive --chown=adam:adam /root/.ssh /home/adam
 <summary>
 P.S. Вместо использования готовых файлов `root`'-а можно пойти другим, более безопасным путём и сгенерировать новую пару ключей:
 </summary>
-
-<p>
 
 ```console
 root@my-vps:~$ su - adam
@@ -248,10 +253,10 @@ Now try logging into the machine, with:   "ssh 'adam@my-vps.hosted-by-vdsina.ru'
 and check to make sure that only the key(s) you wanted were added.
 ```
 
-> Чтобы ключ был добавлен успешно, потребуется вводить пароль пользователя, т.е. авторизация по паролю *не должна быть запрещена*. Проверьте параметр и исправьте ~~no~~ на yes
+> Чтобы ключ был добавлен успешно, потребуется вводить пароль пользователя, то есть должна работать *аутентификация по паролю*. Проверьте параметр и исправьте ~~no~~ на yes
 > 
 > ```console
-> cat /etc/ssh/sshd_config | grep -i passwordauth
+> adam@my-vps:~$ grep -i wordauth /etc/ssh/sshd_config
 > PasswordAuthentication no
 > ```
 
@@ -275,7 +280,6 @@ adam@my-vps:~$ cat ~/.ssh/id_ed25519
 ```console
 adam@my-vps:~$ rm -f ~/.ssh/id_ed25519
 ```
-</p>
 </details>
 
 
