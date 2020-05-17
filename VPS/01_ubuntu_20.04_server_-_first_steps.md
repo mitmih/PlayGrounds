@@ -170,12 +170,11 @@ root@my-vps:~$ ufw status
 > содержание файла:
 > 
 > ```properties
-> [WireGuard]
-> title=WireGuard VPN service
-> description=modern fast kernel-level vpn service
-> ports=514/udp
+> [MyService]
+> title=MyService
+> description=modern fast amazing service
+> ports=10000:10002/tcp|10003,10009/udp
 > ```
-<!-- 10000:10002/tcp|10003,10009/udp -->
 > 
 > Перезагрузим брандмауэр, чтобы перечитать список приложений
 > 
