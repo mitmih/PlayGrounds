@@ -49,6 +49,14 @@ VPN - Virtual Private Network - Виртуальная Частная Сеть -
 
 WireGuard можно [собрать из исходников](https://www.wireguard.com/compilation/) или установить готовый пакет из репозитория через пакетный менеджер:
 
+<details>
+<summary>
+
+```console
+adam@my-vps:~$ sudo apt install wireguard -y
+```
+</summary>
+
 ```console
 adam@my-vps:~$ sudo apt install wireguard -y
 Reading package lists... Done
@@ -75,6 +83,16 @@ Setting up wireguard-tools (1.0.20200319-1ubuntu1) ...
 Setting up wireguard (1.0.20200319-1ubuntu1) ...
 Processing triggers for man-db (2.9.1-1) ...
 ```
+</details>
+
+
+> в Ubuntu 18.04 сначала нужно подключить ppa-репозиторий:
+> 
+> ```console
+> adam@my-vps:~$ sudo add-apt-repository ppa:wireguard/wireguard
+> adam@my-vps:~$ sudo apt-get update
+> adam@my-vps:~$ sudo apt-get install wireguard
+> ```
 
 Далее генерируем пару - закрытый / открытый - ключей для нашего сервера:
 
