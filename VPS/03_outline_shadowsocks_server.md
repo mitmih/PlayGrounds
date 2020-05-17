@@ -58,7 +58,7 @@
 ubuntu@ip-172-26-13-197:~$ sudo apt update && sudo apt upgrade -y
 ```
 
-И [настроить файл подкачки](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-18-04).
+Также [рекомендуется настроить](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-18-04) файл подкачки.
 
 <details>
 <summary>Outline-сервер представляет собой `Docker`-контейнер, нужно установить `Docker`:
