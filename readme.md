@@ -20,6 +20,8 @@
 
 3. [Запуск Outline Shadowsocks сервиса](https://github.com/mitmih/PlayGrounds/blob/master/VPS/03_outline_shadowsocks_server.md)
 
-    Настройка собственного wg-сервера, Windows / Linux / Android клиентов.
+    Запуск Outline-сервера на базе [Lightsail](https://lightsail.aws.amazon.com)
 
-    Решение проблемы задержки, до нескольких минут, восстановления соединения после перезагрузки сервера.
+    Настройка через Outline-manager
+
+    Подключение Outline-клиента
