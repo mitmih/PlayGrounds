@@ -12,11 +12,11 @@
 
 1. [сгенерируем пару (открытый / закрытый) ключей по алгоритму `Ed25519` и запустим новый сервер с `root`-доступом по открытому ключу](#step1)
 
-2. [добавим нового пользователя `adam` и сделаем его `sudo`-пользователем](#step2)
+2. [добавим нового пользователя `user` и сделаем его `sudo`-пользователем](#step2)
 
 3. [включим брандмауэр `ufw` и разрешим работу `OpenSSH`](#step3)
 
-4. [настроим `adam`'у ssh-доступ по ключу](#step4)
+4. [настроим `user`'у ssh-доступ по ключу](#step4)
 
 5. [обезопасим сервис `sshd`](#step5)
 
@@ -75,24 +75,24 @@ P.S. Вместо консольной `plink.exe` для ssh-подключен
 Первым делом обновляем список источников пакетов и сами пакеты:
 
 ```console
-root@my-vps:~# apt update && apt upgrade -y
+root@host:~# apt update && apt upgrade -y
 ```
 
-Пока мы вошли в систему под `root` - суперпользователем - но, в дальнейшем, всю работу на сервере будем выполнять из-под ограниченной учётной записи `adam`, в том числе и требующую прав администратора ОС.
+Пока мы вошли в систему под `root` - суперпользователем - но, в дальнейшем, всю работу на сервере будем выполнять из-под ограниченной учётной записи `user`, в том числе и требующую прав администратора ОС.
 
 Для этого выполним команду:
 
 ```console
-root@my-vps:~$ adduser adam
-Adding user `adam' ...
-Adding new group `adam' (1000) ...
-Adding new user `adam' (1000) with group `adam' ...
-Creating home directory `/home/adam' ...
+root@host:~$ adduser user
+Adding user `user' ...
+Adding new group `user' (1000) ...
+Adding new user `user' (1000) with group `user' ...
+Creating home directory `/home/user' ...
 Copying files from `/etc/skel' ...
 New password:
 Retype new password:
 passwd: password updated successfully
-Changing the user information for adam
+Changing the user information for user
 Enter the new value, or press ENTER for the default
         Full Name []:
         Room Number []:
@@ -100,7 +100,7 @@ Enter the new value, or press ENTER for the default
         Home Phone []:
         Other []:
 Is the information correct? [Y/n]
-root@my-vps:~$ 
+root@host:~$ 
 ```
 
 В процессе нужно будет установить пароль и ответить ещё на несколько вопросов.
@@ -108,23 +108,23 @@ root@my-vps:~$
 Далее внесём его в группу `sudo`, что позволит запускать команды с повышенными привелегиями:
 
 ```console
-root@my-vps:~$ usermod -aG sudo adam
+root@host:~$ usermod -aG sudo user
 ```
 
-Проверим работу новой учётной записи, подменив `root`'-а на `adam`'-а:
+Проверим работу новой учётной записи, подменив `root`'-а на `user`'-а:
 
 ```console
-root@my-vps:~$ su - adam
-adam@my-vps:~$ whoami
-adam
-adam@my-vps:~$ sudo whoami
+root@host:~$ su - user
+user@host:~$ whoami
+user
+user@host:~$ sudo whoami
 root
 ```
 
 В случае ошибки, можно удалить пользователя вместе с его домашним каталогом и начать заново:
 
 ```console
-root@my-vps:~$ deluser --remove-home adam
+root@host:~$ deluser --remove-home user
 ```
 
 
@@ -133,25 +133,25 @@ root@my-vps:~$ deluser --remove-home adam
 Проверим регистрацию приложения `OpenSSH`:
 
 ```console
-root@my-vps:~$ ufw app list
+root@host:~$ ufw app list
 ```
 
 Разрешим приложению работу через брандмауэр:
 
 ```console
-root@my-vps:~$ ufw allow OpenSSH
+root@host:~$ ufw allow OpenSSH
 ```
 
 включим брандмауэр:
 
 ```console
-root@my-vps:~$ ufw enable
+root@host:~$ ufw enable
 ```
 
 и проверим текущее состояние:
 
 ```console
-root@my-vps:~$ ufw status
+root@host:~$ ufw status
 ```
 
 <details>
@@ -164,7 +164,7 @@ root@my-vps:~$ ufw status
 > Например, добавим в список новое приложение `WireGuard`:
 > 
 > ```console
-> root@my-vps:~$ nano /etc/ufw/applications.d/wireguard-server
+> root@host:~$ nano /etc/ufw/applications.d/wireguard-server
 > ```
 > 
 > содержание файла:
@@ -179,7 +179,7 @@ root@my-vps:~$ ufw status
 > Перезагрузим брандмауэр, чтобы перечитать список приложений
 > 
 > ```console
-> root@my-vps:~$ ufw reload
+> root@host:~$ ufw reload
 > ```
 
 </details>
@@ -190,13 +190,13 @@ root@my-vps:~$ ufw status
 Когда мы запустили сервер, определив ssh-ключ для доступа, открытый ключ был записан в домашней папке `root`-пользователя  в файле `/root/.ssh/authorized_keys`, посмотреть который можно так:
 
 ```console
-root@my-vps:~$ cat ~/.ssh/authorized_keys
+root@host:~$ cat ~/.ssh/authorized_keys
 ```
 
-Самый простой способ организовать ssh-доступ для `adam`'-а - скопировать, сохранив права доступа, структуру `/root/.ssh` в его домашний каталог, используюя `rsync`:
+Самый простой способ организовать ssh-доступ для `user`'-а - скопировать, сохранив права доступа, структуру `/root/.ssh` в его домашний каталог, используюя `rsync`:
 
 ```console
-root@my-vps:~$ rsync --archive --chown=adam:adam /root/.ssh /home/adam
+root@host:~$ rsync --archive --chown=user:user /root/.ssh /home/user
 ```
 
 > **Примечание:** команда `rsync` по-разному обрабатывает источники и приемники с завершающим слэшем и без завершающего слэша. При использовании команды убедитесь, что исходный каталог `/root/.ssh` не содержит завершающий слэш (убедитесь, что вы не используете `/root/.ssh/`).
@@ -205,7 +205,7 @@ root@my-vps:~$ rsync --archive --chown=adam:adam /root/.ssh /home/adam
 >
 > Файлы будут храниться в неправильном месте, и `OpenSSH` не сможет их найти и использовать.
 
-Проверьте вход на сервер под учётной записью `adam`. Если все ok, можно двигаться дальше и отключить вход по паролям и вход для `root`.
+Проверьте вход на сервер под учётной записью `user`. Если все ok, можно двигаться дальше и отключить вход по паролям и вход для `root`.
 
 <details>
 <summary>
@@ -213,17 +213,17 @@ P.S. Вместо использования готовых файлов `root`'
 </summary>
 
 ```console
-root@my-vps:~$ su - adam
-adam@my-vps:~$ ssh-keygen -o -a 100 -t ed25519
+root@host:~$ su - user
+user@host:~$ ssh-keygen -o -a 100 -t ed25519
 Generating public/private ed25519 key pair.
-Enter file in which to save the key (/home/adam/.ssh/id_ed25519):
-Created directory '/home/adam/.ssh'.
+Enter file in which to save the key (/home/user/.ssh/id_ed25519):
+Created directory '/home/user/.ssh'.
 Enter passphrase (empty for no passphrase):
 Enter same passphrase again:
-Your identification has been saved in /home/adam/.ssh/id_ed25519
-Your public key has been saved in /home/adam/.ssh/id_ed25519.pub
+Your identification has been saved in /home/user/.ssh/id_ed25519
+Your public key has been saved in /home/user/.ssh/id_ed25519.pub
 The key fingerprint is:
-SHA256:w5GRExrDAWAWHw0Br4aPWc8yymPJm5meDWdYDh4+G90 adam@my-vps.hosted-by-vdsina.ru
+SHA256:w5GRExrDAWAWHw0Br4aPWc8yymPJm5meDWdYDh4+G90 user@host.hosted-by-vdsina.ru
 The key's randomart image is:
 +--[ED25519 256]--+
 |  *+=*+.oo       |
@@ -241,58 +241,58 @@ The key's randomart image is:
 Теперь добавим публичную часть нового ключа в список разрешённых ключей:
 
 ```console
-adam@my-vps:~$ ssh-copy-id adam@my-vps.hosted-by-vdsina.ru
-/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/adam/.ssh/id_ed25519.pub"
+user@host:~$ ssh-copy-id user@host.hosted-by-vdsina.ru
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/user/.ssh/id_ed25519.pub"
 /usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
 /usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
-adam@my-vps.hosted-by-vdsina.ru's password:
+user@host.hosted-by-vdsina.ru's password:
 
 Number of key(s) added: 1
 
-Now try logging into the machine, with:   "ssh 'adam@my-vps.hosted-by-vdsina.ru'"
+Now try logging into the machine, with:   "ssh 'user@host.hosted-by-vdsina.ru'"
 and check to make sure that only the key(s) you wanted were added.
 ```
 
 > Чтобы ключ был добавлен успешно, потребуется вводить пароль пользователя, то есть должна работать *аутентификация по паролю*. Проверьте параметр и исправьте ~~no~~ на yes
 > 
 > ```console
-> adam@my-vps:~$ grep -i wordauth /etc/ssh/sshd_config
+> user@host:~$ grep -i wordauth /etc/ssh/sshd_config
 > PasswordAuthentication no
 > ```
 
 и ограничим доступ к файлам (любого кроме `root`-а)
 
 ```console
-adam@my-vps:~$ chmod 600 ~/.ssh/{authorized_keys, id_ed25519.pub}
+user@host:~$ chmod 600 ~/.ssh/{authorized_keys, id_ed25519.pub}
 ```
 
-Теперь сохраните этот *закрытый* - `id_ed25519` - ключ пользователя `adam` на свой ПК, с которого вы собираетесь подключаться к серверу по `ssh`:
+Теперь сохраните этот *закрытый* - `id_ed25519` - ключ пользователя `user` на свой ПК, с которого вы собираетесь подключаться к серверу по `ssh`:
 
 * либо зайдите на сервер через [WinSCP](https://winscp.net/download/WinSCP-5.17.5-Portable.zip) и скопируйте себе файл ключа
 
 * либо выведите его в консоль и скопируйте в буфер обмена:
 
 ```console
-adam@my-vps:~$ cat ~/.ssh/id_ed25519
+user@host:~$ cat ~/.ssh/id_ed25519
 ```
 Серверу нужен только публичный ключ пользователя, записанный в `~/.ssh/authorized_keys`. Закрытый ключ используется ssh-клиентом, с помощью которого вы подключаетесь, поэтому его необходимо удалить с сервера:
 
 ```console
-adam@my-vps:~$ rm -f ~/.ssh/id_ed25519
+user@host:~$ rm -f ~/.ssh/id_ed25519
 ```
 </details>
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step5">[Шаг 5 - Настройка службы `sshd`](#step5)</a>
 
-Дальнейшие настройки выполним, войдя на сервер под пользователем `adam`, которого мы добавили на 2-ом шаге.
+Дальнейшие настройки выполним, войдя на сервер под пользователем `user`, которого мы добавили на 2-ом шаге.
 
 > Если, при запуске программ под `sudo`, вы столкнулись с ошибкой `sudo: unable to resolve host my-vps.local: Name or service not known`
 > 
 > Добавьте my-vps.local в `/etc/hosts`
 > 
 > ```console
-> adam@my-vps:~$ printf "\n127.0.1.1 $(cat /etc/hostname)\n" | sudo tee -a /etc/hosts
+> user@host:~$ printf "\n127.0.1.1 $(cat /etc/hostname)\n" | sudo tee -a /etc/hosts
 > 
 > 127.0.1.1 my-vps.local
 > ```
@@ -300,32 +300,32 @@ adam@my-vps:~$ rm -f ~/.ssh/id_ed25519
 > Проверьте файл `/etc/nsswitch.conf` на наличие строки (`files` на первом месте):
 > 
 > ```console
-> adam@my-vps:~$ cat /etc/nsswitch.conf | grep -i host
+> user@host:~$ cat /etc/nsswitch.conf | grep -i host
 > hosts:          files dns
 > ```
 > 
 > Перезапустите службу
 > 
 > ```console
-> adam@my-vps:~$ sudo systemctl restart systemd-resolved.service
+> user@host:~$ sudo systemctl restart systemd-resolved.service
 > ```
 
 Сначала, на всякий случай, сделаем резервную копию оригинального файла конфига:
 
 ```console
-adam@my-vps:~$ sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
+user@host:~$ sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup
 ```
 
 и уберём у неё доступ на запись:
 
 ```console
-adam@my-vps:~$ sudo chmod a-w /etc/ssh/sshd_config.backup
+user@host:~$ sudo chmod a-w /etc/ssh/sshd_config.backup
 ```
 
 Отредактируем текущий конфиг:
 
 ```console
-adam@my-vps:~$ sudo nano /etc/ssh/sshd_config
+user@host:~$ sudo nano /etc/ssh/sshd_config
 ```
 
 (используйте комбинацию `alt + shift + 3`, чтобы включить в редакторе `nano` отображение номеров строк)
@@ -340,7 +340,7 @@ PermitEmptyPasswords no
 Проверим изменения относительно оригинального конфига:
 
 ```console
-adam@my-vps:~$ diff -W 80 -y --suppress-common-lines /etc/ssh/sshd_config.backup /etc/ssh/sshd_config
+user@host:~$ diff -W 80 -y --suppress-common-lines /etc/ssh/sshd_config.backup /etc/ssh/sshd_config
 PermitRootLogin yes                   | PermitRootLogin no
 #PubkeyAuthentication yes             | PubkeyAuthentication yes
 #PasswordAuthentication yes           | PasswordAuthentication no
@@ -350,7 +350,7 @@ PermitRootLogin yes                   | PermitRootLogin no
 И посмотрим *текущие* настройки
 
 ```console
-adam@my-vps:~$ grep -ine '^[[:alpha:]]' /etc/ssh/sshd_config
+user@host:~$ grep -ine '^[[:alpha:]]' /etc/ssh/sshd_config
 13:Include /etc/ssh/sshd_config.d/*.conf
 34:PermitRootLogin no
 39:PubkeyAuthentication yes
@@ -367,7 +367,7 @@ adam@my-vps:~$ grep -ine '^[[:alpha:]]' /etc/ssh/sshd_config
 Перезапустим службу `sshd`:
 
 ```console
-adam@my-vps:~$ sudo systemctl restart sshd.service
+user@host:~$ sudo systemctl restart sshd.service
 ```
 
 Поздравляем, вы настроили хорошую основу для вашего нового сервера! Теперь он готов для дальнейшей установки необходимых сервисов и приложений.
@@ -375,7 +375,7 @@ adam@my-vps:~$ sudo systemctl restart sshd.service
 P.S. не забывайте регулярно обновлять ваш сервер
 
 ```console
-adam@my-vps:~$ sudo apt update && sudo apt upgrade -y
+user@host:~$ sudo apt update && sudo apt upgrade -y
 ```
 
 ## [ <kbd>↑</kbd> ](#up)
