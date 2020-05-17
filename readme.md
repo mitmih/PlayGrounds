@@ -20,8 +20,8 @@
 
 3. [Запуск Outline Shadowsocks сервиса](https://github.com/mitmih/PlayGrounds/blob/master/VPS/03_outline_shadowsocks_server.md)
 
-    Запуск Outline-сервера на базе [Lightsail](https://lightsail.aws.amazon.com)
+    Установка Outline-сервиса на виртуальный сервер.
 
-    Настройка через Outline-manager
+    Настройка через Outline-manager.
 
-    Подключение Outline-клиента
+    Подключение Outline-клиента.
