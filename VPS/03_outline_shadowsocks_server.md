@@ -58,10 +58,8 @@ ubuntu@ip-172-26-13-197:~$ sudo apt update && sudo apt upgrade -y
 
 И [настроить файл подкачки](https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-18-04).
 
-Далее, так как Outline-сервер представляет собой `Docker`-контейнер, нужно установить `Docker`:
-
 <details>
-<summary>
+<summary>Outline-сервер представляет собой `Docker`-контейнер, нужно установить `Docker`:
 
 ```console
 ubuntu@ip-172-26-13-197:~$ sudo bash -c "$(wget -qO- https://get.docker.com/)"
@@ -128,10 +126,8 @@ WARNING: Adding a user to the "docker" group will grant the ability to run
 ubuntu@ip-172-26-13-197:~$ sudo usermod -aG docker ubuntu
 ```
 
-Далее, для установки `Docker`-контейнера с Outline-сервером копируем из пункта (1) Ouline-менеджера строку и вставляем <kbd>shift</kbd> <kbd>Ins</kbd> в ssh-консоль:
-
 <details>
-<summary>
+<summary>Для установки `Docker`-контейнера Outline-сервера копируем из пункта (1) менеджера Ouline и вставляем <kbd>shift</kbd> <kbd>Ins</kbd> в ssh-консоль команду установки:
 
 ```console
 ubuntu@ip-172-26-13-197:~$ sudo bash -c "$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-server/master/src/server_manager/install_scripts/install_server.sh)"
