@@ -53,7 +53,7 @@ WireGuard можно [собрать из исходников](https://www.wire
 <summary>
 
 ```console
-user@host:~$ sudo apt install wireguard -y
+adam@my-vps:~$ sudo apt install wireguard -y
 ```
 </summary>
 
@@ -88,16 +88,16 @@ Processing triggers for man-db (2.9.1-1) ...
 > в Ubuntu 18.04 сначала нужно подключить ppa-репозиторий:
 > 
 > ```console
-> user@host:~$ sudo add-apt-repository ppa:wireguard/wireguard
-> user@host:~$ sudo apt-get update
-> user@host:~$ sudo apt-get install wireguard
+> adam@my-vps:~$ sudo add-apt-repository ppa:wireguard/wireguard
+> adam@my-vps:~$ sudo apt-get update
+> adam@my-vps:~$ sudo apt-get install wireguard
 > ```
 
 Далее генерируем пару - закрытый / открытый - ключей для нашего сервера:
 
 ```console
-user@host:~$ (umask 077 && printf "[Interface]\nPrivateKey = " | sudo tee /etc/wireguard/wg0.conf > /dev/null)
-user@host:~$ wg genkey | sudo tee -a /etc/wireguard/wg0.conf | wg pubkey | sudo tee /etc/wireguard/publickey
+adam@my-vps:~$ (umask 077 && printf "[Interface]\nPrivateKey = " | sudo tee /etc/wireguard/wg0.conf > /dev/null)
+adam@my-vps:~$ wg genkey | sudo tee -a /etc/wireguard/wg0.conf | wg pubkey | sudo tee /etc/wireguard/publickey
 yMXfyyT9m3fkoUTnW/mOMaq/WspQoOZyL02oUftwDkI=
 ```
 
@@ -106,7 +106,7 @@ yMXfyyT9m3fkoUTnW/mOMaq/WspQoOZyL02oUftwDkI=
 * `/etc/wireguard/wg0.conf` - конфиг виртуального сетевого интерфейса, который будет шифровать и обрабатывать трафик между сервером и клиентами, также здесь записан закрытый, т.е. *секретный* ключ сервера в формате `base64`
 
     ```console
-    user@host:~$ sudo cat /etc/wireguard/wg0.conf
+    adam@my-vps:~$ sudo cat /etc/wireguard/wg0.conf
     [Interface]
     PrivateKey = cCCJ27hpJvdIVmCAvVk8FRAt9caNR3zpH5eeUoL3uHg=
     ```
@@ -114,7 +114,7 @@ yMXfyyT9m3fkoUTnW/mOMaq/WspQoOZyL02oUftwDkI=
 * `/etc/wireguard/publickey` - публичный ключ сервера, который прописывается на клиентах
 
     ```console
-    user@host:~$ sudo cat /etc/wireguard/publickey
+    adam@my-vps:~$ sudo cat /etc/wireguard/publickey
     yMXfyyT9m3fkoUTnW/mOMaq/WspQoOZyL02oUftwDkI=
     ```
 
@@ -152,7 +152,7 @@ yMXfyyT9m3fkoUTnW/mOMaq/WspQoOZyL02oUftwDkI=
 Откроем конфиг виртуального сетевого интерфейса - `wg0` - в редакторе:
 
 ```console
-user@host:~$ sudo nano /etc/wireguard/wg0.conf
+adam@my-vps:~$ sudo nano /etc/wireguard/wg0.conf
 ```
 
 и добавим необходимые настройки
@@ -189,7 +189,7 @@ AllowedIPs = 10.0.0.2/32
 * `ens3` - сетевой интерфейс, который по умолчанию использует сервер для выхода в Интернет, можно узнать командой:
 
     ```console
-    user@host:~$ ip -o -4 route show to default | awk '{print $5}'
+    adam@my-vps:~$ ip -o -4 route show to default | awk '{print $5}'
     ```
 
 * `[Peer]` - клиентские настройки, у каждого клиента своя отдельная секция `[Peer]`
@@ -203,7 +203,7 @@ AllowedIPs = 10.0.0.2/32
 Отредактируем файл `/etc/sysctl.conf`, разрешив перенаправление IP трафика:
 
 ```console
-user@host:~$ sudo nano /etc/sysctl.conf
+adam@my-vps:~$ sudo nano /etc/sysctl.conf
 ```
 
 ```properties
@@ -215,7 +215,7 @@ net.ipv4.ip_forward=1
 Проверим изменения:
 
 ```console
-user@host:~$ sudo sysctl -p
+adam@my-vps:~$ sudo sysctl -p
 net.ipv4.ip_forward = 1
 ```
 <!-- net.ipv6.conf.all.forwarding = 1 -->
@@ -230,7 +230,7 @@ net.ipv4.ip_forward = 1
 У нас включен брандмауэр `ufw` - разрешим UDP-трафик на 514 порту:
 
 ```console
-user@host:~$ sudo ufw allow 514/udp
+adam@my-vps:~$ sudo ufw allow 514/udp
 Rule added
 Rule added (v6)
 ```
@@ -267,7 +267,7 @@ PersistentKeepalive = 19
 * `Public Key :` (2) - открытый ключ клиента, скопируйте его в буфер обмена и пропишите в конфиге интерфейса `wg0` на сервере, секция `[Peer]`:
 
     ```console
-    user@host:~$ sudo nano /etc/wireguard/wg0.conf
+    adam@my-vps:~$ sudo nano /etc/wireguard/wg0.conf
     ```
 
     ```properties
@@ -291,7 +291,7 @@ PersistentKeepalive = 19
 * `PublicKey = ` (4) - указываем публичный ключ сервера, полученный на [первом шаге](#step1)
     
     ```console
-    user@host:~$ sudo cat /etc/wireguard/publickey
+    adam@my-vps:~$ sudo cat /etc/wireguard/publickey
     yMXfyyT9m3fkoUTnW/mOMaq/WspQoOZyL02oUftwDkI=
     ```
 
@@ -312,7 +312,7 @@ PersistentKeepalive = 19
 Итак, все приготовления выполнены, пробуем соединиться! Включаем интерфейс `wg0` на сервере:
 
 ```console
-user@host:~$ sudo wg-quick up wg0
+adam@my-vps:~$ sudo wg-quick up wg0
 [#] ip link add wg0 type wireguard
 [#] wg setconf wg0 /dev/fd/63
 [#] ip -4 address add 10.0.0.1/24 dev wg0
@@ -323,7 +323,7 @@ user@host:~$ sudo wg-quick up wg0
 Проверим открытые порты:
 
 ```console
-user@host:~$ sudo ss -nltup
+adam@my-vps:~$ sudo ss -nltup
 Netid   State    Recv-Q   Send-Q     Local Address:Port     Peer Address:Port   Process
 udp     UNCONN   0        0                0.0.0.0:514           0.0.0.0:*
 udp     UNCONN   0        0          127.0.0.53%lo:53            0.0.0.0:*       users:(("systemd-resolve",pid=392,fd=12))
@@ -362,7 +362,7 @@ Control-C
 Чтобы также проверить обратное направление - доступность клиента с сервера - в брандмауэре разрешите Windows отвечать на icmp-запросы: откройте `Панель управления\Система и безопасность\Брандмауэр Защитника Windows`, перейдите в `Дополнительные параметры\Правила для входящих подключений` и включите правило `Общий доступ к файлам и принтерам (эхо-запрос - входящий трафик ICMPv4)` для профиля `Общий`.
 
 ```console
-user@host:~$ ping 10.0.0.2
+adam@my-vps:~$ ping 10.0.0.2
 PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 64 bytes from 10.0.0.2: icmp_seq=1 ttl=128 time=68.7 ms
 64 bytes from 10.0.0.2: icmp_seq=2 ttl=128 time=69.1 ms
@@ -397,7 +397,7 @@ TRACERT.EXE -w 500 google.com
 Также можно посмотреть текущую информацию во время работы WireGuard:
 
 ```console
-user@host:~$ sudo wg
+adam@my-vps:~$ sudo wg
 interface: wg0
   public key: <открытый ключ сервера>
   private key: (hidden)
@@ -413,7 +413,7 @@ peer: <открытый ключ клиента>
 Поздравляем, туннель приготовлен как следует и можно двигаться дальше, а пока - выключить туннель с обеих сторон:
 
 ```console
-user@host:~$ sudo wg-quick down wg0
+adam@my-vps:~$ sudo wg-quick down wg0
 [#] wg showconf wg0
 [#] ip link delete dev wg0
 [#] iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o ens3 -j MASQUERADE
@@ -423,7 +423,7 @@ user@host:~$ sudo wg-quick down wg0
 
 
 ```console
-user@host:~$ sudo ss -nltup
+adam@my-vps:~$ sudo ss -nltup
 Netid   State    Recv-Q   Send-Q     Local Address:Port     Peer Address:Port   Process
 udp     UNCONN   0        0          127.0.0.53%lo:53            0.0.0.0:*       users:(("systemd-resolve",pid=392,fd=12))
 tcp     LISTEN   0        4096       127.0.0.53%lo:53            0.0.0.0:*       users:(("systemd-resolve",pid=392,fd=13))
@@ -439,20 +439,20 @@ tcp     LISTEN   0        128                 [::]:22               [::]:*      
 Включаем автоматический запуск сервиса при старте операционной системы:
 
 ```console
-user@host:~$ sudo systemctl enable wg-quick@wg0.service
+adam@my-vps:~$ sudo systemctl enable wg-quick@wg0.service
 Created symlink /etc/systemd/system/multi-user.target.wants/wg-quick@wg0.service → /lib/systemd/system/wg-quick@.service.
 ```
 
 Запускаем сервис:
 
 ```console
-user@host:~$ sudo systemctl start wg-quick@wg0.service
+adam@my-vps:~$ sudo systemctl start wg-quick@wg0.service
 ```
 
 Проверяем статус работы сервиса:
 
 ```console
-user@host:~$ sudo systemctl status wg-quick@wg0.service
+adam@my-vps:~$ sudo systemctl status wg-quick@wg0.service
 ● wg-quick@wg0.service - WireGuard via wg-quick(8) for wg0
      Loaded: loaded (/lib/systemd/system/wg-quick@.service; enabled; vendor preset: enabled)
      Active: active (exited) since Mon 2020-05-11 04:21:33 MSK; 6s ago
@@ -477,7 +477,7 @@ May 11 04:21:33 my-vps.hosted-by-vdsina.ru systemd[1]: Finished WireGuard via wg
 Перезагружае сервер для проверки запуска сервиса:
 
 ```console
-user@host:~$ sudo reboot
+adam@my-vps:~$ sudo reboot
 ```
 
 И, хотя vps-сервер перезагрузился за считанные секунды, vpn-соединение восстанавливается только спустя несколько долгих минут... Если для вас это не критично, пропускайте следующий шаг.
@@ -485,7 +485,7 @@ user@host:~$ sudo reboot
 > P.S. Остановите сервис прежде, чем начнёте менять конфигурацию WireGuard:
 >
 > ```console
-> user@host:~$ sudo systemctl stop wg-quick@wg0.service
+> adam@my-vps:~$ sudo systemctl stop wg-quick@wg0.service
 >```
 > Это связано с параметром `SaveConfig = true` - WireGuard будет сохранять актуальные настройки в файл конфигурации при каждой остановке, таким образом ручные изменения окажутся потеряны.
 
@@ -495,7 +495,7 @@ user@host:~$ sudo reboot
 Задержка конечно при каждой перезагрузке будет разной, но, тем не менее, заметной. В поисках причины поможет `dmesg`:
 
 ```console
-user@host:~$ dmesg
+adam@my-vps:~$ dmesg
 ...
 [  307.674338] random: crng init done
 [  307.674353] random: 7 urandom warning(s) missed due to ratelimiting
@@ -514,7 +514,7 @@ user@host:~$ dmesg
 </summary>
 
 > ```console
-> user@host:~$ man 4 random | grep -ine 'entropy_avail$'  -A 2
+> adam@my-vps:~$ man 4 random | grep -ine 'entropy_avail$'  -A 2
 > 111:       entropy_avail
 > 112-              This read-only file gives the available entropy, in bits.  This will be a number in the range 0 to 4096.
 > 113-
@@ -523,7 +523,7 @@ user@host:~$ dmesg
 </details>
 
 ```console
-user@host:~$ cat /proc/sys/kernel/random/entropy_avail
+adam@my-vps:~$ cat /proc/sys/kernel/random/entropy_avail
 137
 ```
 
@@ -532,14 +532,14 @@ user@host:~$ cat /proc/sys/kernel/random/entropy_avail
 В качестве выхода рекомендуют установить [программный генератор псевдослучайных чисел](http://www.issihosts.com/haveged/) использующий адаптацию алгоритма [HAVEGE](http://www.irisa.fr/caps/projects/hipsor/ "HArdware Volatile Entropy Gathering and Expansion"):
 
 ```console
-user@host:~$ sudo apt install haveged rng-tools -y
-user@host:~$ cat /proc/sys/kernel/random/entropy_avail
+adam@my-vps:~$ sudo apt install haveged rng-tools -y
+adam@my-vps:~$ cat /proc/sys/kernel/random/entropy_avail
 2497
 ```
 
 Пакет `rng-tools` поможет оценить качество последовательностей `haveged`-генератора:
 ```console
-user@host:~$ cat /dev/random | rngtest -c 1000
+adam@my-vps:~$ cat /dev/random | rngtest -c 1000
 rngtest 5
 Copyright (c) 2004 by Henrique de Moraes Holschuh
 This is free software; see the source for copying conditions.  There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -614,13 +614,13 @@ PersistentKeepalive = 19
 
 Сначала остановим WireGuard-сервис:
 ```console
-user@host:~$ sudo systemctl stop wg-quick@wg0.service
+adam@my-vps:~$ sudo systemctl stop wg-quick@wg0.service
 ```
 
 Откроем конфиг:
 
 ```console
-user@host:~$ sudo nano /etc/wireguard/wg0.conf
+adam@my-vps:~$ sudo nano /etc/wireguard/wg0.conf
 ```
 
 Добавим открытый ключ Linux-клиента в новую `[Peer]`-секцию, получится такая конфигурация:
@@ -649,7 +649,7 @@ PublicKey = CLIENT_PUBLIC_KEY
 И снова запустим сервис:
 
 ```console
-user@host:~$ sudo systemctl start wg-quick@wg0.service
+adam@my-vps:~$ sudo systemctl start wg-quick@wg0.service
 ```
 
 Теперь наш WireGuard-сервис готов к подключению Linux-клиента и можно приступить к настройке Android-смартфона.
@@ -662,18 +662,18 @@ user@host:~$ sudo systemctl start wg-quick@wg0.service
 Сгенерируем на сервере ключевую пару для смартфона, причём делать это мы будем в нашей домашней папке, предварительно создав в ней папку `droid`:
 
 ```console
-user@host:~$ (umask 077 && printf "[Interface]\nPrivateKey = " | tee ~/droid.conf > /dev/null)
-user@host:~$ wg genkey | tee -a ~/droid.conf | wg pubkey | tee ~/droid.publickey
+adam@my-vps:~$ (umask 077 && printf "[Interface]\nPrivateKey = " | tee ~/droid.conf > /dev/null)
+adam@my-vps:~$ wg genkey | tee -a ~/droid.conf | wg pubkey | tee ~/droid.publickey
 TP9ahELWd2gUzhSZ4Mu5eYtzDgmnF7tfPTfSEPzO0j8=
-user@host:~$ ls -la droid*
--rw------- 1 user user 70 May 11 22:06 droid.conf
--rw------- 1 user user 45 May 11 22:06 droid.publickey
+adam@my-vps:~$ ls -la droid*
+-rw------- 1 adam adam 70 May 11 22:06 droid.conf
+-rw------- 1 adam adam 45 May 11 22:06 droid.publickey
 ```
 
 Отредактируем файл android-конфига:
 
 ```console
-user@host:~$ nano ~/droid.conf
+adam@my-vps:~$ nano ~/droid.conf
 ```
 
 Добавив в него уже привычные клиентские настройки - IP-адрес смартфона внутри vpn-сети, открытый ключ и Интенет-IP адрес сервера. Важный момент касаемо порта: номера до 1024 требуют `root`-прав, поэтому укажите порт `5140`
@@ -704,13 +704,13 @@ PublicKey = TP9ahELWd2gUzhSZ4Mu5eYtzDgmnF7tfPTfSEPzO0j8=
 Установим утилиту `qrencode`
 
 ```console
-user@host:~$ sudo apt install qrencode -y
+adam@my-vps:~$ sudo apt install qrencode -y
 ```
 
 И превратим текстовый Android-конфиг в QR-код:
 
 ```console
-user@host:~$ qrencode -t ansiutf8 < droid.conf
+adam@my-vps:~$ qrencode -t ansiutf8 < droid.conf
 ```
 
 ![alt text](02_wireguard_vpn_server_08_1.png "img name")
@@ -718,7 +718,7 @@ user@host:~$ qrencode -t ansiutf8 < droid.conf
 Сканируйте свой QR-код в Android-приложении WireGuard и проверяйте работу туннеля, все ok? Удалите файлы с сервера, чтобы уже наверняка никто, кроме вас, не смог воспользоваться вашим Android-конфигом:
 
 ```console
-user@host:~$ rm -f droid.*
+adam@my-vps:~$ rm -f droid.*
 ```
 
 Поздравляем! Вы приготовили собственный WireGuard VPN!
