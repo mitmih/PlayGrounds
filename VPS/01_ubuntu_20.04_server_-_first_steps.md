@@ -175,6 +175,7 @@ root@my-vps:~$ ufw status
 > description=modern fast kernel-level vpn service
 > ports=514/udp
 > ```
+<!-- 10000:10002/tcp|10003,10009/udp -->
 > 
 > Перезагрузим брандмауэр, чтобы перечитать список приложений
 > 
