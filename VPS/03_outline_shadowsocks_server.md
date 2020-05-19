@@ -185,7 +185,7 @@ Make sure to open the following ports on your firewall, router or cloud provider
 </details>
 
 > P.S. строка подключения менеджера к серверу формируется из файла `/opt/outline/access.txt`
-<details><summary>её всегда можно восстановить вручную</summary>
+<details><summary>поэтому её всегда можно восстановить вручную</summary>
 
 ```console
 ubuntu@ip-172-26-13-197:~$ sudo ls -la /opt/outline/access.txt
@@ -196,9 +196,9 @@ apiUrl:https://15.236.142.214:39415/E20HL-jc_Qm41bgO7ci4mQ
 ```
 </details>
 
-<details><summary>или сделать скрипт</summary>
+<details><summary>или небольшим скриптом (по следам <code>install_server.sh</code>)</summary>
 
-Сделаем небольшой исполняемый текстовый файл - скрипт `get_string_for_manager.sh`
+Подготовим скрипт `get_string_for_manager.sh` - исполняемый (-rw**x**------) текстовый файл с командами оболочки
 
 ```console
 ubuntu@ip-172-26-13-197:~$  umask 077 && touch get_string_for_manager.sh && chmod u+x get_string_for_manager.sh && ls -la get_string_for_manager.sh
@@ -222,7 +222,7 @@ function get_field_value {
 echo -e "\033[1;32m{\"apiUrl\":\"$(get_field_value apiUrl)\",\"certSha256\":\"$(get_field_value certSha256)\"}\033[0m"
 ```
 
-Так как читать и менять файл может только `root` и его группа, запускать скрипт нужно под `sudo`:
+Так как доступ к файлу `/opt/outline/access.txt` есть только у `root` и его группы, запускать скрипт нужно под `sudo`:
 
 ```console
 ubuntu@ip-172-26-13-197:~$ ./get_string_for_manager.sh
