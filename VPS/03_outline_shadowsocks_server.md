@@ -184,19 +184,56 @@ Make sure to open the following ports on your firewall, router or cloud provider
 ![text](03_outline_shadowsocks_server_02_4.png "text")
 </details>
 
-> P.S. строка подключения менеджера к серверу формируется из файла `/opt/outline/access.txt`, так что её всегда можно восстановить вручную
-<details><summary></summary>
+> P.S. строка подключения менеджера к серверу формируется из файла `/opt/outline/access.txt`
+<details><summary>её всегда можно восстановить вручную</summary>
 
-> ```console
-> ubuntu@ip-172-26-13-197:~$ sudo cat /opt/outline/access.txt
-> certSha256:BC023480E79EA4730D0FE8B62C10EBD51966183B727F7FEEC2C148A5DB87060A
-> apiUrl:https://15.236.142.214:39415/E20HL-jc_Qm41bgO7ci4mQ
-> ```
-details
+```console
+ubuntu@ip-172-26-13-197:~$ sudo ls -la /opt/outline/access.txt
+-rw-rw---- 1 root root 131 May 17 14:30 /opt/outline/access.txt
+ubuntu@ip-172-26-13-197:~$ sudo cat /opt/outline/access.txt
+certSha256:BC023480E79EA4730D0FE8B62C10EBD51966183B727F7FEEC2C148A5DB87060A
+apiUrl:https://15.236.142.214:39415/E20HL-jc_Qm41bgO7ci4mQ
+```
 </details>
 
+<details><summary>или сделать скрипт</summary>
 
+Сделаем небольшой исполняемый текстовый файл - скрипт `get_string_for_manager.sh`
 
+```console
+ubuntu@ip-172-26-13-197:~$  umask 077 && touch get_string_for_manager.sh && chmod u+x get_string_for_manager.sh && ls -la get_string_for_manager.sh
+-rwx------ 1 ubuntu ubuntu 0 May 19 02:55 get_string_for_manager.sh*
+ubuntu@ip-172-26-13-197:~$ nano get_string_for_manager.sh
+```
+
+Добавим в него несколько строк из `install_server.sh`
+
+```properties
+#!/bin/bash
+
+export SHADOWBOX_DIR="${SHADOWBOX_DIR:-/opt/outline}"
+
+readonly ACCESS_CONFIG=${ACCESS_CONFIG:-$SHADOWBOX_DIR/access.txt}
+
+function get_field_value {
+    grep "$1" $ACCESS_CONFIG | sed "s/$1://"
+}
+
+echo -e "\033[1;32m{\"apiUrl\":\"$(get_field_value apiUrl)\",\"certSha256\":\"$(get_field_value certSha256)\"}\033[0m"
+```
+
+Так как читать и менять файл может только `root` и его группа, запускать скрипт нужно под `sudo`:
+
+```console
+ubuntu@ip-172-26-13-197:~$ ./get_string_for_manager.sh
+grep: /opt/outline/access.txt: Permission denied
+grep: /opt/outline/access.txt: Permission denied
+{"apiUrl":"","certSha256":""}
+
+ubuntu@ip-172-26-13-197:~$ sudo ./get_string_for_manager.sh
+{"apiUrl":"https://15.236.142.214:39415/E20HL-jc_Qm41bgO7ci4mQ","certSha256":"BC023480E79EA4730D0FE8B62C10EBD51966183B727F7FEEC2C148A5DB87060A"}
+```
+</details>
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Ouline-клиенты](#step3)</a>
