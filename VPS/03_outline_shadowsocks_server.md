@@ -184,6 +184,20 @@ Make sure to open the following ports on your firewall, router or cloud provider
 ![text](03_outline_shadowsocks_server_02_4.png "text")
 </details>
 
+> P.S. строка подключения менеджера к серверу формируется из файла `/opt/outline/access.txt`, так что её всегда можно восстановить вручную
+<details><summary></summary>
+
+> ```console
+> ubuntu@ip-172-26-13-197:~$ sudo cat /opt/outline/access.txt
+> certSha256:BC023480E79EA4730D0FE8B62C10EBD51966183B727F7FEEC2C148A5DB87060A
+> apiUrl:https://15.236.142.214:39415/E20HL-jc_Qm41bgO7ci4mQ
+> ```
+details
+</details>
+
+
+
+
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Ouline-клиенты](#step3)</a>
 
