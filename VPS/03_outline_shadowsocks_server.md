@@ -206,7 +206,7 @@ ubuntu@ip-172-26-13-197:~$  umask 077 && touch get_string_for_manager.sh && chmo
 ubuntu@ip-172-26-13-197:~$ nano get_string_for_manager.sh
 ```
 
-Добавим в него несколько строк из `install_server.sh`
+Добавим несколько строк из `install_server.sh`
 
 ```properties
 #!/bin/bash
