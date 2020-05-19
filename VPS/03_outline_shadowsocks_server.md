@@ -203,10 +203,13 @@ apiUrl:https://15.236.142.214:39415/E20HL-jc_Qm41bgO7ci4mQ
 ```console
 ubuntu@ip-172-26-13-197:~$  umask 077 && touch get_string_for_manager.sh && chmod u+x get_string_for_manager.sh && ls -la get_string_for_manager.sh
 -rwx------ 1 ubuntu ubuntu 0 May 19 02:55 get_string_for_manager.sh*
-ubuntu@ip-172-26-13-197:~$ nano get_string_for_manager.sh
 ```
 
 Добавим несколько строк из `install_server.sh`
+
+```console
+ubuntu@ip-172-26-13-197:~$ nano get_string_for_manager.sh
+```
 
 ```properties
 #!/bin/bash
