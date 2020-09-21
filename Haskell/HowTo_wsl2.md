@@ -550,6 +550,86 @@
     Version 2.3.3, Git revision cb44d51bed48b723a5deb08c3348c0b3ccfc437e x86_64 hpack-0.33.0
     ```
 
+1. Устанавливаем [ghcup](https://www.haskell.org/ghcup/) - an installer for the general purpose language Haskell
+
+    <details>
+    <summary>
+
+    ```console
+    sudo curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+    ```
+    </summary>
+
+    ```console
+    Welcome to Haskell!
+
+    This script will download and install the following binaries:
+    * ghcup - The Haskell toolchain installer
+                (for managing GHC/cabal versions)
+    * ghc   - The Glasgow Haskell Compiler
+    * cabal - The Cabal build tool
+
+    ghcup installs only into the following directory,
+    which can be removed anytime:
+    /home/wsl2/.ghcup
+
+    Press ENTER to proceed or ctrl-c to abort.
+    Note that this script can be re-run at any given time.
+
+
+    % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                    Dload  Upload   Total   Spent    Left  Speed
+    100 7597k  100 7597k    0     0  5055k      0  0:00:01  0:00:01 --:--:-- 5051k
+    [ Info  ] Upgrading GHCup...
+    [ Warn  ] No GHCup update available
+
+    System requirements
+    Install the following distro packages: build-essential curl libffi-dev libffi6 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5
+
+    Press ENTER to proceed or ctrl-c to abort.
+    Installation may take a while.
+
+
+    [ Info  ] downloading: https://downloads.haskell.org/~ghc/8.8.4/ghc-8.8.4-x86_64-fedora27-linux.tar.xz
+    % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                    Dload  Upload   Total   Spent    Left  Speed
+    100  198M  100  198M    0     0  10.6M      0  0:00:18  0:00:18 --:--:-- 11.1M
+    [ Info  ] verifying digest of: ghc-8.8.4-x86_64-fedora27-linux.tar.xz
+    [ Info  ] Unpacking: ghc-8.8.4-x86_64-fedora27-linux.tar.xz to /tmp/ghcup-fFinMa
+    [ Info  ] Installing GHC (this may take a while)
+    [ ghc-make ] # on Win64, "install -s" calls a strip that doesn't understand 64bit binaries.
+    [ Info  ] GHC installation successful
+    [ Warn  ] New GHC version available: 8.10.2. To upgrade, run 'ghcup install ghc 8.10.2'
+    [ Info  ] GHC 8.8.4 successfully set as default version
+    [ Warn  ] New GHC version available: 8.10.2. To upgrade, run 'ghcup install ghc 8.10.2'
+    [ Info  ] downloading: https://downloads.haskell.org/~cabal/cabal-install-3.2.0.0/cabal-install-3.2.0.0-x86_64-unknown-linux.tar.xz
+    % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                    Dload  Upload   Total   Spent    Left  Speed
+    100 4260k  100 4260k    0     0  2554k      0  0:00:01  0:00:01 --:--:-- 2552k
+    [ Info  ] verifying digest of: cabal-install-3.2.0.0-x86_64-unknown-linux.tar.xz
+    [ Info  ] Unpacking: cabal-install-3.2.0.0-x86_64-unknown-linux.tar.xz to /tmp/ghcup-PMEFBl
+    [ Info  ] Installing cabal
+    [ Info  ] Cabal installation successful
+    Config file path source is default config file.
+    Config file /home/wsl2/.cabal/config not found.
+    Writing default configuration to /home/wsl2/.cabal/config
+    Downloading the latest package list from hackage.haskell.org
+
+    Installation done!
+
+    In order to run ghc and cabal, you need to adjust your PATH variable.
+    You may want to source '/home/wsl2/.ghcup/env' in your shell
+    configuration to do so (e.g. ~/.bashrc).
+
+    Detected bash shell on your system...
+    If you want ghcup to automatically add the required PATH variable to "/home/wsl2/.bashrc"
+    answer with YES, otherwise with NO and press ENTER.
+
+    YES
+    wsl2@w10m2:~$
+    ```
+    </details>
+
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Haskell IDE Engine (HIE)](#step3)</a>
 
 1. Ставим непосредственно движок HIE [из исходников](https://github.com/haskell/haskell-ide-engine#installation-from-source)
