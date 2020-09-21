@@ -662,7 +662,7 @@
 
 
 
-1. Ставим Haskell IDE Engine - интерфейс для IDE [из исходников](https://github.com/haskell/haskell-ide-engine#installation-from-source)
+1. Ставим [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine#installation-from-source) - интерфейс для IDE - из исходников
     <details>
     <summary>
     
