@@ -550,7 +550,7 @@
     Version 2.3.3, Git revision cb44d51bed48b723a5deb08c3348c0b3ccfc437e x86_64 hpack-0.33.0
     ```
 
-1. Устанавливаем [ghcup](https://www.haskell.org/ghcup/) - an installer for the general purpose language Haskell
+1. Устанавливаем [ghcup](https://www.haskell.org/ghcup/) - упрощает установку определенных версий ghc
 
     <details>
     <summary>
@@ -630,53 +630,36 @@
     ```
     </details>
 
-1. Проверяем версии GHCi
-    
-    * <details><summary>Глобальная версия</summary>
-        
-        ```console
-        wsl2@w10m2:~$ ghci.exe
-        GHCi, version 8.10.2: https://www.haskell.org/ghc/  :? for help
-        Prelude> :show language
-        base language is: Haskell2010
-        with the following modifiers:
-        -XNoDatatypeContexts
-        -XNondecreasingIndentation
-        Prelude> :quit
-        Leaving GHCi.
-        ```
-        </details>
-    
-    * <details><summary>stack-версия</summary>
-    
-        ```console
-        wsl2@w10m2:~$ stack ghci
+1.
+    ```console
+    wsl2@w10m2:~$ ghcup list
+    [ Warn  ] New GHC version available: 8.10.2. To upgrade, run 'ghcup install ghc 8.10.2'
+    Tool  Version     Tags                                 Notes
+    ✗  ghc   7.10.3      base-4.8.2.0
+    ✗  ghc   8.0.2       base-4.9.1.0
+    ✗  ghc   8.2.2       base-4.10.1.0
+    ✗  ghc   8.4.1       base-4.11.0.0
+    ✗  ghc   8.4.2       base-4.11.1.0
+    ✗  ghc   8.4.3       base-4.11.1.0
+    ✗  ghc   8.4.4       base-4.11.1.0
+    ✗  ghc   8.6.1       base-4.12.0.0
+    ✗  ghc   8.6.2       base-4.12.0.0
+    ✗  ghc   8.6.3       base-4.12.0.0
+    ✗  ghc   8.6.4       base-4.12.0.0
+    ✗  ghc   8.6.5       base-4.12.0.0
+    ✗  ghc   8.8.1       base-4.13.0.0
+    ✗  ghc   8.8.2       base-4.13.0.0
+    ✗  ghc   8.8.3       base-4.13.0.0
+    ✔✔ ghc   8.8.4       recommended,base-4.13.0.0
+    ✗  ghc   8.10.1      base-4.14.0.0
+    ✗  ghc   8.10.2      latest,base-4.14.1.0
+    ✗  cabal 2.4.1.0
+    ✗  cabal 3.0.0.0
+    ✔✔ cabal 3.2.0.0     latest,recommended
+    ✗  cabal 3.4.0.0-rc3 prerelease
+    ✔✔ ghcup 0.1.10      latest,recommended
+    ```
 
-        Note: No local targets specified, so a plain ghci will be started with no package hiding or package options.
-
-            You are using snapshot: lts-16.15
-
-            If you want to use package hiding and options, then you can try one of the following:
-
-            * If you want to start a different project configuration
-                than /home/wsl2/.stack/global-project/stack.yaml, then you can use stack init to create a new stack.yaml for the
-                packages in the current directory.
-
-            * If you want to use the project configuration
-                at /home/wsl2/.stack/global-project/stack.yaml, then you can add to its 'packages' field.
-
-        Configuring GHCi with the following packages:
-        GHCi, version 8.8.4: https://www.haskell.org/ghc/  :? for help
-        Loaded GHCi configuration from /tmp/haskell-stack-ghci/2a3bbd58/ghci-script
-        Prelude> :show language
-        base language is: Haskell2010
-        with the following modifiers:
-        -XNoDatatypeContexts
-        -XNondecreasingIndentation
-        Prelude> :quit
-        Leaving GHCi.
-        ```
-        </details>
 
 
 1. Ставим Haskell IDE Engine - интерфейс для IDE [из исходников](https://github.com/haskell/haskell-ide-engine#installation-from-source)
