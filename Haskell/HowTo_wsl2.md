@@ -686,8 +686,8 @@
     ```console
     wsl2@w10m2:~$ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules
     wsl2@w10m2:~$ cd haskell-ide-engine
-    wsl2@w10m2:~$ stack ./install.hs help
-    wsl2@w10m2:~$ stack ./install.hs hie -q
+    wsl2@w10m2:~/haskell-ide-engine$ stack ./install.hs help
+    wsl2@w10m2:~/haskell-ide-engine$ stack ./install.hs hie -q
     ```
     </summary>
 
