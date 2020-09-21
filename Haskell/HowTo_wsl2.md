@@ -632,7 +632,8 @@
 
 1. Проверяем версии GHCi
     
-    * Глобальная версия
+    * <details><summary>Глобальная версия</summary>
+        
         ```console
         wsl2@w10m2:~$ ghci.exe
         GHCi, version 8.10.2: https://www.haskell.org/ghc/  :? for help
@@ -644,8 +645,9 @@
         Prelude> :quit
         Leaving GHCi.
         ```
+        </details>
     
-    * stack-версия
+    * <details><summary>stack-версия</summary>
     
         ```console
         wsl2@w10m2:~$ stack ghci
@@ -674,6 +676,7 @@
         Prelude> :quit
         Leaving GHCi.
         ```
+        </details>
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Подготовка Haskell на стороне Ubuntu](#step3)</a>
