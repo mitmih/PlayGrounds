@@ -124,7 +124,7 @@
     ```
 
 
-## [ <kbd>↑</kbd> ](#up) <a name="step2">[Шаг 2 - установка / настройка / проверка `The Haskell Tool Stack`](#step2)</a>
+## [ <kbd>↑</kbd> ](#up) <a name="step2">[Шаг 2 - Подготовка Haskell на стороне Ubuntu](#step2)</a>
 На основе [дополнительной информации по среде разработки](https://rizzoma.com/topic/c27faf1cfa188c1120f59af4c35e6099/0_b_9n8n_96jab/) из чата `Learn Haskell with FSD`.
 
 1. Устанавливаем [stack](https://docs.haskellstack.org/en/stable/README/)
@@ -678,8 +678,6 @@
         ```
         </details>
 
-
-## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Подготовка Haskell на стороне Ubuntu](#step3)</a>
 
 1. Ставим Haskell IDE Engine - интерфейс для IDE [из исходников](https://github.com/haskell/haskell-ide-engine#installation-from-source)
     <details>
