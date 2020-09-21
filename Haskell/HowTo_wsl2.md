@@ -676,9 +676,9 @@
         ```
 
 
-## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Haskell IDE Engine (HIE)](#step3)</a>
+## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Подготовка Haskell на стороне Ubuntu](#step3)</a>
 
-1. Ставим непосредственно движок HIE [из исходников](https://github.com/haskell/haskell-ide-engine#installation-from-source)
+1. Ставим Haskell IDE Engine - интерфейс для IDE [из исходников](https://github.com/haskell/haskell-ide-engine#installation-from-source)
     <details>
     <summary>
     
@@ -730,16 +730,15 @@
     ```
     </details>
 
-1. Ставим движок поиска документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md)
+1. Ставим систему поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md)
     ```console
-    stack install hoogle
-    hoogle generate
-    stack haddock --hoogle
+    wsl2@w10m2:~$ stack install hoogle
+    wsl2@w10m2:~$ echo >> ~/.ghci ':def hoogle \x -> return $ ":!hoogle " ++ x'
+    wsl2@w10m2:~$ hoogle generate
+    wsl2@w10m2:~$ stack haddock --hoogle
     ```
 
 
-    cabal install hoogle
-    echo >> ~/.ghci ':def hoogle \x -> return $ ":!hoogle " ++ x'
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step4">[Шаг 4](#step4)</a>
