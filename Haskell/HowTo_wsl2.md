@@ -453,7 +453,7 @@
     ```
     </details>
 
-1. Проверяем установку сборкой тестового проекта
+1. Проверяем установку `stack` сборкой тестового проекта
     <details>
     <summary>
 
@@ -544,7 +544,7 @@
     ```
     </details>
 
-1. Проверка версии `stack`'а
+1. Версия `stack`
     ```console
     wsl2@w10m2:~$ stack exec stack -- --version
     Version 2.3.3, Git revision cb44d51bed48b723a5deb08c3348c0b3ccfc437e x86_64 hpack-0.33.0
@@ -629,6 +629,52 @@
     wsl2@w10m2:~$
     ```
     </details>
+
+1. Проверяем версии GHCi
+    
+    * Глобальная версия
+        ```console
+        wsl2@w10m2:~$ ghci.exe
+        GHCi, version 8.10.2: https://www.haskell.org/ghc/  :? for help
+        Prelude> :show language
+        base language is: Haskell2010
+        with the following modifiers:
+        -XNoDatatypeContexts
+        -XNondecreasingIndentation
+        Prelude> :quit
+        Leaving GHCi.
+        ```
+    
+    * stack-версия
+    
+        ```console
+        wsl2@w10m2:~$ stack ghci
+
+        Note: No local targets specified, so a plain ghci will be started with no package hiding or package options.
+
+            You are using snapshot: lts-16.15
+
+            If you want to use package hiding and options, then you can try one of the following:
+
+            * If you want to start a different project configuration
+                than /home/wsl2/.stack/global-project/stack.yaml, then you can use stack init to create a new stack.yaml for the
+                packages in the current directory.
+
+            * If you want to use the project configuration
+                at /home/wsl2/.stack/global-project/stack.yaml, then you can add to its 'packages' field.
+
+        Configuring GHCi with the following packages:
+        GHCi, version 8.8.4: https://www.haskell.org/ghc/  :? for help
+        Loaded GHCi configuration from /tmp/haskell-stack-ghci/2a3bbd58/ghci-script
+        Prelude> :show language
+        base language is: Haskell2010
+        with the following modifiers:
+        -XNoDatatypeContexts
+        -XNondecreasingIndentation
+        Prelude> :quit
+        Leaving GHCi.
+        ```
+
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Haskell IDE Engine (HIE)](#step3)</a>
 
