@@ -108,14 +108,12 @@
     ~$ curl -sSL https://get.haskellstack.org/ | sh
     ```
 
-1. Обращаем внимание на предупреждение `WARNING: '/home/wsl2/.local/bin' is not on your PATH. For best results, please add it to the beginning of PATH in your profile.`
-    Заводим нужную папку:
-    
-
-    ```shell
-    ~$ mkdir -p ~/.local/bin
-    ```
-    По умолчанию профиль пользователя `~/.profile` уже настроен на добавление такой папки к `PATH`.
+    > Обращаем внимание на предупреждение `WARNING: '/home/wsl2/.local/bin' is not on your PATH. For best results, please add it to the beginning of PATH in your profile.`
+    > Заводим нужную папку:
+    > ```shell
+    > ~$ mkdir -p ~/.local/bin
+    > ```
+    > По умолчанию профиль пользователя `~/.profile` уже настроен на добавление такой папки к `PATH`.
 
 1. Перезайдём в консоль, чтобы изменения вступили в силу:
     ```shell
