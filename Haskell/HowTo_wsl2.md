@@ -119,6 +119,12 @@
     > ~$ mkdir -p ~/.local/bin
     > ```
 
+1. Разворачиваем Haskell-инфраструктуру в своём профиле:
+    
+    ```shell
+    ~$ stack setup
+    ```
+
 1. Перезайдём в консоль, чтобы изменения вступили в силу:
     ```shell
     ~$ logout
@@ -126,15 +132,11 @@
     ```PowerShell
     PS > wsl -t Ubuntu-20.04 && ubuntu2004.exe
     ```
+
+1. И проверим, как:
     ```shell
     ~$ stack path --local-bin
     /home/wsl2/.local/bin
-    ```
-
-1. Разворачиваем Haskell-инфраструктуру в своём профиле:
-    
-    ```shell
-    ~$ stack setup
     ```
 
 1. Проверяем установку `stack` сборкой тестового проекта:
