@@ -217,9 +217,9 @@
         ghc-exactprint     > collect2: error: ld returned 1 exit status
         ghc-exactprint     > `gcc' failed in phase `Linker'. (Exit code: 1)
         ```
-        Компоновщик `ld.gold` не может найти библиотеку `libtinfo.so` ни по одному из путей. Для решения нужно провести небольшое расследование.
+        Компоновщик `ld.gold` не может найти библиотеку `libtinfo.so` ни по одному из путей `ld --verbose | grep SEARCH_DIR`. Для решения нужно провести небольшое расследование.
         
-        Посмотрим подробнее, где компоновщик её ищет:
+        Посмотрим подробнее результат поиска при компоновке:
         ```shell
         $ ld.gold -ltinfo --verbose
         ld.gold: Attempt to open //lib/x86_64-linux-gnu/libtinfo.so failed
@@ -236,7 +236,7 @@
         
         Не хватает символической ссылки `/usr/lib/x86_64-linux-gnu/libtinfo.so`. Поищем нужные файлы:
         ```shell
-        $ sudo find /lib /usr/lib -name *tinfo*so*
+        $ sudo find /lib /usr/lib -name *libtinfo.*
         /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
         /usr/lib/x86_64-linux-gnu/libtinfo.so.6
         ```
