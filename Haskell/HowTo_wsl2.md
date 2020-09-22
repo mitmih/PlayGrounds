@@ -145,7 +145,108 @@
     Version 2.3.3, Git revision cb44d51bed48b723a5deb08c3348c0b3ccfc437e x86_64 hpack-0.33.0
     ```
 
-<!-- 1. Устанавливаем Cabal и Haskell через Stack:
+1. Устанавливаем, [ghcup](https://www.haskell.org/ghcup/) - упрощает установку различный версий ghc и понадобится для корректной работы vscode-расширения `Integrated Haskell Shell`:
+
+    ```console
+    ~$ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+    ~$ ghcup list
+    ```
+
+## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Подготовка Haskell на стороне Ubuntu - Установка Haskell IDE Engine](#step3)</a>
+
+1. Haskell IDE Engine использует систему сборки `shake`:
+    ```
+    ~$ stack install shake
+    ~$ stack exec -- shake --demo
+    ```
+
+1. Доустановим необходимые зависимости:
+    ```
+    ~$ sudo apt install -y libicu-dev libncurses-dev libgmp-dev zlib1g-dev
+    ```
+
+1. Ставим из исходников интерфейс для IDE [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine#installation-from-source):
+    
+    ```console
+    ~$ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules
+    ~$ cd haskell-ide-engine
+    ~/haskell-ide-engine$ stack ./install.hs help
+    ~/haskell-ide-engine$ stack clean && stack ./install.hs hie -s
+    ```
+    
+    > Без VPN сборка прерывалась из-за ошибок, т.к. некоторые пакеты не скачивались и срабатывал таймаут, это можно увидеть, если запускать сборку с параметром `-q` вместо `-s`
+    > 
+    > 
+    > 
+
+1. Смотрим версию HIE
+    ```console
+    ~/haskell-ide-engine$ hie --version
+    ```
+
+1. Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
+    ```console
+    ~/haskell-ide-engine$ cd ~
+    ~$ stack install hoogle
+    ```
+    <!-- ~$ echo >> ~/.ghci ':def hoogle \x -> return ~$ ":!hoogle " ++ x' -->
+    > Если видим ошибки `ConnectionTimeout` то перезапускаем установку `stack install hoogle`
+
+1. Генерируем индекс
+    ```console
+    ~$ hoogle generate
+    ```
+    <!-- ~$ stack haddock --hoogle -->
+
+1. Проверяем версию `hoogle`
+    
+    ```console
+    $ hoogle -V
+    ```
+
+
+## [ <kbd>↑</kbd> ](#up) <a name="step4">[Шаг 4 - Подготовка VS Code](#step4)</a>
+
+1. Запускаем VS Code:
+    ```
+    $ code .
+    Installing VS Code Server for x64 (58bb7b2331731bf72587010e943852e13e6fd3cf)
+    Downloading: 100%
+    Unpacking: 100%
+    Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf72587010e943852e13e6fd3cf.
+    ```
+
+1. Устанавливаем плагины <kbd>F1</kbd>, `>extensions: Install Extensions`^
+    
+    1. [Haskell](https://marketplace.visualstudio.com/items?itemName=haskell.haskell)
+    1. [hlint](https://marketplace.visualstudio.com/items?itemName=lunaryorn.hlint)
+    1. [hoogle-vscode](https://marketplace.visualstudio.com/items?itemName=jcanero.hoogle-vscode)
+    1. [Integrated Haskell Shell](https://marketplace.visualstudio.com/items?itemName=eriksik2.vscode-ghci)
+
+<!--
+## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3](#step3)</a>
+## [ <kbd>↑</kbd> ](#up) <a name="step4">[Шаг 4](#step4)</a>
+<details>
+<summary>
+
+```console
+```
+</summary>
+
+```console
+```
+</details>
+
+ghcup System requirements
+Install the following distro packages: build-essential curl libffi-dev libffi6 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5
+sudo apt install build-essential curl libffi-dev libffi6 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5
+
+https://medium.com/@remisa.yousefvand/setup-haskell-development-environment-on-ubuntu-64c0f29f2b
+
+git clone --recursive https://github.com/haskell/haskell-ide-engine
+
+
+    1. Устанавливаем Cabal и Haskell через Stack:
     
     ```console
     ~$ stack install cabal-install
@@ -179,70 +280,5 @@
     > extra-deps:
     > - Cabal-3.2.0.0@sha256:d0d7a1f405f25d0000f5ddef684838bc264842304fd4e7f80ca92b997b710874,27320
     > ```
-    > после этого повторяем `stack install cabal-install` -->
-
-
-## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Подготовка Haskell на стороне Ubuntu - Установка Haskell IDE Engine](#step3)</a>
-
-1. Haskell IDE Engine использует систему сборки `shake`:
-    ```
-    ~$ stack install shake
-    ~$ stack exec -- shake --demo
-    ```
-
-1. Доустановим необходимые зависимости:
-    ```
-    ~$ sudo apt install -y libicu-dev libncurses-dev libgmp-dev zlib1g-dev
-    ```
-
-1. Ставим из исходников интерфейс для IDE [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine#installation-from-source):
-    
-    ```console
-    ~$ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules
-    ~$ cd haskell-ide-engine
-    ~/haskell-ide-engine$ stack ./install.hs help
-    ~/haskell-ide-engine$ stack clean && stack ./install.hs hie -s
-    ```
-    
-    > Без VPN сборка прерывалась из-за ошибок, т.к. некоторые пакеты не скачивались и срабатывал таймаут, это можно увидеть, если запускать сборку с параметром `-q` вместо `-s`
-    > 
-    > 
-    > 
-
-1. Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
-    ```console
-    ~$ stack install hoogle
-    ~$ echo >> ~/.ghci ':def hoogle \x -> return ~$ ":!hoogle " ++ x'
-    ~$ hoogle generate
-    ~$ stack haddock --hoogle
-    ```
-
-<!--
-## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3](#step3)</a>
-## [ <kbd>↑</kbd> ](#up) <a name="step4">[Шаг 4](#step4)</a>
-<details>
-<summary>
-
-```console
-```
-</summary>
-
-```console
-```
-</details>
-
-ghcup System requirements
-Install the following distro packages: build-essential curl libffi-dev libffi6 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5
-sudo apt install build-essential curl libffi-dev libffi6 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5
-
-https://medium.com/@remisa.yousefvand/setup-haskell-development-environment-on-ubuntu-64c0f29f2b
-
-git clone --recursive https://github.com/haskell/haskell-ide-engine
-
-1. Устанавливаем, по желанию, [ghcup](https://www.haskell.org/ghcup/) - упрощает установку различный версий ghc:
-
-    ```console
-    ~$ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
-    ~$ ghcup list
-    ```
+    > после этого повторяем `stack install cabal-install`
 -->
