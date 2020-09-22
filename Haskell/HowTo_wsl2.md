@@ -8,9 +8,9 @@
 
 * [заводим Haskell IDE Engine (HIE)](#step3)
 
-* [#step3](#step3)
+<!-- * [#step4](#step4) -->
 
-* [#step4](#step4)
+<!-- * [#step5](#step5) -->
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step1">[Шаг 1 - Подготовка Windows Subsystem Linux 2, установка Ubuntu 20.04](#step1)</a>
@@ -94,7 +94,7 @@
     ```
 
 
-## [ <kbd>↑</kbd> ](#up) <a name="step2">[Шаг 2 - Подготовка Haskell на стороне Ubuntu](#step2)</a>
+## [ <kbd>↑</kbd> ](#up) <a name="step2">[Шаг 2 - Подготовка Haskell на стороне Ubuntu - установка `stack`](#step2)</a>
 На основе [дополнительной информации по среде разработки](https://rizzoma.com/topic/c27faf1cfa188c1120f59af4c35e6099/0_b_9n8n_96jab/) из чата `Learn Haskell with FSD`.
 
 1. Устанавливаем [stack](https://docs.haskellstack.org/en/stable/README/):
@@ -181,24 +181,33 @@
     > ```
     > после этого повторяем `stack install cabal-install` -->
 
-1.
+
+## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Подготовка Haskell на стороне Ubuntu - Установка Haskell IDE Engine](#step3)</a>
+
+1. Haskell IDE Engine использует систему сборки `shake`:
     ```
     ~$ stack install shake
     ~$ stack exec -- shake --demo
+    ```
+
+1. Доустановим необходимые зависимости:
+    ```
     ~$ sudo apt install -y libicu-dev libncurses-dev libgmp-dev zlib1g-dev
     ```
 
 1. Ставим из исходников интерфейс для IDE [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine#installation-from-source):
     
-    <!-- sudo apt install libicu-dev libncurses-dev libgmp-dev zlib1g-dev -y -->
-    
-    <!-- ~$ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules -->
     ```console
     ~$ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules
     ~$ cd haskell-ide-engine
     ~/haskell-ide-engine$ stack ./install.hs help
     ~/haskell-ide-engine$ stack clean && stack ./install.hs hie -s
     ```
+    
+    > Без VPN сборка прерывалась из-за ошибок, т.к. некоторые пакеты не скачивались и срабатывал таймаут, это можно увидеть, если запускать сборку с параметром `-q` вместо `-s`
+    > 
+    > 
+    > 
 
 1. Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
     ```console
