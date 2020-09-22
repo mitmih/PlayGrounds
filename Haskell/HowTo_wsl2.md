@@ -175,9 +175,6 @@
     ```
     
     > Без VPN сборка прерывалась из-за ошибок, т.к. некоторые пакеты не скачивались и срабатывал таймаут, это можно увидеть, если запускать сборку с параметром `-q` вместо `-s`
-    > 
-    > 
-    > 
 
 1. Смотрим версию HIE
     ```console
@@ -216,12 +213,12 @@
     Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf72587010e943852e13e6fd3cf.
     ```
 
-1. Устанавливаем плагины <kbd>F1</kbd>, `>extensions: Install Extensions`^
+1. Устанавливаем плагины <kbd>F1</kbd>, `extensions: Install Extensions`:
     
-    1. [Haskell](https://marketplace.visualstudio.com/items?itemName=haskell.haskell)
-    1. [hlint](https://marketplace.visualstudio.com/items?itemName=lunaryorn.hlint)
-    1. [hoogle-vscode](https://marketplace.visualstudio.com/items?itemName=jcanero.hoogle-vscode)
-    1. [Integrated Haskell Shell](https://marketplace.visualstudio.com/items?itemName=eriksik2.vscode-ghci)
+    * [Haskell](https://marketplace.visualstudio.com/items?itemName=haskell.haskell)
+    * [hlint](https://marketplace.visualstudio.com/items?itemName=lunaryorn.hlint)
+    * [hoogle-vscode](https://marketplace.visualstudio.com/items?itemName=jcanero.hoogle-vscode)
+    * [Integrated Haskell Shell](https://marketplace.visualstudio.com/items?itemName=eriksik2.vscode-ghci)
 
 <!--
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3](#step3)</a>
