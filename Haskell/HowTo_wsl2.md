@@ -8,9 +8,9 @@
 
 * [заводим Haskell IDE Engine (HIE)](#step3)
 
-* [#step4](#step4)
+* [#step3](#step3)
 
-* [#step5](#step5)
+* [#step4](#step4)
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step1">[Шаг 1 - Подготовка Windows Subsystem Linux 2, установка Ubuntu 20.04](#step1)</a>
@@ -544,7 +544,7 @@
     ```
     </details>
 
-1. Версия `stack`
+1. Смотрим версию `stack`
     ```console
     wsl2@w10m2:~$ stack exec stack -- --version
     Version 2.3.3, Git revision cb44d51bed48b723a5deb08c3348c0b3ccfc437e x86_64 hpack-0.33.0
@@ -626,12 +626,6 @@
     answer with YES, otherwise with NO and press ENTER.
 
     YES
-    wsl2@w10m2:~$
-    ```
-    </details>
-
-1.
-    ```console
     wsl2@w10m2:~$ ghcup list
     [ Warn  ] New GHC version available: 8.10.2. To upgrade, run 'ghcup install ghc 8.10.2'
     Tool  Version     Tags                                 Notes
@@ -659,10 +653,12 @@
     ✗  cabal 3.4.0.0-rc3 prerelease
     ✔✔ ghcup 0.1.10      latest,recommended
     ```
-
-
+    </details>
 
 1. Ставим [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine#installation-from-source) - интерфейс для IDE - из исходников
+    
+    sudo apt install libicu-dev libncurses-dev libgmp-dev zlib1g-dev -y
+    
     <details>
     <summary>
     
@@ -670,7 +666,7 @@
     wsl2@w10m2:~$ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules
     wsl2@w10m2:~$ cd haskell-ide-engine
     wsl2@w10m2:~/haskell-ide-engine$ stack ./install.hs help
-    wsl2@w10m2:~/haskell-ide-engine$ stack ./install.hs hie -q
+    wsl2@w10m2:~/haskell-ide-engine$ stack ./install.hs latest -s
     ```
     </summary>
 
@@ -714,7 +710,7 @@
     ```
     </details>
 
-1. Ставим систему поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md)
+1. Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE.
     ```console
     wsl2@w10m2:~$ stack install hoogle
     wsl2@w10m2:~$ echo >> ~/.ghci ':def hoogle \x -> return $ ":!hoogle " ++ x'
@@ -722,11 +718,8 @@
     wsl2@w10m2:~$ stack haddock --hoogle
     ```
 
-
-
-
+## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3](#step3)</a>
 ## [ <kbd>↑</kbd> ](#up) <a name="step4">[Шаг 4](#step4)</a>
-## [ <kbd>↑</kbd> ](#up) <a name="step5">[Шаг 5](#step5)</a>
 <details>
 <summary>
 
