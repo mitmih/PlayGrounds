@@ -145,7 +145,7 @@
     Version 2.3.3, Git revision cb44d51bed48b723a5deb08c3348c0b3ccfc437e x86_64 hpack-0.33.0
     ```
 
-1. Устанавливаем Cabal и Haskell через Stack:
+<!-- 1. Устанавливаем Cabal и Haskell через Stack:
     
     ```console
     ~$ stack install cabal-install
@@ -179,7 +179,7 @@
     > extra-deps:
     > - Cabal-3.2.0.0@sha256:d0d7a1f405f25d0000f5ddef684838bc264842304fd4e7f80ca92b997b710874,27320
     > ```
-    > после этого повторяем `stack install cabal-install`
+    > после этого повторяем `stack install cabal-install` -->
 
 1.
     ```
