@@ -167,10 +167,10 @@
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Подготовка Haskell в Ubuntu - Установка Haskell IDE Engine и Hoogle](#step3)</a>
 
-1. Доустановим необходимые зависимости:
+<!-- 1. Доустановим необходимые зависимости:
     ```
     ~$ sudo apt install -y libicu-dev libncurses-dev libgmp-dev zlib1g-dev
-    ```
+    ``` -->
 
 1. Haskell IDE Engine использует систему сборки `shake`:
     ```
