@@ -72,10 +72,19 @@
 1. Запускаем, в первый раз нужно указать пользователя и задать ему пароль:
     
     > набираем `ubuntu`, нажимаем <kbd>Tab</kbd>
+    > ```PowerShell
+    > PS C:\Users\user> ubuntu2004.exe
+    > ```
     
-    ```PowerShell
-    PS C:\Users\user> ubuntu2004.exe
-    ```
+    > Отменить развёртывание можно командами:
+    > ```PowerShell
+    > PS C:\Users\user> wsl --shutdown
+    > PS C:\Users\user> wsl -l -v
+    > NAME            STATE           VERSION
+    > * Ubuntu-20.04    Stopped         2
+    > PS C:\Users\user> wsl -t Ubuntu-20.04
+    > PS C:\Users\user> Get-AppxPackage *ubuntu* | Remove-AppxPackage
+    > ```
 
 1. И обновляем дистрибутив:
     ```console
@@ -134,7 +143,7 @@
     Version 2.3.3, Git revision cb44d51bed48b723a5deb08c3348c0b3ccfc437e x86_64 hpack-0.33.0
     ```
 
-1. Устанавливаем [ghcup](https://www.haskell.org/ghcup/) - упрощает установку определенных версий ghc:
+1. Устанавливаем, по желанию, [ghcup](https://www.haskell.org/ghcup/) - упрощает установку различный версий ghc:
 
     ```console
     wsl2@w10m2:~$ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
