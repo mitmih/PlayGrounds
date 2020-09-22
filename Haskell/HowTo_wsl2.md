@@ -177,7 +177,7 @@
     ~$ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules
     ~$ cd haskell-ide-engine
     ~/haskell-ide-engine$ stack ./install.hs help
-    ~/haskell-ide-engine$ stack clean && stack ./install.hs hie -q
+    ~/haskell-ide-engine$ stack clean && stack ./install.hs latest -q
     ```
 
     <details><summary>Если у вас случились ошибки.</summary>
