@@ -309,6 +309,11 @@
     ```
     > Если `ghcup list` не срабатывает, нужно перезайти, чтобы изменения переменных окружения вступили в силу (см. шаг 2 п. 2)
 
+1. Для плагина отладки
+    ```shell
+    ~$ stack install phoityne-vscode haskell-dap
+    ```
+
 1. Запускаем VS Code:
     ```
     $ code .
@@ -317,6 +322,27 @@
     Unpacking: 100%
     Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf72587010e943852e13e6fd3cf.
     ```
+    
+    > Все настройки сервера VS Code, в т.ч. и установленные плагины, хранятся в профиле пользователя:
+    > ```shell
+    > ~$ tree -L 2 .vscode-server/
+    > .vscode-server/
+    > ├── bin
+    > │   └── 58bb7b2331731bf72587010e943852e13e6fd3cf
+    > ├── data
+    > │   ├── CachedExtensionVSIXs
+    > │   ├── Machine
+    > │   ├── User
+    > │   ├── logs
+    > │   └── machineid
+    > └── extensions
+    >     ├── eriksik2.vscode-ghci-0.0.2
+    >     ├── haskell.haskell-1.1.0
+    >     ├── jcanero.hoogle-vscode-0.0.7
+    >     ├── justusadam.language-haskell-3.3.0
+    >     ├── lunaryorn.hlint-0.5.1
+    >     └── phoityne.phoityne-vscode-0.0.25
+    >```
 
 1. Устанавливаем плагины <kbd>F1</kbd>, `extensions: Install Extensions`:
     
@@ -324,11 +350,11 @@
     * [hlint](https://marketplace.visualstudio.com/items?itemName=lunaryorn.hlint)
     * [hoogle-vscode](https://marketplace.visualstudio.com/items?itemName=jcanero.hoogle-vscode)
     * [Integrated Haskell Shell](https://marketplace.visualstudio.com/items?itemName=eriksik2.vscode-ghci)
+    * [Haskell GHCi Debug Adapter Phoityne](https://marketplace.visualstudio.com/items?itemName=phoityne.phoityne-vscode)
     
     > Для разработки в Ubuntu через WSL2 достаточно установленного по умолчанию расширения `Remote - WSL`
     > 
     > Если необходимо подключаться к контейнеру или к отдельной машине по SSH, то можно установить сразу набор из трёх расширений `Remote Development`
-
 
 <!--
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3](#step3)</a>
