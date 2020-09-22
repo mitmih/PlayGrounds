@@ -90,7 +90,7 @@
 
 1. И обновляем дистрибутив:
     ```console
-    $ sudo apt update && sudo apt upgrade -y
+    ~$ sudo apt update && sudo apt upgrade -y
     ```
 
 
@@ -100,56 +100,56 @@
 1. Устанавливаем [stack](https://docs.haskellstack.org/en/stable/README/):
     
     ```console
-    $ curl -sSL https://get.haskellstack.org/ | sh
+    ~$ curl -sSL https://get.haskellstack.org/ | sh
     ```
 
 1. Обращаем внимание на предупреждение про `~/.local/bin` - заводим нужную папку:
     
 
     ```console
-    $ mkdir -p ~/.local/bin
+    ~$ mkdir -p ~/.local/bin
     ```
     По умолчанию профиль пользователя `~/.profile` уже настроен на добавление к `PATH` такой папки.
 
 1. Перезайдём в консоль, чтобы изменения вступили в силу:
     ```console
-    $ logout
+    ~$ logout
     PS > ubuntu2004.exe
-    $ stack path --local-bin
+    ~$ stack path --local-bin
     /home/wsl2/.local/bin
     ```
 
 1. Разворачиваем Haskell-инфраструктуру в своём профиле:
     
     ```console
-    $ $ stack setup
+    ~$ stack setup
     ```
 
 1. Проверяем установку `stack` сборкой тестового проекта:
 
     ```console
-    $ stack new test
-    $ cd ./test/
+    ~$ stack new test
+    ~$ cd ./test/
     ~/test$ stack build
     ~/test$ stack exec test-exe
     someFunc
     ~/test$ stack install
     ~/test$ cd ..
-    $ test-exe
+    ~$ test-exe
     someFunc
     ```
 
 1. Смотрим версию `stack`:
     ```console
-    $ stack exec stack -- --version
+    ~$ stack exec stack -- --version
     Version 2.3.3, Git revision cb44d51bed48b723a5deb08c3348c0b3ccfc437e x86_64 hpack-0.33.0
     ```
 
 1. Устанавливаем Cabal и Haskell через Stack:
     
     ```console
-    $ stack install cabal-install
-    $ cabal update
+    ~$ stack install cabal-install
+    ~$ cabal update
     ```
     
     > У меня в процессе установки выскочила ошибка из несоответствия доступной версии и указанной в конфиге stack`а:
@@ -171,7 +171,7 @@
     > 
     > Отркрываем конфиг:
     > ```console
-    > $ nano ~/.stack/global-project/stack.yaml
+    > ~$ nano ~/.stack/global-project/stack.yaml
     > ```
     > 
     > И добавляем, как рекомендовано, соответствующую поправку
@@ -183,29 +183,29 @@
 
 1.
     ```
-    $ stack install shake
-    $ stack exec -- shake --demo
-    $ sudo apt install -y libicu-dev libncurses-dev libgmp-dev zlib1g-dev
+    ~$ stack install shake
+    ~$ stack exec -- shake --demo
+    ~$ sudo apt install -y libicu-dev libncurses-dev libgmp-dev zlib1g-dev
     ```
 
 1. Ставим из исходников интерфейс для IDE [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine#installation-from-source):
     
     <!-- sudo apt install libicu-dev libncurses-dev libgmp-dev zlib1g-dev -y -->
     
-    <!-- $ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules -->
+    <!-- ~$ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules -->
     ```console
-    $ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules
-    $ cd haskell-ide-engine
+    ~$ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules
+    ~$ cd haskell-ide-engine
     ~/haskell-ide-engine$ stack ./install.hs help
     ~/haskell-ide-engine$ stack clean && stack ./install.hs hie -s
     ```
 
 1. Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
     ```console
-    $ stack install hoogle
-    $ echo >> ~/.ghci ':def hoogle \x -> return $ ":!hoogle " ++ x'
-    $ hoogle generate
-    $ stack haddock --hoogle
+    ~$ stack install hoogle
+    ~$ echo >> ~/.ghci ':def hoogle \x -> return ~$ ":!hoogle " ++ x'
+    ~$ hoogle generate
+    ~$ stack haddock --hoogle
     ```
 
 <!--
@@ -233,7 +233,7 @@ git clone --recursive https://github.com/haskell/haskell-ide-engine
 1. Устанавливаем, по желанию, [ghcup](https://www.haskell.org/ghcup/) - упрощает установку различный версий ghc:
 
     ```console
-    $ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
-    $ ghcup list
+    ~$ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+    ~$ ghcup list
     ```
 -->
