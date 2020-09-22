@@ -185,7 +185,7 @@
     ```
     $ stack install shake
     $ stack exec -- shake --demo
-    $ sudo apt install libicu-dev libncurses-dev libgmp-dev zlib1g-dev
+    $ sudo apt install -y libicu-dev libncurses-dev libgmp-dev zlib1g-dev
     ```
 
 1. Ставим из исходников интерфейс для IDE [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine#installation-from-source):
@@ -194,10 +194,10 @@
     
     <!-- $ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules -->
     ```console
-    $ git clone --recursive https://github.com/haskell/haskell-ide-engine
+    $ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules
     $ cd haskell-ide-engine
     ~/haskell-ide-engine$ stack ./install.hs help
-    ~/haskell-ide-engine$ stack clean && stack ./install.hs hie -q
+    ~/haskell-ide-engine$ stack clean && stack ./install.hs hie -s
     ```
 
 1. Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
