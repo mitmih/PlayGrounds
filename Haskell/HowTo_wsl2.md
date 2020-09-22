@@ -177,10 +177,82 @@
     ~$ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules
     ~$ cd haskell-ide-engine
     ~/haskell-ide-engine$ stack ./install.hs help
-    ~/haskell-ide-engine$ stack clean && stack ./install.hs hie -s
+    ~/haskell-ide-engine$ stack clean && stack ./install.hs hie -q
     ```
+
+1. <details><summary>Если у вас случились ошибки.</summary>
     
-    > Без VPN сборка прерывалась из-за ошибок, т.к. некоторые пакеты не скачивались и срабатывал таймаут, это можно увидеть, если запускать сборку с параметром `-q` вместо `-s`
+    В процессе установки `hie` у меня возникали ошибки двух типов:
+    
+    1. `ConnectionTimeout` - ошибка при скачивании пакета, например:
+        ```shell
+        HttpExceptionRequest Request {
+        host                 = "casa.fpcomplete.com"
+        port                 = 443
+        secure               = True
+        requestHeaders       = []
+        path                 = "/v1/pull"
+        queryString          = ""
+        method               = "POST"
+        proxy                = Nothing
+        rawBody              = False
+        redirectCount        = 10
+        responseTimeout      = ResponseTimeoutDefault
+        requestVersion       = HTTP/1.1
+        }
+        ConnectionTimeout
+        Progress 27/56
+        ```
+        
+        В процессе скачивания пакетов на различных этапах не удаётся скачать какой-либо пакет и сборка завершается ошибкой. Облегчает, но не полностью не избавляет, либо включение VPN, либо запуск в однопоточном режиме `stack ./install.hs hie -q -j1`, либо их комбинация.
+        
+        **Решение**: перезапуск `stack clean && stack ./install.hs hie -q` снова и снова, до тех пор, пока все пакеты не будут скачаны.
+    
+    1. `/usr/bin/ld.gold: error: cannot find -ltinfo` - ошибка компоновщика для ELF файлов, например:
+        ```shell
+        ghc-lib-parser-ex  > /usr/bin/ld.gold: error: cannot find -ltinfo
+        ghc-lib-parser-ex  > collect2: error: ld returned 1 exit status
+        ghc-lib-parser-ex  > `gcc' failed in phase `Linker'. (Exit code: 1)
+        ghc-exactprint     > /usr/bin/ld.gold: error: cannot find -ltinfo
+        ghc-exactprint     > collect2: error: ld returned 1 exit status
+        ghc-exactprint     > `gcc' failed in phase `Linker'. (Exit code: 1)
+        ```
+        Компоновщик `ld.gold` не может найти библиотеку `libtinfo.so` ни по одному из путей. Для решения нужно провести небольшое расследование.
+        
+        Посмотрим подробнее, где компоновщик её ищет:
+        ```shell
+        $ ld.gold -ltinfo --verbose
+        ld.gold: Attempt to open //lib/x86_64-linux-gnu/libtinfo.so failed
+        ld.gold: Attempt to open //lib/x86_64-linux-gnu/libtinfo.a failed
+        ld.gold: Attempt to open //usr/lib/x86_64-linux-gnu/libtinfo.so failed
+        ld.gold: Attempt to open //usr/lib/x86_64-linux-gnu/libtinfo.a failed
+        ld.gold: Attempt to open //lib/libtinfo.so failed
+        ld.gold: Attempt to open //lib/libtinfo.a failed
+        ld.gold: Attempt to open //usr/lib/libtinfo.so failed
+        ld.gold: Attempt to open //usr/lib/libtinfo.a failed
+        ld.gold: error: cannot find -ltinfo
+        ld.gold: Opened new descriptor 3 for "a.out"
+        ```
+        
+        Не хватает символической ссылки `/usr/lib/x86_64-linux-gnu/libtinfo.so`. Поищем нужные файлы:
+        ```shell
+        $ sudo find /usr -name *tinfo*so*
+        /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+        /usr/lib/x86_64-linux-gnu/libtinfo.so.6
+        ```
+        
+        Найдено два файла. Посмотрим, что это за файлы, чтобы понять, на какой из них нужно дать ссылку:
+        ```shell
+        $ ls -la /usr/lib/x86_64-linux-gnu/*tinfo*so*
+        lrwxrwxrwx 1 root root     15 Feb 26  2020 /usr/lib/x86_64-linux-gnu/libtinfo.so.6 -> libtinfo.so.6.2
+        -rw-r--r-- 1 root root 192032 Feb 26  2020 /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+        ```
+        
+        Файл `libtinfo.so.6` сам является ссылкой на оригинал `libtinfo.so.6.2`, поэтому сделаем ещё одну подобную ссылку также на оригинал:
+        ```shell
+        $ sudo ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2 /usr/lib/x86_64-linux-gnu/libtinfo.so
+        ```
+    </details>
 
 1. Смотрим версию HIE
     ```shell
