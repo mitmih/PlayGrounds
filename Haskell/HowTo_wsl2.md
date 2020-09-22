@@ -180,7 +180,7 @@
     ~/haskell-ide-engine$ stack clean && stack ./install.hs latest -q
     ```
 
-    <details><summary>Если у вас случились ошибки.</summary>
+    <details><summary>Если у вас случились ошибки.<a name="step3err">[.](#step3err)</summary>
     
     В процессе установки `hie` у меня возникали ошибки двух типов:
     
