@@ -237,13 +237,9 @@
 ```
 </details>
 
-ghcup System requirements
-Install the following distro packages: build-essential curl libffi-dev libffi6 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5
-sudo apt install build-essential curl libffi-dev libffi6 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5
 
 https://medium.com/@remisa.yousefvand/setup-haskell-development-environment-on-ubuntu-64c0f29f2b
 
-git clone --recursive https://github.com/haskell/haskell-ide-engine
 
 
     1. Устанавливаем Cabal и Haskell через Stack:
@@ -281,4 +277,8 @@ git clone --recursive https://github.com/haskell/haskell-ide-engine
     > - Cabal-3.2.0.0@sha256:d0d7a1f405f25d0000f5ddef684838bc264842304fd4e7f80ca92b997b710874,27320
     > ```
     > после этого повторяем `stack install cabal-install`
+
+choco list --local-only
+choco uninstall haskell-dev --remove-dependencies
+choco list --local-only
 -->
