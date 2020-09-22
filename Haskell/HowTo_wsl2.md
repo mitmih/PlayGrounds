@@ -119,7 +119,11 @@
 1. Перезайдём в консоль, чтобы изменения вступили в силу:
     ```console
     ~$ logout
+    ```
+    ```PowerShell
     PS > wsl -t Ubuntu-20.04 && ubuntu2004.exe
+    ```
+    ```console
     ~$ stack path --local-bin
     /home/wsl2/.local/bin
     ```
