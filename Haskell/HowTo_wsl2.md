@@ -92,6 +92,11 @@
     ```console
     ~$ sudo apt update && sudo apt upgrade -y
     ```
+    > для листинга директорий в виде дерева можно поставить утилиту `tree`
+    > ```console
+    > ~$ sudo apt install tree
+    > ```
+    > 
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step2">[Шаг 2 - Подготовка Haskell в Ubuntu - установка `stack`](#step2)</a>
