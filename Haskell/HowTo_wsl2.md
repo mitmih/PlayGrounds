@@ -180,7 +180,7 @@
     ~/haskell-ide-engine$ stack clean && stack ./install.hs hie -q
     ```
 
-1. <details><summary>Если у вас случились ошибки.</summary>
+    <details><summary>Если у вас случились ошибки.</summary>
     
     В процессе установки `hie` у меня возникали ошибки двух типов:
     
