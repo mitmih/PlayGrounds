@@ -108,7 +108,8 @@
     ~$ curl -sSL https://get.haskellstack.org/ | sh
     ```
 
-1. Обращаем внимание на предупреждение про `~/.local/bin` - заводим нужную папку:
+1. Обращаем внимание на предупреждение `WARNING: '/home/wsl2/.local/bin' is not on your PATH. For best results, please add it to the beginning of PATH in your profile.`
+    Заводим нужную папку:
     
 
     ```shell
