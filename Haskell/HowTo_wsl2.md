@@ -158,14 +158,6 @@
     Version 2.3.3, Git revision cb44d51bed48b723a5deb08c3348c0b3ccfc437e x86_64 hpack-0.33.0
     ```
 
-1. Устанавливаем, [ghcup](https://www.haskell.org/ghcup/) - понадобится для корректной работы vscode-расширения `Integrated Haskell Shell`, также упрощает установку различный версий `ghc`:
-
-    ```shell
-    ~$ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
-    ~$ ghcup list
-    ```
-    > Если `ghcup list` не срабатывает, нужно перезайти, чтобы изменения переменных окружения вступили в силу (см. шаг 2 п. 2)
-
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Подготовка Haskell в Ubuntu - Установка Haskell IDE Engine и Hoogle](#step3)</a>
 
 <!-- 1. Доустановим необходимые зависимости:
@@ -217,6 +209,14 @@
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step4">[Шаг 4 - Подготовка VS Code](#step4)</a>
+
+1. Устанавливаем, [ghcup](https://www.haskell.org/ghcup/) - понадобится для корректной работы vscode-расширения `Integrated Haskell Shell`, также упрощает установку различный версий `ghc`:
+
+    ```shell
+    ~$ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+    ~$ ghcup list
+    ```
+    > Если `ghcup list` не срабатывает, нужно перезайти, чтобы изменения переменных окружения вступили в силу (см. шаг 2 п. 2)
 
 1. Запускаем VS Code:
     ```
