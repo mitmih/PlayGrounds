@@ -94,7 +94,7 @@
     ```
 
 
-## [ <kbd>↑</kbd> ](#up) <a name="step2">[Шаг 2 - Подготовка Haskell на стороне Ubuntu - установка `stack`](#step2)</a>
+## [ <kbd>↑</kbd> ](#up) <a name="step2">[Шаг 2 - Подготовка Haskell в Ubuntu - установка `stack`](#step2)</a>
 На основе [дополнительной информации по среде разработки](https://rizzoma.com/topic/c27faf1cfa188c1120f59af4c35e6099/0_b_9n8n_96jab/) из чата `Learn Haskell with FSD`.
 
 1. Устанавливаем [stack](https://docs.haskellstack.org/en/stable/README/):
@@ -152,7 +152,7 @@
     ~$ ghcup list
     ```
 
-## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Подготовка Haskell на стороне Ubuntu - Установка Haskell IDE Engine](#step3)</a>
+## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Подготовка Haskell в Ubuntu - Установка Haskell IDE Engine](#step3)</a>
 
 1. Haskell IDE Engine использует систему сборки `shake`:
     ```
