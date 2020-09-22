@@ -92,7 +92,7 @@
     ```console
     ~$ sudo apt update && sudo apt upgrade -y
     ```
-    > для листинга директорий в виде дерева можно поставить утилиту `tree`
+    > для листинга директорий в виде дерева пригодится утилита `tree`
     > ```console
     > ~$ sudo apt install tree
     > ```
