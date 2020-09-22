@@ -96,7 +96,12 @@
     > ```shell
     > ~$ sudo apt install tree
     > ```
-    > 
+
+
+1. По умолчанию профиль пользователя `~/.profile` уже настроен на добавление папки `~/.local/bin` к переменной `PATH`, поэтому достаточно её сделать папку:
+    ```shell
+    ~$ mkdir -p ~/.local/bin
+    ```
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step2">[Шаг 2 - Подготовка Haskell в Ubuntu - установка `stack`](#step2)</a>
@@ -133,13 +138,13 @@
     PS > wsl -t Ubuntu-20.04 && ubuntu2004.exe
     ```
 
-1. И проверим, как:
+1. Проверяем, что `stack` находится в переменной `PATH`:
     ```shell
     ~$ stack path --local-bin
     /home/wsl2/.local/bin
     ```
 
-1. Проверяем установку `stack` сборкой тестового проекта:
+1. И установку `stack` сборкой тестового проекта:
 
     ```shell
     ~$ stack new test
