@@ -158,7 +158,7 @@
     Version 2.3.3, Git revision cb44d51bed48b723a5deb08c3348c0b3ccfc437e x86_64 hpack-0.33.0
     ```
 
-1. Устанавливаем, [ghcup](https://www.haskell.org/ghcup/) - упрощает установку различный версий ghc и понадобится для корректной работы vscode-расширения `Integrated Haskell Shell`:
+1. Устанавливаем, [ghcup](https://www.haskell.org/ghcup/) - понадобится для корректной работы vscode-расширения `Integrated Haskell Shell`, также упрощает установку различный версий `ghc`:
 
     ```shell
     ~$ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
