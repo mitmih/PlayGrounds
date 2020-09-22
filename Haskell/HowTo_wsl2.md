@@ -165,11 +165,11 @@
     ~$ sudo apt install -y libicu-dev libncurses-dev libgmp-dev zlib1g-dev
     ``` -->
 
-1. Haskell IDE Engine использует систему сборки `shake`:
+<!-- 1. Haskell IDE Engine использует систему сборки `shake`:
     ```
     ~$ stack install shake
     ~$ stack exec -- shake --demo
-    ```
+    ``` -->
 
 1. Ставим из исходников интерфейс для IDE [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine#installation-from-source):
     
