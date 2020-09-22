@@ -149,7 +149,7 @@
     wsl2@w10m2:~$ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules
     wsl2@w10m2:~$ cd haskell-ide-engine
     wsl2@w10m2:~/haskell-ide-engine$ stack ./install.hs help
-    wsl2@w10m2:~/haskell-ide-engine$ stack ./install.hs latest -s
+    wsl2@w10m2:~/haskell-ide-engine$ stack clean && stack ./install.hs hie -q
     ```
 
 1. Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
