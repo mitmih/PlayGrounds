@@ -219,6 +219,11 @@
     * [hlint](https://marketplace.visualstudio.com/items?itemName=lunaryorn.hlint)
     * [hoogle-vscode](https://marketplace.visualstudio.com/items?itemName=jcanero.hoogle-vscode)
     * [Integrated Haskell Shell](https://marketplace.visualstudio.com/items?itemName=eriksik2.vscode-ghci)
+    
+    > Для разработки в Ubuntu через WSL2 достаточно установленного по умолчанию расширения `Remote - WSL`
+    > 
+    > Если необходимо подключаться к контейнерам или по SSH, то можно установить сразу набор из трёх расширений `Remote Development`
+
 
 <!--
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3](#step3)</a>
