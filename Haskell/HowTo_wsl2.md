@@ -89,11 +89,11 @@
     > ```
 
 1. И обновляем дистрибутив:
-    ```console
+    ```shell
     ~$ sudo apt update && sudo apt upgrade -y
     ```
     > для листинга директорий в виде дерева пригодится утилита `tree`
-    > ```console
+    > ```shell
     > ~$ sudo apt install tree
     > ```
     > 
@@ -104,39 +104,39 @@
 
 1. Устанавливаем [stack](https://docs.haskellstack.org/en/stable/README/):
     
-    ```console
+    ```shell
     ~$ curl -sSL https://get.haskellstack.org/ | sh
     ```
 
 1. Обращаем внимание на предупреждение про `~/.local/bin` - заводим нужную папку:
     
 
-    ```console
+    ```shell
     ~$ mkdir -p ~/.local/bin
     ```
     По умолчанию профиль пользователя `~/.profile` уже настроен на добавление к `PATH` такой папки.
 
 1. Перезайдём в консоль, чтобы изменения вступили в силу:
-    ```console
+    ```shell
     ~$ logout
     ```
     ```PowerShell
     PS > wsl -t Ubuntu-20.04 && ubuntu2004.exe
     ```
-    ```console
+    ```shell
     ~$ stack path --local-bin
     /home/wsl2/.local/bin
     ```
 
 1. Разворачиваем Haskell-инфраструктуру в своём профиле:
     
-    ```console
+    ```shell
     ~$ stack setup
     ```
 
 1. Проверяем установку `stack` сборкой тестового проекта:
 
-    ```console
+    ```shell
     ~$ stack new test
     ~$ cd ./test/
     ~/test$ stack build
@@ -149,14 +149,14 @@
     ```
 
 1. Смотрим версию `stack`:
-    ```console
+    ```shell
     ~$ stack exec stack -- --version
     Version 2.3.3, Git revision cb44d51bed48b723a5deb08c3348c0b3ccfc437e x86_64 hpack-0.33.0
     ```
 
 1. Устанавливаем, [ghcup](https://www.haskell.org/ghcup/) - упрощает установку различный версий ghc и понадобится для корректной работы vscode-расширения `Integrated Haskell Shell`:
 
-    ```console
+    ```shell
     ~$ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
     ~$ ghcup list
     ```
@@ -176,7 +176,7 @@
 
 1. Ставим из исходников интерфейс для IDE [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine#installation-from-source):
     
-    ```console
+    ```shell
     ~$ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules
     ~$ cd haskell-ide-engine
     ~/haskell-ide-engine$ stack ./install.hs help
@@ -186,12 +186,12 @@
     > Без VPN сборка прерывалась из-за ошибок, т.к. некоторые пакеты не скачивались и срабатывал таймаут, это можно увидеть, если запускать сборку с параметром `-q` вместо `-s`
 
 1. Смотрим версию HIE
-    ```console
+    ```shell
     ~/haskell-ide-engine$ hie --version
     ```
 
 1. Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
-    ```console
+    ```shell
     ~/haskell-ide-engine$ cd ~
     ~$ stack install hoogle
     ```
@@ -199,14 +199,14 @@
     > Если видим ошибки `ConnectionTimeout` то перезапускаем установку `stack install hoogle`
 
 1. Генерируем индекс
-    ```console
+    ```shell
     ~$ hoogle generate
     ```
     <!-- ~$ stack haddock --hoogle -->
 
 1. Проверяем версию `hoogle`
     
-    ```console
+    ```shell
     $ hoogle -V
     ```
 
@@ -240,11 +240,11 @@
 <details>
 <summary>
 
-```console
+```shell
 ```
 </summary>
 
-```console
+```shell
 ```
 </details>
 
@@ -255,13 +255,13 @@ https://medium.com/@remisa.yousefvand/setup-haskell-development-environment-on-u
 
     1. Устанавливаем Cabal и Haskell через Stack:
     
-    ```console
+    ```shell
     ~$ stack install cabal-install
     ~$ cabal update
     ```
     
     > У меня в процессе установки выскочила ошибка из несоответствия доступной версии и указанной в конфиге stack`а:
-    > ```console
+    > ```shell
     > Error: While constructing the build plan, the following exceptions were encountered:
     > 
     > In the dependencies for cabal-install-3.2.0.0:
@@ -278,12 +278,12 @@ https://medium.com/@remisa.yousefvand/setup-haskell-development-environment-on-u
     > ```
     > 
     > Отркрываем конфиг:
-    > ```console
+    > ```shell
     > ~$ nano ~/.stack/global-project/stack.yaml
     > ```
     > 
     > И добавляем, как рекомендовано, соответствующую поправку
-    > ```console
+    > ```shell
     > extra-deps:
     > - Cabal-3.2.0.0@sha256:d0d7a1f405f25d0000f5ddef684838bc264842304fd4e7f80ca92b997b710874,27320
     > ```
