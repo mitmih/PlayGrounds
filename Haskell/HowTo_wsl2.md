@@ -164,6 +164,7 @@
     ~$ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
     ~$ ghcup list
     ```
+    > Если `ghcup list` не срабатывает, нужно перезайти, чтобы изменения переменных окружения вступили в силу (см. шаг 2 п. 2)
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Подготовка Haskell в Ubuntu - Установка Haskell IDE Engine и Hoogle](#step3)</a>
 
