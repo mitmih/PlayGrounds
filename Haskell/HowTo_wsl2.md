@@ -184,9 +184,9 @@
     ~/haskell-ide-engine$ stack clean && stack ./install.hs latest -q
     ```
 
-    <a name="step3err">[](#step3err)<details><summary>Если у вас случились ошибки.</summary>
+    <details><summary>Если у вас случились ошибки.</summary>
     
-    В процессе установки `hie` у меня возникали ошибки двух типов:
+    <a name="step3err">[](#step3err)В процессе установки `hie` у меня возникали ошибки двух типов:
     
     1. `ConnectionTimeout` - ошибка при скачивании пакета, например:
         ```shell
