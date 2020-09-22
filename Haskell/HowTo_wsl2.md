@@ -134,12 +134,12 @@
     Version 2.3.3, Git revision cb44d51bed48b723a5deb08c3348c0b3ccfc437e x86_64 hpack-0.33.0
     ```
 
-1. Устанавливаем [ghcup](https://www.haskell.org/ghcup/) - упрощает установку определенных версий ghc:
+<!-- 1. Устанавливаем [ghcup](https://www.haskell.org/ghcup/) - упрощает установку определенных версий ghc:
 
     ```console
     wsl2@w10m2:~$ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
     wsl2@w10m2:~$ ghcup list
-    ```
+    ``` -->
 
 1. Ставим из исходников серверный интерфейс для IDE [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine#installation-from-source):
     
