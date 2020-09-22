@@ -98,12 +98,6 @@
     > ```
 
 
-1. По умолчанию профиль пользователя `~/.profile` уже настроен на добавление папки `~/.local/bin` к переменной `PATH`, поэтому достаточно её сделать папку:
-    ```shell
-    ~$ mkdir -p ~/.local/bin
-    ```
-
-
 ## [ <kbd>↑</kbd> ](#up) <a name="step2">[Шаг 2 - Подготовка Haskell в Ubuntu - установка `stack`](#step2)</a>
 На основе [дополнительной информации по среде разработки](https://rizzoma.com/topic/c27faf1cfa188c1120f59af4c35e6099/0_b_9n8n_96jab/) из чата `Learn Haskell with FSD`.
 
@@ -113,21 +107,14 @@
     ~$ curl -sSL https://get.haskellstack.org/ | sh
     ```
 
-    > Обращаем внимание на предупреждение
-    > ```
-    > WARNING: '/home/wsl2/.local/bin' is not on your PATH.
-    >    For best results, please add it to the beginning of PATH in your profile.
-    > ```
-    >
-    > По умолчанию профиль пользователя `~/.profile` уже настроен на добавление такой папки к `PATH`, поэтому просто сделаем нужную папку:
-    > ```shell
-    > ~$ mkdir -p ~/.local/bin
-    > ```
-
-1. Разворачиваем Haskell-инфраструктуру в своём профиле:
-    
+1. Обращаем внимание на предупреждение:
+    ```
+    WARNING: '/home/wsl2/.local/bin' is not on your PATH.
+        For best results, please add it to the beginning of PATH in your profile.
+    ```
+    По умолчанию профиль пользователя `~/.profile` уже настроен на добавление такой папки к `PATH`, но её пока не существует, исправляем:
     ```shell
-    ~$ stack setup
+    ~$ mkdir -p ~/.local/bin
     ```
 
 1. Перезайдём в консоль, чтобы изменения вступили в силу:
@@ -136,6 +123,12 @@
     ```
     ```PowerShell
     PS > wsl -t Ubuntu-20.04 && ubuntu2004.exe
+    ```
+
+1. Разворачиваем Haskell-инфраструктуру в своём профиле:
+    
+    ```shell
+    ~$ stack setup
     ```
 
 1. Проверяем, что `stack` находится в переменной `PATH`:
