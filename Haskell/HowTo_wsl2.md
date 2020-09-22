@@ -254,6 +254,12 @@
         lrwxrwxrwx 1 root root     41 Sep 22 23:22 /usr/lib/x86_64-linux-gnu/libtinfo.so -> /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
         lrwxrwxrwx 1 root root     15 Feb 26  2020 /usr/lib/x86_64-linux-gnu/libtinfo.so.6 -> libtinfo.so.6.2
         -rw-r--r-- 1 root root 192032 Feb 26  2020 /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+        $ ld.gold -ltinfo --verbose
+        ld.gold: Opened new descriptor 3 for "//lib/x86_64-linux-gnu/libtinfo.so"
+        ld.gold: Attempt to open //lib/x86_64-linux-gnu/libtinfo.so succeeded
+        ld.gold: Unlocking file "//lib/x86_64-linux-gnu/libtinfo.so"
+        ld.gold: Released descriptor 3 for "//lib/x86_64-linux-gnu/libtinfo.so"
+        ld.gold: Opened new descriptor 4 for "a.out"
         ```
         
         **Решение 2** ~~узнаём, [в какой пакет входит библиотека](https://packages.debian.org/search?suite=buster&arch=any&searchon=contents&keywords=libtinfo.so.6) и ставим его `$ sudo apt install -y libtinfo6`~~ не работает, такой пакет уже стоит.
