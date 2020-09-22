@@ -250,12 +250,14 @@
         
         **Решение 1** раз оригиналом является файл `libtinfo.so.6.2`, а `libtinfo.so.6` - лишь ссылкой, сделаем ещё одну подобную ссылку на оригинал:
         ```shell
-        $ sudo ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2 /usr/lib/x86_64-linux-gnu/libtinfo.so
-        $ ls -la /usr/lib/x86_64-linux-gnu/*tinfo*so*
-        lrwxrwxrwx 1 root root     41 Sep 22 23:22 /usr/lib/x86_64-linux-gnu/libtinfo.so -> /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-        lrwxrwxrwx 1 root root     15 Feb 26  2020 /usr/lib/x86_64-linux-gnu/libtinfo.so.6 -> libtinfo.so.6.2
-        -rw-r--r-- 1 root root 192032 Feb 26  2020 /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-        $ ld.gold -ltinfo --verbose
+        ~$ cd /usr/lib/x86_64-linux-gnu/
+        /usr/lib/x86_64-linux-gnu$ sudo ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2 libtinfo.so
+        /usr/lib/x86_64-linux-gnu$ ls -la *libtinfo*
+        lrwxrwxrwx 1 root root     41 Sep 22 23:30 libtinfo.so -> /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+        lrwxrwxrwx 1 root root     15 Feb 26  2020 libtinfo.so.6 -> libtinfo.so.6.2
+        -rw-r--r-- 1 root root 192032 Feb 26  2020 libtinfo.so.6.2
+        /usr/lib/x86_64-linux-gnu$ cd ~
+        ~$ ld.gold -ltinfo --verbose
         ld.gold: Opened new descriptor 3 for "//lib/x86_64-linux-gnu/libtinfo.so"
         ld.gold: Attempt to open //lib/x86_64-linux-gnu/libtinfo.so succeeded
         ld.gold: Unlocking file "//lib/x86_64-linux-gnu/libtinfo.so"
