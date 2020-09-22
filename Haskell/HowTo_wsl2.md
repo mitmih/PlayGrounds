@@ -248,7 +248,7 @@
         -rw-r--r-- 1 root root 192032 Feb 26  2020 /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
         ```
         
-        Файл `libtinfo.so.6` сам является ссылкой на оригинал `libtinfo.so.6.2`, поэтому сделаем ещё одну подобную ссылку также на оригинал:
+        **Решение:** раз оригиналом является файл `libtinfo.so.6.2`, а `libtinfo.so.6` - лишь ссылкой, сделаем ещё одну подобную ссылку также на оригинал:
         ```shell
         $ sudo ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2 /usr/lib/x86_64-linux-gnu/libtinfo.so
         ```
