@@ -8,6 +8,10 @@
 
 * [заводим Haskell IDE Engine (HIE)](#step3)
 
+* [HIE не заводится, что делать?](#step3err)
+
+* [расширяем VS Code](#step4)
+
 <!-- * [#step4](#step4) -->
 
 <!-- * [#step5](#step5) -->
