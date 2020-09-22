@@ -236,7 +236,7 @@
         
         Не хватает символической ссылки `/usr/lib/x86_64-linux-gnu/libtinfo.so`. Поищем нужные файлы:
         ```shell
-        $ sudo find /usr -name *tinfo*so*
+        $ sudo find /lib /usr/lib -name *tinfo*so*
         /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
         /usr/lib/x86_64-linux-gnu/libtinfo.so.6
         ```
