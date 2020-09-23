@@ -193,9 +193,28 @@
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Настройка работы плагинов в Ubuntu и в VS Code](#step3)</a>
 
-> Для разработки в Ubuntu через WSL2 достаточно установленного по умолчанию расширения `Remote - WSL`
-> 
-> Если необходимо подключаться к контейнеру или к отдельной машине по SSH, то можно установить сразу набор из трёх расширений `Remote Development`
+Для разработки в Ubuntu через WSL2 достаточно установленного по умолчанию расширения `Remote - WSL`. Если необходимо подключаться к контейнеру или к отдельной машине по SSH, то можно установить сразу набор из трёх расширений `Remote Development`
+
+Все настройки сервера VS Code, в т.ч. и установленные плагины, хранятся в профиле пользователя:
+```shell
+~$ tree -L 2 .vscode-server/
+.vscode-server/
+├── bin
+│   └── 58bb7b2331731bf72587010e943852e13e6fd3cf
+├── data
+│   ├── CachedExtensionVSIXs
+│   ├── Machine
+│   ├── User
+│   ├── logs
+│   └── machineid
+└── extensions
+    ├── eriksik2.vscode-ghci-0.0.2
+    ├── haskell.haskell-1.1.0
+    ├── jcanero.hoogle-vscode-0.0.7
+    ├── justusadam.language-haskell-3.3.0
+    ├── lunaryorn.hlint-0.5.1
+    └── phoityne.phoityne-vscode-0.0.25
+```
 
  Запускаем VS Code:
 ```shell
@@ -210,26 +229,6 @@ Unpacking: 100%
 Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf72587010e943852e13e6fd3cf.
 ```
 
-> Все настройки сервера VS Code, в т.ч. и установленные плагины, хранятся в профиле пользователя:
-> ```shell
-> ~$ tree -L 2 .vscode-server/
-> .vscode-server/
-> ├── bin
-> │   └── 58bb7b2331731bf72587010e943852e13e6fd3cf
-> ├── data
-> │   ├── CachedExtensionVSIXs
-> │   ├── Machine
-> │   ├── User
-> │   ├── logs
-> │   └── machineid
-> └── extensions
->     ├── eriksik2.vscode-ghci-0.0.2
->     ├── haskell.haskell-1.1.0
->     ├── jcanero.hoogle-vscode-0.0.7
->     ├── justusadam.language-haskell-3.3.0
->     ├── lunaryorn.hlint-0.5.1
->     └── phoityne.phoityne-vscode-0.0.25
->```
 
 Установка плагинов происходит по <kbd>F1</kbd> + команда `extensions: Install Extensions`.
 
@@ -362,42 +361,6 @@ Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf
         ```
         
         **Решение 2** ~~узнаём, [в какой пакет входит библиотека](https://packages.debian.org/search?suite=buster&arch=any&searchon=contents&keywords=libtinfo.so.6) и ставим его `$ sudo apt install -y libtinfo6`~~ не работает, такой пакет уже стоит.
-    <!--
-    Exit code: 1
-    Stderr:
-    asn1-types           >
-    asn1-types           > /tmp/stack-91bbb18f1e86c552/asn1-types-0.3.4/Data/ASN1/Types.hs:23:1: error:
-    asn1-types           >     Bad interface file: /home/wsl2/.stack/snapshots/x86_64-linux-tinfo6/7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112/8.8.3/lib/x86_64-linux-ghc-8.8.3/hourglass-0.2.12-D9ublWZfFOQ5RjjySuTJfA/Data/Hourglass.hi
-    asn1-types           >         Data.Binary.getPrim: end of file
-    asn1-types           >    |
-    asn1-types           > 23 | import Data.Hourglass
-    asn1-types           >    | ^^^^^^^^^^^^^^^^^^^^^
-
-    --  While building package asn1-types-0.3.4 using:
-        /home/wsl2/.stack/setup-exe-cache/x86_64-linux-tinfo6/Cabal-simple_mPHDZzAJ_3.0.1.0_ghc-8.8.3 --builddir=.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.0.1.0 build --ghc-options ""
-        Process exited with code: ExitFailure 1
-    Progress 4/147
-
-
-    не помогло
-    stack exec ghc-pkg list
-    stack exec ghc-pkg check
-    stack exec ghc-pkg -clear-package-db
-    stack exec ghc-pkg unregister hourglass-0.2.12
-    stack exec ghc-pkg describe hourglass-0.2.12
-
-    stack exec -- ghc-pkg unregister --force hourglass-0.2.12
-    stack exec -- ghc-pkg update hourglass-0.2.12
-
-
-    снапшот
-    stack ls snapshots
-    7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112
-
-    решено удалением снапшота целиком
-    rm -rf /home/wsl2/.stack/snapshots/x86_64-linux-tinfo6/7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112
-    -->
-    
     </details>
     
     Смотрим версию HIE
@@ -511,4 +474,39 @@ https://medium.com/@remisa.yousefvand/setup-haskell-development-environment-on-u
 choco list --local-only
 choco uninstall haskell-dev --remove-dependencies
 choco list --local-only
+-->
+
+<!--     
+Exit code: 1
+Stderr:
+asn1-types           >
+asn1-types           > /tmp/stack-91bbb18f1e86c552/asn1-types-0.3.4/Data/ASN1/Types.hs:23:1: error:
+asn1-types           >     Bad interface file: /home/wsl2/.stack/snapshots/x86_64-linux-tinfo6/7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112/8.8.3/lib/x86_64-linux-ghc-8.8.3/hourglass-0.2.12-D9ublWZfFOQ5RjjySuTJfA/Data/Hourglass.hi
+asn1-types           >         Data.Binary.getPrim: end of file
+asn1-types           >    |
+asn1-types           > 23 | import Data.Hourglass
+asn1-types           >    | ^^^^^^^^^^^^^^^^^^^^^
+
+--  While building package asn1-types-0.3.4 using:
+    /home/wsl2/.stack/setup-exe-cache/x86_64-linux-tinfo6/Cabal-simple_mPHDZzAJ_3.0.1.0_ghc-8.8.3 --builddir=.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.0.1.0 build --ghc-options ""
+    Process exited with code: ExitFailure 1
+Progress 4/147
+
+
+не помогло
+stack exec ghc-pkg list
+stack exec ghc-pkg check
+stack exec ghc-pkg -clear-package-db
+stack exec ghc-pkg unregister hourglass-0.2.12
+stack exec ghc-pkg describe hourglass-0.2.12
+stack exec -- ghc-pkg unregister --force hourglass-0.2.12
+stack exec -- ghc-pkg update hourglass-0.2.12
+
+
+снапшот
+stack ls snapshots
+7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112
+
+решено удалением снапшота целиком
+rm -rf /home/wsl2/.stack/snapshots/x86_64-linux-tinfo6/7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112
 -->
