@@ -290,39 +290,18 @@
     
     
     </details>
-
+    
 1. Смотрим версию HIE
     ```shell
     ~/haskell-ide-engine$ hie --version
     ```
 
-1. Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
-    ```shell
-    ~/haskell-ide-engine$ cd ~
-    ~$ stack install hoogle
-    ```
-    <!-- ~$ echo >> ~/.ghci ':def hoogle \x -> return ~$ ":!hoogle " ++ x' -->
-    > Если видим ошибки `ConnectionTimeout` то перезапускаем установку `stack install hoogle`
-
-1. Генерируем индекс
-    ```shell
-    ~$ hoogle generate
-    ```
-    <!-- ~$ stack haddock --hoogle -->
-
-1. Проверяем версию `hoogle`
-    
-    ```shell
-    $ hoogle -V
-    ```
-
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step4">[Шаг 4 - Подготовка VS Code](#step4)</a>
-
-1. Для плагина отладки
-    ```shell
-    ~$ stack install phoityne-vscode haskell-dap ghci-dap haskell-debug-adapter
-    ```
+    
+> Для разработки в Ubuntu через WSL2 достаточно установленного по умолчанию расширения `Remote - WSL`
+> 
+> Если необходимо подключаться к контейнеру или к отдельной машине по SSH, то можно установить сразу набор из трёх расширений `Remote Development`
 
 1. Запускаем VS Code:
     ```
@@ -332,7 +311,6 @@
     Unpacking: 100%
     Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf72587010e943852e13e6fd3cf.
     ```
-    
     > Все настройки сервера VS Code, в т.ч. и установленные плагины, хранятся в профиле пользователя:
     > ```shell
     > ~$ tree -L 2 .vscode-server/
@@ -353,18 +331,63 @@
     >     ├── lunaryorn.hlint-0.5.1
     >     └── phoityne.phoityne-vscode-0.0.25
     >```
+    
+    Установка плагинов происходит по <kbd>F1</kbd> + команда `extensions: Install Extensions`.
 
-1. Устанавливаем плагины <kbd>F1</kbd>, `extensions: Install Extensions`:
+1. Плагин [Haskell](https://marketplace.visualstudio.com/items?itemName=haskell.haskell) добавляет поддержку языка в VS Code:
+    * диагностические сообщения об ошибках и предупреждениях от GHC
+    * информация о типах и документация при наведении курсора
+    * переход к определениям функций
+    * подсветка рекомендаций
+    * автодополнение кода
+    * и другие возможности
+
+    Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
+    ```shell
+    ~/haskell-ide-engine$ cd ~
+    ~$ stack install hoogle
+    ```
+    <!-- ~$ echo >> ~/.ghci ':def hoogle \x -> return ~$ ":!hoogle " ++ x' -->
+    > Если видим ошибки `ConnectionTimeout` то перезапускаем установку `stack install hoogle`
+
+    Генерируем индекс
+    ```shell
+    ~$ hoogle generate
+    ```
+    <!-- ~$ stack haddock --hoogle -->
+
+    Проверяем версию `hoogle`
     
-    * [Haskell](https://marketplace.visualstudio.com/items?itemName=haskell.haskell)
-    * [hlint](https://marketplace.visualstudio.com/items?itemName=lunaryorn.hlint)
-    * [hoogle-vscode](https://marketplace.visualstudio.com/items?itemName=jcanero.hoogle-vscode)
-    * [Integrated Haskell Shell](https://marketplace.visualstudio.com/items?itemName=eriksik2.vscode-ghci)
-    * [Haskell GHCi Debug Adapter Phoityne](https://marketplace.visualstudio.com/items?itemName=phoityne.phoityne-vscode)
+    ```shell
+    $ hoogle -V
+    ```
     
-    > Для разработки в Ubuntu через WSL2 достаточно установленного по умолчанию расширения `Remote - WSL`
-    > 
-    > Если необходимо подключаться к контейнеру или к отдельной машине по SSH, то можно установить сразу набор из трёх расширений `Remote Development`
+    Устанавливаем плагин в VS Code, в настройках "Haskell > Language Server Variant" выбираем HIE.
+
+
+
+
+
+
+
+1. [hlint](https://marketplace.visualstudio.com/items?itemName=lunaryorn.hlint)
+
+1. [hoogle-vscode](https://marketplace.visualstudio.com/items?itemName=jcanero.hoogle-vscode)
+
+1. [Integrated Haskell Shell](https://marketplace.visualstudio.com/items?itemName=eriksik2.vscode-ghci)
+
+1. [Haskell GHCi Debug Adapter Phoityne](https://marketplace.visualstudio.com/items?itemName=phoityne.phoityne-vscode)
+
+<!-- 1. Для плагина отладки
+    ```shell
+    ~$ stack install phoityne-vscode haskell-dap ghci-dap haskell-debug-adapter
+    ``` -->
+
+
+
+
+
+
 
 <!--
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3](#step3)</a>
