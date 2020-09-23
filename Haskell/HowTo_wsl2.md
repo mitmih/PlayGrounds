@@ -393,7 +393,7 @@ $ hoogle -V
 
 1. [haskell-linter](https://marketplace.visualstudio.com/items?itemName=hoovercj.haskell-linter) - обёртка для `hlint`
     ```shell
-    cabal install hlint
+    stack install hlint
     hlint --version
     
     # ставим расширение haskell-linter и делаем настройку
