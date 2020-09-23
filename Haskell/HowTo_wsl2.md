@@ -10,8 +10,6 @@
 
 * [HIE не заводится, что делать?](#step3err)
 
-<!-- * [](#step4) -->
-
 <!-- * [#step4](#step4) -->
 
 <!-- * [#step5](#step5) -->
@@ -28,7 +26,7 @@
 1. Включаем `Windows Subsystem for Linux`:
 
     ```PowerShell
-    PS > Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart
+    PS> Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart
     ```
 
 1. Обновляем платформу до WSL 2:
@@ -39,12 +37,12 @@
 1. Включаем `Virtual Machine`:
 
     ```PowerShell
-    PS > Enable-WindowsOptionalFeature -Online -NoRestart -FeatureName VirtualMachinePlatform
+    PS> Enable-WindowsOptionalFeature -Online -NoRestart -FeatureName VirtualMachinePlatform
     ```
 
 1. Проверяем компоненты:
     ```PowerShell
-    PS > Get-WindowsOptionalFeature -Online | Where-Object {$_.FeatureName -in @('Microsoft-Windows-Subsystem-Linux', 'VirtualMachinePlatform')}
+    PS> Get-WindowsOptionalFeature -Online | Where-Object {$_.FeatureName -in @('Microsoft-Windows-Subsystem-Linux', 'VirtualMachinePlatform')}
     
     FeatureName : Microsoft-Windows-Subsystem-Linux
     State       : Enabled
@@ -55,20 +53,20 @@
 
 1. Скачиваем и устанавливаем пакет Linux kernel update:
     ```PowerShell
-    PS > curl.exe -L -o $env:USERPROFILE\Downloads\wsl_update_x64.msi https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi
+    PS> curl.exe -L -o $env:USERPROFILE\Downloads\wsl_update_x64.msi https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi
     
-    PS > & $env:USERPROFILE\Downloads\wsl_update_x64.msi
+    PS> & $env:USERPROFILE\Downloads\wsl_update_x64.msi
     ```
 
 1. Включаем использование 2-й версиии wsl по умолчанию:
     ```PowerShell
-    PS > wsl --set-default-version 2
+    PS> wsl --set-default-version 2
     ```
 
 1. Скачиваем и устанавливаем Ubuntu 20.04:
     ```PowerShell
-    PS > curl.exe -L -o $env:USERPROFILE\Downloads\ubuntu-20-04.appx https://aka.ms/wslubuntu2004
-    PS > Add-AppxPackage $env:USERPROFILE\Downloads\ubuntu-20-04.appx
+    PS> curl.exe -L -o $env:USERPROFILE\Downloads\ubuntu-20-04.appx https://aka.ms/wslubuntu2004
+    PS> Add-AppxPackage $env:USERPROFILE\Downloads\ubuntu-20-04.appx
     ```
 
     > Ссылки доступных для скачивания дистрибутивов Linux можно посмотреть на [официальной странице](https://docs.microsoft.com/en-us/windows/wsl/install-manual).
@@ -77,19 +75,21 @@
     
     > набираем `ubuntu`, нажимаем <kbd>Tab</kbd>
     > ```PowerShell
-    > PS > ubuntu2004.exe
+    > PS> ubuntu2004.exe
     > ```
     
     > Отменить развёртывание можно командами:
     > ```PowerShell
-    > PS > wsl -l -v
-    > NAME            STATE           VERSION
+    > PS> wsl -l -v
+    >   NAME            STATE           VERSION
     > * Ubuntu-20.04    Running         2
-    > PS > wsl -t Ubuntu-20.04
-    > PS > wsl -l -v
-    > NAME            STATE           VERSION
-    > * Ubuntu-20.04    Stopped         2
-    > PS > Get-AppxPackage *ubuntu* | Remove-AppxPackage
+    > PS> wsl --terminate Ubuntu-20.04
+    > PS> wsl --unregister Ubuntu-20.04
+    > Отмена регистрации...
+    > PS> wsl -l -v
+    > Нет установленных дистрибутивов подсистемы Windows для Linux.
+    > Дистрибутивы можно установить из Microsoft Store:
+    > https://aka.ms/wslstore
     > ```
 
 1. И обновляем дистрибутив:
@@ -140,7 +140,7 @@
     ~$ logout
     ```
     ```PowerShell
-    PS > wsl -t Ubuntu-20.04 && ubuntu2004.exe
+    PS> wsl --terminate Ubuntu-20.04 ; wsl --distribution Ubuntu-20.04
     ```
 
 1. Разворачиваем Haskell-инфраструктуру в своём профиле:
