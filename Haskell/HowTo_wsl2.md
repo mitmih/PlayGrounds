@@ -245,6 +245,24 @@ Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf
     
     <details><summary><a href="https://github.com/haskell/haskell-language-server">Haskell Language Server</a> - сервер по умолчанию, находится на ранней стадии разработки
     </summary>
+    
+    ```shell
+    git clone https://github.com/haskell/haskell-language-server --recurse-submodules
+    cd haskell-language-server
+
+    stack ./install.hs help
+    # Ждём несколько минут
+
+    stack ./install.hs hls -s
+    # Ждём несколько десятков минут :)
+
+    # проверяем
+    haskell-language-server --version
+
+    # ставим vscode-расширение Haskell и делаем настройку
+    "haskell.serverExecutablePath": "/home/wsl2/.local/bin/haskell-language-server"
+    ```
+    
     </details>
     
     <details><summary><a href="https://github.com/haskell/haskell-ide-engine#installation-from-source">Haskell IDE Engine</a> - стабильный и зрелый сервер, но фокус разработки сместился на Haskell Language Server
