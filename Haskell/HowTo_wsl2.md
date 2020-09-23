@@ -200,7 +200,7 @@
 
     <a name="step3err">[](#step3err)<details><summary>Если у вас случились ошибки.</summary>
     
-    В процессе установки `hie` у меня возникали ошибки двух типов:
+    В процессе установки `hie` могут возникать различные ошибки:
     
     1. `ConnectionTimeout` - ошибка при скачивании пакета, например:
         ```shell
@@ -239,7 +239,7 @@
         
         Посмотрим подробнее результат поиска при компоновке:
         ```shell
-        $ ld.gold -ltinfo --verbose
+        $ ld.gold -ltinfo --verbose && rm a.out
         ld.gold: Attempt to open //lib/x86_64-linux-gnu/libtinfo.so failed
         ld.gold: Attempt to open //lib/x86_64-linux-gnu/libtinfo.a failed
         ld.gold: Attempt to open //usr/lib/x86_64-linux-gnu/libtinfo.so failed
@@ -284,6 +284,10 @@
         ```
         
         **Решение 2** ~~узнаём, [в какой пакет входит библиотека](https://packages.debian.org/search?suite=buster&arch=any&searchon=contents&keywords=libtinfo.so.6) и ставим его `$ sudo apt install -y libtinfo6`~~ не работает, такой пакет уже стоит.
+    
+    <!-- 1.  -->
+    
+    
     
     </details>
 
