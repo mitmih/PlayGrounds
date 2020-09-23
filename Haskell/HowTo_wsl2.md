@@ -105,6 +105,19 @@
 ## [ <kbd>↑</kbd> ](#up) <a name="step2">[Шаг 2 - Подготовка Haskell в Ubuntu - установка `stack`](#step2)</a>
 На основе [дополнительной информации по среде разработки](https://rizzoma.com/topic/c27faf1cfa188c1120f59af4c35e6099/0_b_9n8n_96jab/) из чата `Learn Haskell with FSD`.
 
+1. Устанавливаем, [ghcup](https://www.haskell.org/ghcup/) - понадобится для корректной работы vscode-расширения `Integrated Haskell Shell`, также упрощает установку различный версий `ghc`:
+
+    Сначала установим необходимые пакеты
+    ```shell
+    ~$ sudo apt install build-essential curl libffi-dev libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5
+    ```
+    Потом сам `ghcup`
+    ```shell
+    ~$ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+    ~$ ghcup list
+    ```
+    > Если `ghcup list` не срабатывает, нужно перезайти, чтобы изменения переменных окружения вступили в силу (см. шаг 2 п. 2)
+
 1. Устанавливаем [stack](https://docs.haskellstack.org/en/stable/README/):
     
     ```shell
@@ -300,14 +313,6 @@
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step4">[Шаг 4 - Подготовка VS Code](#step4)</a>
-
-1. Устанавливаем, [ghcup](https://www.haskell.org/ghcup/) - понадобится для корректной работы vscode-расширения `Integrated Haskell Shell`, также упрощает установку различный версий `ghc`:
-
-    ```shell
-    ~$ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
-    ~$ ghcup list
-    ```
-    > Если `ghcup list` не срабатывает, нужно перезайти, чтобы изменения переменных окружения вступили в силу (см. шаг 2 п. 2)
 
 1. Для плагина отладки
     ```shell
