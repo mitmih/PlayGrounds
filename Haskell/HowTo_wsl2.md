@@ -183,7 +183,11 @@
 
  Запускаем VS Code:
 ```
-$ code .
+# новый проект ex
+$ stack new ex
+# ...
+# открытие проекта в VS Code
+$ code ./ex/
 Installing VS Code Server for x64 (58bb7b2331731bf72587010e943852e13e6fd3cf)
 Downloading: 100%
 Unpacking: 100%
