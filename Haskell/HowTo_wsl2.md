@@ -241,7 +241,9 @@ Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf
     * автодополнение кода
     * и другие возможности
     
-    
+    <details><summary>сервер Haskell Language Server</summary>
+    </details>
+    <details><summary>сервер Haskell IDE Engine</summary>
     Ставим из исходников интерфейс для IDE [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine#installation-from-source):
     
     ```shell
@@ -252,7 +254,7 @@ Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf
     ```
     <!-- stack clean && stack ./install.hs hie-8.8.3 -s -j1 -->
     
-    <a name="step3err">[](#step3err)<details><summary>Если у вас случились ошибки.</summary>
+    <a name="step3err">[](#step3err)<details><summary>Что делать с ошибками?</summary>
      
     В процессе установки `hie` могут возникать различные ошибки:
     
@@ -344,6 +346,7 @@ Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf
     ```shell
     ~/haskell-ide-engine$ hie --version
     ```
+    </details>
     
     Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
     ```shell
