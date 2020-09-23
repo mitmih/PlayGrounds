@@ -124,8 +124,9 @@
 
     Сначала установим необходимые пакеты
     ```shell
-    ~$ sudo apt install build-essential curl libffi-dev libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5
+    ~$ sudo apt install build-essential curl libffi-dev libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5 zlib1g-dev libicu-dev
     ```
+    <!-- ~$ sudo apt install build-essential curl libffi-dev libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5 -->
     Потом сам `ghcup`
     ```shell
     ~$ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
