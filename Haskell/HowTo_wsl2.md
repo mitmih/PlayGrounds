@@ -6,11 +6,11 @@
 
 * [ставим stack](#step2)
 
-* [заводим Haskell IDE Engine (HIE)](#step3)
+* [расширяем VS Code](#step3)
 
 * [HIE не заводится, что делать?](#step3err)
 
-* [расширяем VS Code](#step4)
+<!-- * [](#step4) -->
 
 <!-- * [#step4](#step4) -->
 
@@ -175,20 +175,54 @@
     Version 2.3.3, Git revision cb44d51bed48b723a5deb08c3348c0b3ccfc437e x86_64 hpack-0.33.0
     ```
 
-## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Подготовка Haskell в Ubuntu - Установка Haskell IDE Engine и Hoogle](#step3)</a>
+## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3 - Настройка работы плагинов в Ubuntu и в VS Code](#step3)</a>
 
-<!-- 1. Доустановим необходимые зависимости:
-    ```
-    ~$ sudo apt install -y libicu-dev libncurses-dev libgmp-dev zlib1g-dev
-    ``` -->
+> Для разработки в Ubuntu через WSL2 достаточно установленного по умолчанию расширения `Remote - WSL`
+> 
+> Если необходимо подключаться к контейнеру или к отдельной машине по SSH, то можно установить сразу набор из трёх расширений `Remote Development`
 
-<!-- 1. Haskell IDE Engine использует систему сборки `shake`:
-    ```
-    ~$ stack install shake
-    ~$ stack exec -- shake --demo
-    ``` -->
-1. Ставим из исходников интерфейс для IDE [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine#installation-from-source):
+ Запускаем VS Code:
+```
+$ code .
+Installing VS Code Server for x64 (58bb7b2331731bf72587010e943852e13e6fd3cf)
+Downloading: 100%
+Unpacking: 100%
+Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf72587010e943852e13e6fd3cf.
+```
+
+> Все настройки сервера VS Code, в т.ч. и установленные плагины, хранятся в профиле пользователя:
+> ```shell
+> ~$ tree -L 2 .vscode-server/
+> .vscode-server/
+> ├── bin
+> │   └── 58bb7b2331731bf72587010e943852e13e6fd3cf
+> ├── data
+> │   ├── CachedExtensionVSIXs
+> │   ├── Machine
+> │   ├── User
+> │   ├── logs
+> │   └── machineid
+> └── extensions
+>     ├── eriksik2.vscode-ghci-0.0.2
+>     ├── haskell.haskell-1.1.0
+>     ├── jcanero.hoogle-vscode-0.0.7
+>     ├── justusadam.language-haskell-3.3.0
+>     ├── lunaryorn.hlint-0.5.1
+>     └── phoityne.phoityne-vscode-0.0.25
+>```
+
+Установка плагинов происходит по <kbd>F1</kbd> + команда `extensions: Install Extensions`.
+
+1. Плагин [Haskell](https://marketplace.visualstudio.com/items?itemName=haskell.haskell) добавляет поддержку языка в VS Code:
+    * диагностические сообщения об ошибках и предупреждениях от GHC
+    * информация о типах и документация при наведении курсора
+    * переход к определениям функций
+    * подсветка рекомендаций
+    * автодополнение кода
+    * и другие возможности
     
+    
+    Ставим из исходников интерфейс для IDE [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine#installation-from-source):
     
     ```shell
     ~$ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules
@@ -197,9 +231,9 @@
     ~/haskell-ide-engine$ stack clean && stack ./install.hs latest -q
     ```
     <!-- stack clean && stack ./install.hs hie-8.8.3 -s -j1 -->
-
-    <a name="step3err">[](#step3err)<details><summary>Если у вас случились ошибки.</summary>
     
+    <a name="step3err">[](#step3err)<details><summary>Если у вас случились ошибки.</summary>
+     
     В процессе установки `hie` могут возникать различные ошибки:
     
     1. `ConnectionTimeout` - ошибка при скачивании пакета, например:
@@ -284,64 +318,13 @@
         ```
         
         **Решение 2** ~~узнаём, [в какой пакет входит библиотека](https://packages.debian.org/search?suite=buster&arch=any&searchon=contents&keywords=libtinfo.so.6) и ставим его `$ sudo apt install -y libtinfo6`~~ не работает, такой пакет уже стоит.
-    
-    <!-- 1.  -->
-    
-    
-    
     </details>
     
-1. Смотрим версию HIE
+    Смотрим версию HIE
     ```shell
     ~/haskell-ide-engine$ hie --version
     ```
-
-
-## [ <kbd>↑</kbd> ](#up) <a name="step4">[Шаг 4 - Подготовка VS Code](#step4)</a>
     
-> Для разработки в Ubuntu через WSL2 достаточно установленного по умолчанию расширения `Remote - WSL`
-> 
-> Если необходимо подключаться к контейнеру или к отдельной машине по SSH, то можно установить сразу набор из трёх расширений `Remote Development`
-
-1. Запускаем VS Code:
-    ```
-    $ code .
-    Installing VS Code Server for x64 (58bb7b2331731bf72587010e943852e13e6fd3cf)
-    Downloading: 100%
-    Unpacking: 100%
-    Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf72587010e943852e13e6fd3cf.
-    ```
-    > Все настройки сервера VS Code, в т.ч. и установленные плагины, хранятся в профиле пользователя:
-    > ```shell
-    > ~$ tree -L 2 .vscode-server/
-    > .vscode-server/
-    > ├── bin
-    > │   └── 58bb7b2331731bf72587010e943852e13e6fd3cf
-    > ├── data
-    > │   ├── CachedExtensionVSIXs
-    > │   ├── Machine
-    > │   ├── User
-    > │   ├── logs
-    > │   └── machineid
-    > └── extensions
-    >     ├── eriksik2.vscode-ghci-0.0.2
-    >     ├── haskell.haskell-1.1.0
-    >     ├── jcanero.hoogle-vscode-0.0.7
-    >     ├── justusadam.language-haskell-3.3.0
-    >     ├── lunaryorn.hlint-0.5.1
-    >     └── phoityne.phoityne-vscode-0.0.25
-    >```
-    
-    Установка плагинов происходит по <kbd>F1</kbd> + команда `extensions: Install Extensions`.
-
-1. Плагин [Haskell](https://marketplace.visualstudio.com/items?itemName=haskell.haskell) добавляет поддержку языка в VS Code:
-    * диагностические сообщения об ошибках и предупреждениях от GHC
-    * информация о типах и документация при наведении курсора
-    * переход к определениям функций
-    * подсветка рекомендаций
-    * автодополнение кода
-    * и другие возможности
-
     Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
     ```shell
     ~/haskell-ide-engine$ cd ~
