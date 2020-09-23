@@ -321,7 +321,7 @@
 
 1. Для плагина отладки
     ```shell
-    ~$ stack install phoityne-vscode haskell-dap
+    ~$ stack install phoityne-vscode haskell-dap ghci-dap haskell-debug-adapter
     ```
 
 1. Запускаем VS Code:
