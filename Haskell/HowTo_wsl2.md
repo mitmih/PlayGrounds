@@ -187,8 +187,8 @@
     ~$ stack install shake
     ~$ stack exec -- shake --demo
     ``` -->
-
 1. Ставим из исходников интерфейс для IDE [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine#installation-from-source):
+    
     
     ```shell
     ~$ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules
@@ -196,6 +196,7 @@
     ~/haskell-ide-engine$ stack ./install.hs help
     ~/haskell-ide-engine$ stack clean && stack ./install.hs latest -q
     ```
+    <!-- stack clean && stack ./install.hs hie-8.8.3 -s -j1 -->
 
     <a name="step3err">[](#step3err)<details><summary>Если у вас случились ошибки.</summary>
     
