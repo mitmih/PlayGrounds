@@ -91,6 +91,21 @@
     > Дистрибутивы можно установить из Microsoft Store:
     > https://aka.ms/wslstore
     > ```
+    > 
+    > Полезные команды по управлению дистрибутивами:
+    > ```PowerShell
+    > # перезапуск дистрибутива
+    > wsl --terminate ubuntu ; wsl --distribution ubuntu --user wsl2
+    > 
+    > # бэкап дистрибутива
+    > wsl --export ubuntu D:\ubuntu.tar
+    > 
+    > # удаление дистрибутива
+    > wsl --unregister ubuntu
+    > 
+    > # импорт дистрибутива
+    > wsl --import ubuntu C:\ubuntu D:\ubuntu.tar
+    > ```
 
 1. И обновляем дистрибутив:
     ```shell
@@ -187,7 +202,7 @@
 $ stack new ex
 # ...
 # открытие проекта в VS Code
-$ code ./ex/
+$ code ~/ex
 Installing VS Code Server for x64 (58bb7b2331731bf72587010e943852e13e6fd3cf)
 Downloading: 100%
 Unpacking: 100%
