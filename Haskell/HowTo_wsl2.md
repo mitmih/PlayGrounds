@@ -259,7 +259,7 @@ Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf
     haskell-language-server --version
 
     # ставим vscode-расширение Haskell и делаем настройку
-    "haskell.serverExecutablePath": "/home/wsl2/.local/bin/haskell-language-server"
+    "haskell.serverExecutablePath": "/home/wsl2/.local/bin/haskell-language-server",
     ```
     
     </details>
@@ -398,6 +398,11 @@ Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf
 
 
 1. [hlint](https://marketplace.visualstudio.com/items?itemName=lunaryorn.hlint)
+    ```shell
+    cabal install hlint
+    hlint --version
+    "haskell.hlint.executablePath": "/home/wsl2/.local/bin/hlint",
+    ```
 
 1. [hoogle-vscode](https://marketplace.visualstudio.com/items?itemName=jcanero.hoogle-vscode)
 
