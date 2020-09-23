@@ -241,10 +241,14 @@ Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf
     * автодополнение кода
     * и другие возможности
     
-    <details><summary>сервер Haskell Language Server</summary>
+    Расширение может работать с различными серверами языка
+    
+    <details><summary><a href="https://github.com/haskell/haskell-language-server">Haskell Language Server</a> - сервер по умолчанию, находится на ранней стадии разработки
+    </summary>
     </details>
-    <details><summary>сервер Haskell IDE Engine</summary>
-    Ставим из исходников интерфейс для IDE [Haskell IDE Engine](https://github.com/haskell/haskell-ide-engine#installation-from-source):
+    
+    <details><summary><a href="https://github.com/haskell/haskell-ide-engine#installation-from-source">Haskell IDE Engine</a> - стабильный и зрелый сервер, но фокус разработки сместился на Haskell Language Server
+    </summary>
     
     ```shell
     ~$ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules
