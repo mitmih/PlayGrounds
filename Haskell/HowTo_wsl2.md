@@ -229,8 +229,27 @@ Unpacking: 100%
 Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf72587010e943852e13e6fd3cf.
 ```
 
-
 Установка плагинов происходит по <kbd>F1</kbd> + команда `extensions: Install Extensions`.
+
+Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
+```shell
+~/haskell-ide-engine$ cd ~
+~$ stack install hoogle
+```
+<!-- ~$ echo >> ~/.ghci ':def hoogle \x -> return ~$ ":!hoogle " ++ x' -->
+> Если видим ошибки `ConnectionTimeout` то перезапускаем установку `stack install hoogle`
+
+Генерируем индекс БД
+```shell
+~$ hoogle generate
+```
+<!-- ~$ stack haddock --hoogle -->
+
+Проверяем версию `hoogle`
+
+```shell
+$ hoogle -V
+```
 
 1. Плагин [Haskell](https://marketplace.visualstudio.com/items?itemName=haskell.haskell) добавляет поддержку языка в VS Code:
     * диагностические сообщения об ошибках и предупреждениях от GHC
@@ -367,40 +386,19 @@ Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf
     ```shell
     ~/haskell-ide-engine$ hie --version
     ```
-    </details>
-    
-    Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
-    ```shell
-    ~/haskell-ide-engine$ cd ~
-    ~$ stack install hoogle
-    ```
-    <!-- ~$ echo >> ~/.ghci ':def hoogle \x -> return ~$ ":!hoogle " ++ x' -->
-    > Если видим ошибки `ConnectionTimeout` то перезапускаем установку `stack install hoogle`
-
-    Генерируем индекс
-    ```shell
-    ~$ hoogle generate
-    ```
-    <!-- ~$ stack haddock --hoogle -->
-
-    Проверяем версию `hoogle`
-    
-    ```shell
-    $ hoogle -V
-    ```
     
     Устанавливаем плагин в VS Code, в настройках "Haskell > Language Server Variant" выбираем HIE.
+    </details>
 
 
-
-
-
-
-
-1. [hlint](https://marketplace.visualstudio.com/items?itemName=lunaryorn.hlint)
+1. [haskell-linter](https://marketplace.visualstudio.com/items?itemName=hoovercj.haskell-linter) - обёртка для `hlint`
     ```shell
     cabal install hlint
     hlint --version
+    
+    # ставим расширение haskell-linter и делаем настройку
+    "haskell.hlint.hints": ["Default", "Dollar", "Generalise"],
+    "haskell.hlint.ignore": ["Redundant do"],
     "haskell.hlint.executablePath": "/home/wsl2/.local/bin/hlint",
     ```
 
