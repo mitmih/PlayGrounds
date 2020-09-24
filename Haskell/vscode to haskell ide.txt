@@ -1,3 +1,5 @@
+stack install hlint ormolu haskell-dap ghci-dap haskell-debug-adapter
+
 # linter        hoovercj.haskell-linter
 https://marketplace.visualstudio.com/items?itemName=hoovercj.haskell-linter
 stack install hlint
@@ -27,18 +29,7 @@ phoityne.phoityne-vscode
 curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 
 
-# formatter     MaxGabriel.brittany
-https://github.com/lspitzner/brittany#installation
-https://marketplace.visualstudio.com/items?itemName=MaxGabriel.brittany
-stack install brittany # --resolver lts-13.25 # --resolver lts-10.0
-brittany --version
-code --install-extension maxgabriel.brittany
-    "files.associations": {
-        "*.hs": "haskell",
-    },
-    "brittany.path": "/home/wsl2/.local/bin/brittany",
-    "brittany.keepCRLF": true
-
+stack install ormolu
 
 
 
@@ -61,18 +52,13 @@ Set-WSLDefaultUser ubuntu wsl2  # custom function from profile
 
 
 
-module Main where
+-- | Foo performs foo and sometimes bar.
 
-import Lib
-import Data.List (unwords)
-
-main :: IO ()
-main = someFunc
-
-x = (1 + 2)
-y = putStrLn x
-
--- ex :: [String]
--- ex = ["this", "is", "an"]
-
--- print :: IO ()
+foo :: Thoroughness
+  -> Int -> Int
+foo t x = if x > 20
+    then case t of
+           Thorough -> x + 50
+           Somewhat -> x + 20
+           NotAtAll -> 0
+    else 10 + 1
