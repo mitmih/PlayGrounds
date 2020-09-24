@@ -164,6 +164,7 @@
     ```shell
     ~$ stack setup --resolver lts-14.27
     ```
+    <!-- ~$ stack setup --resolver lts-14.27 -->
 
 1. Проверяем, что `stack` находится в переменной `PATH`:
     ```shell
