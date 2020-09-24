@@ -8,6 +8,25 @@ code --install-extension hoovercj.haskell-linter
     "haskell.hlint.hints": [],
 
 
+# IDE           haskell.haskell
+https://github.com/haskell/haskell-language-server
+https://marketplace.visualstudio.com/items?itemName=haskell.haskell
+find -type f -name *haskell-lang*
+    "haskell.languageServerVariant": "haskell-ide-engine",
+    "haskell.serverExecutablePath": "/home/wsl2/.local/bin/hie",
+    "[haskell]": {
+        "editor.defaultFormatter": "MaxGabriel.brittany"
+    },
+
+
+# debugger      phoityne.phoityne-vscode
+https://marketplace.visualstudio.com/items?itemName=phoityne.phoityne-vscode
+https://github.com/phoityne/hdx4vsc/tree/master/configs
+stack install haskell-dap ghci-dap haskell-debug-adapter
+phoityne.phoityne-vscode
+curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+
+
 # formatter     MaxGabriel.brittany
 https://github.com/lspitzner/brittany#installation
 https://marketplace.visualstudio.com/items?itemName=MaxGabriel.brittany
@@ -20,28 +39,6 @@ code --install-extension maxgabriel.brittany
     "brittany.path": "/home/wsl2/.local/bin/brittany",
     "brittany.keepCRLF": true
 
-
-# IDE           haskell.haskell
-https://github.com/haskell/haskell-language-server
-https://marketplace.visualstudio.com/items?itemName=haskell.haskell
-    "haskell.languageServerVariant": "haskell-ide-engine",
-    "haskell.serverExecutablePath": "/home/wsl2/.local/bin/hie",
-    "[haskell]": {
-        "editor.defaultFormatter": "MaxGabriel.brittany"
-    },
-
-
-# hoogle
-stack install hoogle
-code --install-extension jcanero.hoogle-vscode
-
-
-# debugger      phoityne.phoityne-vscode
-https://marketplace.visualstudio.com/items?itemName=phoityne.phoityne-vscode
-https://github.com/phoityne/hdx4vsc/tree/master/configs
-stack install haskell-dap ghci-dap haskell-debug-adapter
-phoityne.phoityne-vscode
-curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 
 
 
@@ -59,3 +56,23 @@ wsl --terminate ubuntu
 wsl --unregister ubuntu
 wsl --import ubuntu C:\ubuntu D:\ubuntu.tar
 Set-WSLDefaultUser ubuntu wsl2  # custom function from profile
+
+
+
+
+
+module Main where
+
+import Lib
+import Data.List (unwords)
+
+main :: IO ()
+main = someFunc
+
+x = (1 + 2)
+y = putStrLn x
+
+-- ex :: [String]
+-- ex = ["this", "is", "an"]
+
+-- print :: IO ()
