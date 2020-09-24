@@ -162,7 +162,7 @@
 1. Разворачиваем Haskell-инфраструктуру в своём профиле:
     
     ```shell
-    ~$ stack setup
+    ~$ stack setup --resolver lts-14.27
     ```
 
 1. Проверяем, что `stack` находится в переменной `PATH`:
@@ -500,7 +500,7 @@ Progress 4/147
 stack exec ghc-pkg list
 stack exec ghc-pkg check
 stack exec ghc-pkg -clear-package-db
-stack exec ghc-pkg unregister hourglass-0.2.12
+stack exec ghc-pkg unregister brittany-0.12.1.1 hourglass-0.2.12
 stack exec ghc-pkg describe hourglass-0.2.12
 stack exec -- ghc-pkg unregister --force hourglass-0.2.12
 stack exec -- ghc-pkg update hourglass-0.2.12
@@ -512,4 +512,40 @@ stack ls snapshots
 
 решено удалением снапшота целиком
 rm -rf /home/wsl2/.stack/snapshots/x86_64-linux-tinfo6/7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112
+-->
+
+<!--
+ошибка Bad interface file
+wsl2@w10m2:~/haskell-language-server$ stack clean && stack install.hs latest -q
+Synchronizing submodule url for 'ghcide'
+brittany               >
+brittany               > /tmp/stack-747c96eb5b9f1026/brittany-0.12.1.1/src/Language/Haskell/Brittany/Internal/Transformations/Alt.hs:24:1: error:
+brittany               >     Bad interface file: /home/wsl2/.stack/snapshots/x86_64-linux-tinfo6/4bd5477722a6381b33f1add41871f85661a513a21b4cda6baf00686e89ed7f34/8.8.4/lib/x86_64-linux-ghc-8.8.4/monad-memo-0.5.1-IpAGlmj3Z0c9HbIayo2J79/Control/Monad/Memo.hi
+brittany               >         Data.Binary.getPrim: end of file
+brittany               >    |
+brittany               > 24 | import qualified Control.Monad.Memo as Memo
+brittany               >    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^CProgress 2/7: fourmolu, ormolu
+
+********************************************************************************
+Building failed, Try running `stack clean` and restart the build
+If this does not work, open an issue at
+        https://github.com/haskell/haskell-language-server
+********************************************************************************
+
+stack ls snapshots
+4bd5477722a6381b33f1add41871f85661a513a21b4cda6baf00686e89ed7f34
+
+
+
+
+
+
+
+
+
+
+
+
+
 -->
