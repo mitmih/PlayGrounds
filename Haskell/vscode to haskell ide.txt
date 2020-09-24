@@ -44,18 +44,6 @@ phoityne.phoityne-vscode
 curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 
 
-# IDE legacy
-stack install QuickCheck
-stack install stack-run
-stack install intero
-stack install intero QuickCheck stack-run
-code --install-extension ucl.haskelly
 
-
-
-
-Couldn't figure out what GHC version the project is using:
-/root/.vscode-server/data/User/globalStorage/haskell.haskell/haskell-language-server-wrapper-0.4.0-linux --project-ghc-version exited with exit code 1:
-
-Module "/home/wsl2/aa/a" is loaded by Cradle: Cradle {cradleRootDir = "/home/wsl2/aa", cradleOptsProg = CradleAction: Stack}
-Failed to get project GHC version:CradleError {cradleErrorDependencies = [], cradleErrorExitCode = ExitFailure 1, cradleErrorStderr = ["Error when calling stack exec --silent ghc -- --numeric-version","",""]}
+wsl --distribution ubuntu --user wsl2 --exec id -u
+HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss\{GUID}
