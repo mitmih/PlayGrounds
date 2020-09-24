@@ -1,0 +1,61 @@
+# linter        hoovercj.haskell-linter
+https://marketplace.visualstudio.com/items?itemName=hoovercj.haskell-linter
+stack install hlint
+hlint --version
+code --install-extension hoovercj.haskell-linter
+    "haskell.hlint.executablePath": "/home/wsl2/.local/bin/hlint",
+    "haskell.hlint.ignore": [],
+    "haskell.hlint.hints": [],
+
+
+# formatter     MaxGabriel.brittany
+https://github.com/lspitzner/brittany#installation
+https://marketplace.visualstudio.com/items?itemName=MaxGabriel.brittany
+stack install brittany # --resolver lts-13.25 # --resolver lts-10.0
+brittany --version
+code --install-extension maxgabriel.brittany
+    "files.associations": {
+        "*.hs": "haskell",
+    },
+    "brittany.path": "/home/wsl2/.local/bin/brittany",
+    "brittany.keepCRLF": true
+
+
+# IDE           haskell.haskell
+https://github.com/haskell/haskell-language-server
+https://marketplace.visualstudio.com/items?itemName=haskell.haskell
+    "haskell.languageServerVariant": "haskell-ide-engine",
+    "haskell.serverExecutablePath": "/home/wsl2/.local/bin/hie",
+    "[haskell]": {
+        "editor.defaultFormatter": "MaxGabriel.brittany"
+    },
+
+
+# hoogle
+stack install hoogle
+code --install-extension jcanero.hoogle-vscode
+
+
+# debugger      phoityne.phoityne-vscode
+https://marketplace.visualstudio.com/items?itemName=phoityne.phoityne-vscode
+https://github.com/phoityne/hdx4vsc/tree/master/configs
+stack install haskell-dap ghci-dap haskell-debug-adapter
+phoityne.phoityne-vscode
+curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
+
+
+# IDE legacy
+stack install QuickCheck
+stack install stack-run
+stack install intero
+stack install intero QuickCheck stack-run
+code --install-extension ucl.haskelly
+
+
+
+
+Couldn't figure out what GHC version the project is using:
+/root/.vscode-server/data/User/globalStorage/haskell.haskell/haskell-language-server-wrapper-0.4.0-linux --project-ghc-version exited with exit code 1:
+
+Module "/home/wsl2/aa/a" is loaded by Cradle: Cradle {cradleRootDir = "/home/wsl2/aa", cradleOptsProg = CradleAction: Stack}
+Failed to get project GHC version:CradleError {cradleErrorDependencies = [], cradleErrorExitCode = ExitFailure 1, cradleErrorStderr = ["Error when calling stack exec --silent ghc -- --numeric-version","",""]}
