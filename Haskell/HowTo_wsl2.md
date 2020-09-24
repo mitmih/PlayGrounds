@@ -265,8 +265,8 @@ $ hoogle -V
     </summary>
     
     ```shell
-    git clone https://github.com/haskell/haskell-language-server --recurse-submodules
-    cd haskell-language-server
+    git clone https://github.com/haskell/haskell-language-server --recurse-submodules \
+        && cd haskell-language-server
 
     stack ./install.hs help
     # Ждём несколько минут
