@@ -95,7 +95,7 @@
     > Полезные команды по управлению дистрибутивами:
     > ```PowerShell
     > # перезапуск дистрибутива
-    > wsl --terminate ubuntu ; wsl --distribution ubuntu --user wsl2
+    > wsl --terminate ubuntu ; wsl --distribution ubuntu  # --user wsl2
     > 
     > # бэкап дистрибутива
     > wsl --export ubuntu D:\ubuntu.tar
@@ -106,6 +106,21 @@
     > # импорт дистрибутива
     > wsl --import ubuntu C:\ubuntu D:\ubuntu.tar
     > ```
+    > 
+    > **ОЧЕНЬ ВАЖНОЕ ЗАМЕЧАНИЕ:**
+    > 
+    > После экспорта-импорта пользователем по умолчанию становится `root`, вместо указанного при инициализации дистрибутива (`wsl2` в примерах).
+    > 
+    > Конечно, вы можете зайти, указав пользователя `wsl -d ubuntu -u wsl2`, но при запуске VS Code `code .` будет запущен от имени `root` что **поломает работу плагинов**, которые вы установите!
+    > 
+    > Чтобы исправить ситуацию после экспорта, нужно узнать `id` пользователя дистрибутива
+    > ```shell
+    > PS> wsl --distribution ubuntu --user wsl2 --exec id -u
+    > 1000
+    > ```
+    > а затем прописать его в параметр `DefaultUid` ветки `HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss\{GUID}` прописать 
+    > 
+    > [Решение на PowerShell](https://github.com/microsoft/WSL/issues/3974#issuecomment-522921145): `WSL-SetDefaultUser ubuntu wsl2`
 
 1. И обновляем дистрибутив:
     ```shell
@@ -120,19 +135,20 @@
 ## [ <kbd>↑</kbd> ](#up) <a name="step2">[Шаг 2 - Подготовка Haskell в Ubuntu - установка `stack`](#step2)</a>
 На основе [дополнительной информации по среде разработки](https://rizzoma.com/topic/c27faf1cfa188c1120f59af4c35e6099/0_b_9n8n_96jab/) из чата `Learn Haskell with FSD`.
 
+<!--
 1. Устанавливаем, [ghcup](https://www.haskell.org/ghcup/) - понадобится для корректной работы vscode-расширения `Integrated Haskell Shell`, также упрощает установку различный версий `ghc`:
 
     Сначала установим необходимые пакеты
     ```shell
     ~$ sudo apt install build-essential curl libffi-dev libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5 zlib1g-dev libicu-dev
     ```
-    <!-- ~$ sudo apt install -y build-essential curl libffi-dev libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5 -->
     Потом сам `ghcup`
     ```shell
     ~$ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
     ~$ ghcup list
     ```
     > Если `ghcup list` не срабатывает, нужно перезайти, чтобы изменения переменных окружения вступили в силу (см. шаг 2 п. 2)
+-->
 
 1. Устанавливаем [stack](https://docs.haskellstack.org/en/stable/README/):
     
@@ -209,15 +225,40 @@
 │   ├── logs
 │   └── machineid
 └── extensions
-    ├── eriksik2.vscode-ghci-0.0.2
     ├── haskell.haskell-1.1.0
-    ├── jcanero.hoogle-vscode-0.0.7
+    ├── hoovercj.haskell-linter-0.0.6
     ├── justusadam.language-haskell-3.3.0
-    ├── lunaryorn.hlint-0.5.1
     └── phoityne.phoityne-vscode-0.0.25
 ```
 
- Запускаем VS Code:
+Минимальный набор состоит из:
+* [Haskell](https://marketplace.visualstudio.com/items?itemName=haskell.haskell) - добавляет в VS Code функциональность IDE: предупреждения/ошибки GHC, всплывающие подсказки при наведении курсора, переходы к определениям функций, автодополнение кода, рекомендации по исправлению кода и другие возможности.
+    
+    При первом запуске самостоятельно доустановит необходимые `haskell-language-server` и `haskell-language-server-wrapper`:
+    ```shell
+    ~$ find -type f -name *haskell-lang*
+    ./.vscode-server/data/User/globalStorage/haskell.haskell/haskell-language-server-wrapper-0.4.0-linux
+    ./.vscode-server/data/User/globalStorage/haskell.haskell/haskell-language-server-0.4.0-linux-8.8.4
+    ```
+
+* [haskell-linter](https://marketplace.visualstudio.com/items?itemName=hoovercj.haskell-linter) - обёртка для линтера `hlint`, который проверяет код на соответствие определённому набором правил (отступы, лишние скобки, операции и др.).
+
+* [Haskell GHCi Debug Adapter Phoityne](https://marketplace.visualstudio.com/items?itemName=phoityne.phoityne-vscode) - отладчик.
+
+```shell
+~$ stack install hlint ormolu haskell-dap ghci-dap haskell-debug-adapter
+# ...
+Copied executables to /home/wsl2/.local/bin:
+- ghci-dap
+- haskell-dap
+- haskell-debug-adapter
+- hlint
+- ormolu
+~$ ls ~/.local/bin/
+ghci-dap  haskell-dap  haskell-debug-adapter  hlint  ormolu
+```
+
+Далее запускаем VS Code и ставим расширения:
 ```shell
 # новый проект ex
 $ stack new ex
@@ -230,27 +271,8 @@ Unpacking: 100%
 Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf72587010e943852e13e6fd3cf.
 ```
 
-Установка плагинов происходит по <kbd>F1</kbd> + команда `extensions: Install Extensions`.
+Установка плагинов происходит по <kbd>F1</kbd> + команда `extensions: Install Extensions` или по нажатию кнопки на вертикальной панели.
 
-Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
-```shell
-~/haskell-ide-engine$ cd ~
-~$ stack install hoogle
-```
-<!-- ~$ echo >> ~/.ghci ':def hoogle \x -> return ~$ ":!hoogle " ++ x' -->
-> Если видим ошибки `ConnectionTimeout` то перезапускаем установку `stack install hoogle`
-
-Генерируем индекс БД
-```shell
-~$ hoogle generate
-```
-<!-- ~$ stack haddock --hoogle -->
-
-Проверяем версию `hoogle`
-
-```shell
-$ hoogle -V
-```
 
 1. Плагин [Haskell](https://marketplace.visualstudio.com/items?itemName=haskell.haskell) добавляет поддержку языка в VS Code:
     * диагностические сообщения об ошибках и предупреждениях от GHC
@@ -295,94 +317,6 @@ $ hoogle -V
     ```
     <!-- stack clean && stack ./install.hs hie-8.8.3 -s -j1 -->
     
-    <a name="step3err">[](#step3err)<details><summary>Что делать с ошибками?</summary>
-     
-    В процессе установки `hie` могут возникать различные ошибки:
-    
-    1. `ConnectionTimeout` - ошибка при скачивании пакета, например:
-        ```shell
-        HttpExceptionRequest Request {
-        host                 = "casa.fpcomplete.com"
-        port                 = 443
-        secure               = True
-        requestHeaders       = []
-        path                 = "/v1/pull"
-        queryString          = ""
-        method               = "POST"
-        proxy                = Nothing
-        rawBody              = False
-        redirectCount        = 10
-        responseTimeout      = ResponseTimeoutDefault
-        requestVersion       = HTTP/1.1
-        }
-        ConnectionTimeout
-        Progress 27/56
-        ```
-        
-        В процессе скачивания пакетов на различных этапах не удаётся скачать какой-либо пакет и сборка завершается ошибкой. Облегчает, но полностью не избавляет, либо включение VPN, либо запуск в однопоточном режиме `stack ./install.hs hie -q -j1`, либо их комбинация.
-        
-        **Решение**: повторный запуск сборки `stack clean && stack ./install.hs hie -q` до тех пор, пока все пакеты не будут скачаны.
-    
-    1. `/usr/bin/ld.gold: error: cannot find -ltinfo` - ошибка компоновщика для ELF файлов, например:
-        ```shell
-        ghc-lib-parser-ex  > /usr/bin/ld.gold: error: cannot find -ltinfo
-        ghc-lib-parser-ex  > collect2: error: ld returned 1 exit status
-        ghc-lib-parser-ex  > `gcc' failed in phase `Linker'. (Exit code: 1)
-        ghc-exactprint     > /usr/bin/ld.gold: error: cannot find -ltinfo
-        ghc-exactprint     > collect2: error: ld returned 1 exit status
-        ghc-exactprint     > `gcc' failed in phase `Linker'. (Exit code: 1)
-        ```
-        Компоновщик `ld.gold` не может найти библиотеку `libtinfo.so` ни по одному из путей `ld --verbose | grep SEARCH_DIR`. Для решения нужно провести небольшое расследование.
-        
-        Посмотрим подробнее результат поиска при компоновке:
-        ```shell
-        $ ld.gold -ltinfo --verbose && rm a.out
-        ld.gold: Attempt to open //lib/x86_64-linux-gnu/libtinfo.so failed
-        ld.gold: Attempt to open //lib/x86_64-linux-gnu/libtinfo.a failed
-        ld.gold: Attempt to open //usr/lib/x86_64-linux-gnu/libtinfo.so failed
-        ld.gold: Attempt to open //usr/lib/x86_64-linux-gnu/libtinfo.a failed
-        ld.gold: Attempt to open //lib/libtinfo.so failed
-        ld.gold: Attempt to open //lib/libtinfo.a failed
-        ld.gold: Attempt to open //usr/lib/libtinfo.so failed
-        ld.gold: Attempt to open //usr/lib/libtinfo.a failed
-        ld.gold: error: cannot find -ltinfo
-        ld.gold: Opened new descriptor 3 for "a.out"
-        ```
-        
-        Не хватает символической ссылки `/usr/lib/x86_64-linux-gnu/libtinfo.so`. Поищем нужные файлы:
-        ```shell
-        $ sudo find /lib /usr/lib -name *libtinfo.*
-        /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-        /usr/lib/x86_64-linux-gnu/libtinfo.so.6
-        ```
-        
-        Найдено два файла. Посмотрим, что это за файлы, чтобы понять, на какой из них нужно дать ссылку:
-        ```shell
-        $ ls -la /usr/lib/x86_64-linux-gnu/*tinfo*so*
-        lrwxrwxrwx 1 root root     15 Feb 26  2020 /usr/lib/x86_64-linux-gnu/libtinfo.so.6 -> libtinfo.so.6.2
-        -rw-r--r-- 1 root root 192032 Feb 26  2020 /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-        ```
-        
-        **Решение 1** раз оригиналом является файл `libtinfo.so.6.2`, а `libtinfo.so.6` - лишь ссылкой, сделаем ещё одну подобную ссылку на оригинал:
-        ```shell
-        ~$ cd /usr/lib/x86_64-linux-gnu/
-        /usr/lib/x86_64-linux-gnu$ sudo ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2 libtinfo.so
-        /usr/lib/x86_64-linux-gnu$ ls -la *libtinfo*
-        lrwxrwxrwx 1 root root     41 Sep 22 23:30 libtinfo.so -> /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
-        lrwxrwxrwx 1 root root     15 Feb 26  2020 libtinfo.so.6 -> libtinfo.so.6.2
-        -rw-r--r-- 1 root root 192032 Feb 26  2020 libtinfo.so.6.2
-        /usr/lib/x86_64-linux-gnu$ cd ~
-        ~$ ld.gold -ltinfo --verbose
-        ld.gold: Opened new descriptor 3 for "//lib/x86_64-linux-gnu/libtinfo.so"
-        ld.gold: Attempt to open //lib/x86_64-linux-gnu/libtinfo.so succeeded
-        ld.gold: Unlocking file "//lib/x86_64-linux-gnu/libtinfo.so"
-        ld.gold: Released descriptor 3 for "//lib/x86_64-linux-gnu/libtinfo.so"
-        ld.gold: Opened new descriptor 4 for "a.out"
-        ```
-        
-        **Решение 2** ~~узнаём, [в какой пакет входит библиотека](https://packages.debian.org/search?suite=buster&arch=any&searchon=contents&keywords=libtinfo.so.6) и ставим его `$ sudo apt install -y libtinfo6`~~ не работает, такой пакет уже стоит.
-    </details>
-    
     Смотрим версию HIE
     ```shell
     ~/haskell-ide-engine$ hie --version
@@ -403,18 +337,147 @@ $ hoogle -V
     "haskell.hlint.executablePath": "/home/wsl2/.local/bin/hlint",
     ```
 
-1. [hoogle-vscode](https://marketplace.visualstudio.com/items?itemName=jcanero.hoogle-vscode)
-
-<!-- 1. [Integrated Haskell Shell](https://marketplace.visualstudio.com/items?itemName=eriksik2.vscode-ghci) -->
-
 1. [Haskell GHCi Debug Adapter Phoityne](https://marketplace.visualstudio.com/items?itemName=phoityne.phoityne-vscode)
-
-<!-- 1. Для плагина отладки
     ```shell
     ~$ stack install phoityne-vscode haskell-dap ghci-dap haskell-debug-adapter
-    ``` -->
+    ```
+
+<!-- https://blog.ssanj.net/posts/2019-10-19-running-hoogle-locally-for-haskell-dev.html
+
+1. [hoogle-vscode](https://marketplace.visualstudio.com/items?itemName=jcanero.hoogle-vscode)
+Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
+```shell
+~/haskell-ide-engine$ cd ~
+~$ stack install hoogle
+```
+> Если видим ошибки `ConnectionTimeout` то перезапускаем установку `stack install hoogle`
+
+Генерируем индекс БД
+```shell
+~$ hoogle generate
+```
+
+Проверяем версию `hoogle`
+
+```shell
+$ hoogle -V
+```
+-->
 
 
+<a name="step3err">[](#step3err)<details><summary>Что делать с ошибками при установке из исходников `stack ./install.hs <name> -q`?</summary>
+    
+В процессе установки `hie` могут возникать различные ошибки:
+
+1. `ConnectionTimeout` - ошибка при скачивании пакета, например:
+    ```shell
+    HttpExceptionRequest Request {
+    host                 = "casa.fpcomplete.com"
+    port                 = 443
+    secure               = True
+    requestHeaders       = []
+    path                 = "/v1/pull"
+    queryString          = ""
+    method               = "POST"
+    proxy                = Nothing
+    rawBody              = False
+    redirectCount        = 10
+    responseTimeout      = ResponseTimeoutDefault
+    requestVersion       = HTTP/1.1
+    }
+    ConnectionTimeout
+    Progress 27/56
+    ```
+    
+    В процессе скачивания пакетов на различных этапах не удаётся скачать какой-либо пакет и сборка завершается ошибкой. Облегчает, но полностью не избавляет, либо включение VPN, либо запуск в однопоточном режиме `stack ./install.hs hie -q -j1`, либо их комбинация.
+    
+    **Решение**: повторный запуск сборки `stack clean && stack ./install.hs hie -q` до тех пор, пока все пакеты не будут скачаны.
+
+1. `/usr/bin/ld.gold: error: cannot find -ltinfo` - ошибка компоновщика для ELF файлов, например:
+    ```shell
+    ghc-lib-parser-ex  > /usr/bin/ld.gold: error: cannot find -ltinfo
+    ghc-lib-parser-ex  > collect2: error: ld returned 1 exit status
+    ghc-lib-parser-ex  > `gcc' failed in phase `Linker'. (Exit code: 1)
+    ghc-exactprint     > /usr/bin/ld.gold: error: cannot find -ltinfo
+    ghc-exactprint     > collect2: error: ld returned 1 exit status
+    ghc-exactprint     > `gcc' failed in phase `Linker'. (Exit code: 1)
+    ```
+    Компоновщик `ld.gold` не может найти библиотеку `libtinfo.so` ни по одному из путей `ld --verbose | grep SEARCH_DIR`. Для решения нужно провести небольшое расследование.
+    
+    Посмотрим подробнее результат поиска при компоновке:
+    ```shell
+    $ ld.gold -ltinfo --verbose && rm a.out
+    ld.gold: Attempt to open //lib/x86_64-linux-gnu/libtinfo.so failed
+    ld.gold: Attempt to open //lib/x86_64-linux-gnu/libtinfo.a failed
+    ld.gold: Attempt to open //usr/lib/x86_64-linux-gnu/libtinfo.so failed
+    ld.gold: Attempt to open //usr/lib/x86_64-linux-gnu/libtinfo.a failed
+    ld.gold: Attempt to open //lib/libtinfo.so failed
+    ld.gold: Attempt to open //lib/libtinfo.a failed
+    ld.gold: Attempt to open //usr/lib/libtinfo.so failed
+    ld.gold: Attempt to open //usr/lib/libtinfo.a failed
+    ld.gold: error: cannot find -ltinfo
+    ld.gold: Opened new descriptor 3 for "a.out"
+    ```
+    
+    Не хватает символической ссылки `/usr/lib/x86_64-linux-gnu/libtinfo.so`. Поищем нужные файлы:
+    ```shell
+    $ sudo find /lib /usr/lib -name *libtinfo.*
+    /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+    /usr/lib/x86_64-linux-gnu/libtinfo.so.6
+    ```
+    
+    Найдено два файла. Посмотрим, что это за файлы, чтобы понять, на какой из них нужно дать ссылку:
+    ```shell
+    $ ls -la /usr/lib/x86_64-linux-gnu/*tinfo*so*
+    lrwxrwxrwx 1 root root     15 Feb 26  2020 /usr/lib/x86_64-linux-gnu/libtinfo.so.6 -> libtinfo.so.6.2
+    -rw-r--r-- 1 root root 192032 Feb 26  2020 /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+    ```
+    
+    **Решение 1** раз оригиналом является файл `libtinfo.so.6.2`, а `libtinfo.so.6` - лишь ссылкой, сделаем ещё одну подобную ссылку на оригинал:
+    ```shell
+    ~$ cd /usr/lib/x86_64-linux-gnu/
+    /usr/lib/x86_64-linux-gnu$ sudo ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2 libtinfo.so
+    /usr/lib/x86_64-linux-gnu$ ls -la *libtinfo*
+    lrwxrwxrwx 1 root root     41 Sep 22 23:30 libtinfo.so -> /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+    lrwxrwxrwx 1 root root     15 Feb 26  2020 libtinfo.so.6 -> libtinfo.so.6.2
+    -rw-r--r-- 1 root root 192032 Feb 26  2020 libtinfo.so.6.2
+    /usr/lib/x86_64-linux-gnu$ cd ~
+    ~$ ld.gold -ltinfo --verbose
+    ld.gold: Opened new descriptor 3 for "//lib/x86_64-linux-gnu/libtinfo.so"
+    ld.gold: Attempt to open //lib/x86_64-linux-gnu/libtinfo.so succeeded
+    ld.gold: Unlocking file "//lib/x86_64-linux-gnu/libtinfo.so"
+    ld.gold: Released descriptor 3 for "//lib/x86_64-linux-gnu/libtinfo.so"
+    ld.gold: Opened new descriptor 4 for "a.out"
+    ```
+    
+    **Решение 2** ~~узнаём, [в какой пакет входит библиотека](https://packages.debian.org/search?suite=buster&arch=any&searchon=contents&keywords=libtinfo.so.6) и ставим его `$ sudo apt install -y libtinfo6`~~ не работает, такой пакет уже стоит.
+
+1. 
+```shell
+Exit code: 1
+Stderr:
+asn1-types           >
+asn1-types           > /tmp/stack-91bbb18f1e86c552/asn1-types-0.3.4/Data/ASN1/Types.hs:23:1: error:
+asn1-types           >     Bad interface file: /home/wsl2/.stack/snapshots/x86_64-linux-tinfo6/7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112/8.8.3/lib/x86_64-linux-ghc-8.8.3/hourglass-0.2.12-D9ublWZfFOQ5RjjySuTJfA/Data/Hourglass.hi
+asn1-types           >         Data.Binary.getPrim: end of file
+asn1-types           >    |
+asn1-types           > 23 | import Data.Hourglass
+asn1-types           >    | ^^^^^^^^^^^^^^^^^^^^^
+
+--  While building package asn1-types-0.3.4 using:
+    /home/wsl2/.stack/setup-exe-cache/x86_64-linux-tinfo6/Cabal-simple_mPHDZzAJ_3.0.1.0_ghc-8.8.3 --builddir=.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.0.1.0 build --ghc-options ""
+    Process exited with code: ExitFailure 1
+Progress 4/147
+
+
+снапшот
+stack ls snapshots
+7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112
+
+решено удалением снапшота целиком
+rm -rf /home/wsl2/.stack/snapshots/x86_64-linux-tinfo6/7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112
+```
+</details>
 
 
 
@@ -433,52 +496,18 @@ $ hoogle -V
 ```shell
 ```
 </details>
+-->
 
 
-https://medium.com/@remisa.yousefvand/setup-haskell-development-environment-on-ubuntu-64c0f29f2b
+<!-- https://medium.com/@remisa.yousefvand/setup-haskell-development-environment-on-ubuntu-64c0f29f2b -->
 
 
-
-    1. Устанавливаем Cabal и Haskell через Stack:
-    
-    ```shell
-    ~$ stack install cabal-install
-    ~$ cabal update
-    ```
-    
-    > У меня в процессе установки выскочила ошибка из несоответствия доступной версии и указанной в конфиге stack`а:
-    > ```shell
-    > Error: While constructing the build plan, the following exceptions were encountered:
-    > 
-    > In the dependencies for cabal-install-3.2.0.0:
-    >     Cabal-3.0.1.0 from stack configuration does not match ==3.2.*  (latest matching version is 3.2.0.0)
-    > needed since cabal-install is a build target.
-    > 
-    > Some different approaches to resolving this:
-    > 
-    > * Set 'allow-newer: true' in /home/wsl2/.stack/config.yaml to ignore all version constraints and build anyway.
-    > 
-    > * Recommended action: try adding the following to your extra-deps in /home/wsl2/.stack/global-project/stack.yaml:
-    > 
-    > - Cabal-3.2.0.0@sha256:d0d7a1f405f25d0000f5ddef684838bc264842304fd4e7f80ca92b997b710874,27320
-    > ```
-    > 
-    > Отркрываем конфиг:
-    > ```shell
-    > ~$ nano ~/.stack/global-project/stack.yaml
-    > ```
-    > 
-    > И добавляем, как рекомендовано, соответствующую поправку
-    > ```shell
-    > extra-deps:
-    > - Cabal-3.2.0.0@sha256:d0d7a1f405f25d0000f5ddef684838bc264842304fd4e7f80ca92b997b710874,27320
-    > ```
-    > после этого повторяем `stack install cabal-install`
-
+<!--
 choco list --local-only
 choco uninstall haskell-dev --remove-dependencies
 choco list --local-only
 -->
+
 
 <!--     
 Exit code: 1
@@ -501,7 +530,7 @@ Progress 4/147
 stack exec ghc-pkg list
 stack exec ghc-pkg check
 stack exec ghc-pkg -clear-package-db
-stack exec ghc-pkg unregister brittany-0.12.1.1 hourglass-0.2.12
+stack exec ghc-pkg unregister hourglass-0.2.12
 stack exec ghc-pkg describe hourglass-0.2.12
 stack exec -- ghc-pkg unregister --force hourglass-0.2.12
 stack exec -- ghc-pkg update hourglass-0.2.12
@@ -513,40 +542,4 @@ stack ls snapshots
 
 решено удалением снапшота целиком
 rm -rf /home/wsl2/.stack/snapshots/x86_64-linux-tinfo6/7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112
--->
-
-<!--
-ошибка Bad interface file
-wsl2@w10m2:~/haskell-language-server$ stack clean && stack install.hs latest -q
-Synchronizing submodule url for 'ghcide'
-brittany               >
-brittany               > /tmp/stack-747c96eb5b9f1026/brittany-0.12.1.1/src/Language/Haskell/Brittany/Internal/Transformations/Alt.hs:24:1: error:
-brittany               >     Bad interface file: /home/wsl2/.stack/snapshots/x86_64-linux-tinfo6/4bd5477722a6381b33f1add41871f85661a513a21b4cda6baf00686e89ed7f34/8.8.4/lib/x86_64-linux-ghc-8.8.4/monad-memo-0.5.1-IpAGlmj3Z0c9HbIayo2J79/Control/Monad/Memo.hi
-brittany               >         Data.Binary.getPrim: end of file
-brittany               >    |
-brittany               > 24 | import qualified Control.Monad.Memo as Memo
-brittany               >    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-^CProgress 2/7: fourmolu, ormolu
-
-********************************************************************************
-Building failed, Try running `stack clean` and restart the build
-If this does not work, open an issue at
-        https://github.com/haskell/haskell-language-server
-********************************************************************************
-
-stack ls snapshots
-4bd5477722a6381b33f1add41871f85661a513a21b4cda6baf00686e89ed7f34
-
-
-
-
-
-
-
-
-
-
-
-
-
 -->
