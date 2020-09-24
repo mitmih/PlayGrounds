@@ -367,7 +367,7 @@ $ hoogle -V
 
 <a name="step3err">[](#step3err)<details><summary>Что делать с ошибками при установке из исходников `stack ./install.hs <name> -q`?</summary>
     
-В процессе установки `hie` могут возникать различные ошибки:
+В процессе сборки из исходников `Haskell IDE Engine` и других пакетов могут возникать различные ошибки:
 
 1. `ConnectionTimeout` - ошибка при скачивании пакета, например:
     ```shell
@@ -393,7 +393,7 @@ $ hoogle -V
     
     **Решение**: повторный запуск сборки `stack clean && stack ./install.hs hie -q` до тех пор, пока все пакеты не будут скачаны.
 
-1. `/usr/bin/ld.gold: error: cannot find -ltinfo` - ошибка компоновщика для ELF файлов, например:
+1. `/usr/bin/ld.gold: error: cannot find -ltinfo` - ошибка компоновки ELF файлов, например:
     ```shell
     ghc-lib-parser-ex  > /usr/bin/ld.gold: error: cannot find -ltinfo
     ghc-lib-parser-ex  > collect2: error: ld returned 1 exit status
@@ -433,7 +433,7 @@ $ hoogle -V
     -rw-r--r-- 1 root root 192032 Feb 26  2020 /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
     ```
     
-    **Решение 1** раз оригиналом является файл `libtinfo.so.6.2`, а `libtinfo.so.6` - лишь ссылкой, сделаем ещё одну подобную ссылку на оригинал:
+    **Решение 1**: `libtinfo.so.6` ссылка на оригинальный файл `libtinfo.so.6.2`, сделаем такую же ссылку:
     ```shell
     ~$ cd /usr/lib/x86_64-linux-gnu/
     /usr/lib/x86_64-linux-gnu$ sudo ln -s /usr/lib/x86_64-linux-gnu/libtinfo.so.6.2 libtinfo.so
@@ -450,36 +450,42 @@ $ hoogle -V
     ld.gold: Opened new descriptor 4 for "a.out"
     ```
     
-    **Решение 2** ~~узнаём, [в какой пакет входит библиотека](https://packages.debian.org/search?suite=buster&arch=any&searchon=contents&keywords=libtinfo.so.6) и ставим его `$ sudo apt install -y libtinfo6`~~ не работает, такой пакет уже стоит.
+    **Решение 2**: ~~узнаём, [в какой пакет входит библиотека](https://packages.debian.org/search?suite=buster&arch=any&searchon=contents&keywords=libtinfo.so.6) и ставим его `$ sudo apt install -y libtinfo6`~~ не работает, такой пакет уже стоит.
 
-1. 
-```shell
-Exit code: 1
-Stderr:
-asn1-types           >
-asn1-types           > /tmp/stack-91bbb18f1e86c552/asn1-types-0.3.4/Data/ASN1/Types.hs:23:1: error:
-asn1-types           >     Bad interface file: /home/wsl2/.stack/snapshots/x86_64-linux-tinfo6/7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112/8.8.3/lib/x86_64-linux-ghc-8.8.3/hourglass-0.2.12-D9ublWZfFOQ5RjjySuTJfA/Data/Hourglass.hi
-asn1-types           >         Data.Binary.getPrim: end of file
-asn1-types           >    |
-asn1-types           > 23 | import Data.Hourglass
-asn1-types           >    | ^^^^^^^^^^^^^^^^^^^^^
+1. `Bad interface file` - ошибка файла-интерфейса пакета, например:
+    ```shell
+    Exit code: 1
+    Stderr:
+    asn1-types           >
+    asn1-types           > /tmp/stack-91bbb18f1e86c552/asn1-types-0.3.4/Data/ASN1/Types.hs:23:1: error:
+    asn1-types           >     Bad interface file: /home/wsl2/.stack/snapshots/x86_64-linux-tinfo6/7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112/8.8.3/lib/x86_64-linux-ghc-8.8.3/hourglass-0.2.12-D9ublWZfFOQ5RjjySuTJfA/Data/Hourglass.hi
+    asn1-types           >         Data.Binary.getPrim: end of file
+    asn1-types           >    |
+    asn1-types           > 23 | import Data.Hourglass
+    asn1-types           >    | ^^^^^^^^^^^^^^^^^^^^^
 
---  While building package asn1-types-0.3.4 using:
-    /home/wsl2/.stack/setup-exe-cache/x86_64-linux-tinfo6/Cabal-simple_mPHDZzAJ_3.0.1.0_ghc-8.8.3 --builddir=.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.0.1.0 build --ghc-options ""
-    Process exited with code: ExitFailure 1
-Progress 4/147
-
-
-снапшот
-stack ls snapshots
-7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112
-
-решено удалением снапшота целиком
-rm -rf /home/wsl2/.stack/snapshots/x86_64-linux-tinfo6/7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112
-```
+    --  While building package asn1-types-0.3.4 using:
+        /home/wsl2/.stack/setup-exe-cache/x86_64-linux-tinfo6/Cabal-simple_mPHDZzAJ_3.0.1.0_ghc-8.8.3 --builddir=.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.0.1.0 build --ghc-options ""
+        Process exited with code: ExitFailure 1
+    Progress 4/147
+    ```
+    
+    Возникает при внезапных вылетах wsl-дистрибутива, возможно не хватает памяти/ЦП при многопоточной сборке.
+    
+    **Решение**: удалить снимок `stack` и перезапустить установку
+    
+    ```shell
+    # удаляем snapshot со сбойным пакетом
+    rm -rf ~/.stack/snapshots/x86_64-linux-tinfo6/7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112
+    #
+    # посмотреть snapshot`ы можно так
+    stack ls snapshots
+    c1a15fc0b36d2421d56392128a038a0892298dfd1e8684abd4bd1bebb3fed454
+    7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112
+    c352b9f5009757a56e2d06a1d0875761e27a83bbaaad58f33f65a494bfc4778d
+    c733b47589def700198e64ab41cee71169ccfacbb8a95176edcfff30ed0174e6
+    ```
 </details>
-
-
 
 
 
@@ -498,48 +504,10 @@ rm -rf /home/wsl2/.stack/snapshots/x86_64-linux-tinfo6/7e2e539d650a4b2eb8906abda
 </details>
 -->
 
-
 <!-- https://medium.com/@remisa.yousefvand/setup-haskell-development-environment-on-ubuntu-64c0f29f2b -->
-
 
 <!--
 choco list --local-only
 choco uninstall haskell-dev --remove-dependencies
 choco list --local-only
--->
-
-
-<!--     
-Exit code: 1
-Stderr:
-asn1-types           >
-asn1-types           > /tmp/stack-91bbb18f1e86c552/asn1-types-0.3.4/Data/ASN1/Types.hs:23:1: error:
-asn1-types           >     Bad interface file: /home/wsl2/.stack/snapshots/x86_64-linux-tinfo6/7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112/8.8.3/lib/x86_64-linux-ghc-8.8.3/hourglass-0.2.12-D9ublWZfFOQ5RjjySuTJfA/Data/Hourglass.hi
-asn1-types           >         Data.Binary.getPrim: end of file
-asn1-types           >    |
-asn1-types           > 23 | import Data.Hourglass
-asn1-types           >    | ^^^^^^^^^^^^^^^^^^^^^
-
---  While building package asn1-types-0.3.4 using:
-    /home/wsl2/.stack/setup-exe-cache/x86_64-linux-tinfo6/Cabal-simple_mPHDZzAJ_3.0.1.0_ghc-8.8.3 --builddir=.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.0.1.0 build --ghc-options ""
-    Process exited with code: ExitFailure 1
-Progress 4/147
-
-
-не помогло
-stack exec ghc-pkg list
-stack exec ghc-pkg check
-stack exec ghc-pkg -clear-package-db
-stack exec ghc-pkg unregister hourglass-0.2.12
-stack exec ghc-pkg describe hourglass-0.2.12
-stack exec -- ghc-pkg unregister --force hourglass-0.2.12
-stack exec -- ghc-pkg update hourglass-0.2.12
-
-
-снапшот
-stack ls snapshots
-7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112
-
-решено удалением снапшота целиком
-rm -rf /home/wsl2/.stack/snapshots/x86_64-linux-tinfo6/7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112
 -->
