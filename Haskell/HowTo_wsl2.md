@@ -2,17 +2,15 @@
 
 Данный рецепт позволяет настроить окружение для разработки на Haskell по схеме Windows 10 (VS Code) + Ubuntu под WSL2 (инфраструктура и проекты).
 
-* [готовим Ubuntu 20.04 на WSL2 консольно](#step1)
+* [Готовим Ubuntu 20.04 на WSL2 консольно](#step1)
 
-* [ставим stack](#step2)
+* [Ставим stack](#step2)
 
-* [расширяем VS Code](#step3)
+* [Заводим VS Code](#step3)
 
-* [HIE не заводится, что делать?](#step3err)
+* [Дополнение 1 - готовим IDE-плагины из исходников](#step4)
 
-<!-- * [#step4](#step4) -->
-
-<!-- * [#step5](#step5) -->
+* [Дополнение 2 - ошибки, что делать?](#step5)
 
 
 ## [ <kbd>↑</kbd> ](#up) <a name="step1">[Шаг 1 - Подготовка Windows Subsystem Linux 2, установка Ubuntu 20.04](#step1)</a>
@@ -273,7 +271,7 @@ Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf
 
 Установка плагинов происходит по <kbd>F1</kbd> + команда `extensions: Install Extensions` или по нажатию кнопки на вертикальной панели.
 
-
+## [ <kbd>↑</kbd> ](#up) <a name="step4">[Дополнение 1 - сборка IDE-плагина из исходников](#step4)</a>
 1. Плагин [Haskell](https://marketplace.visualstudio.com/items?itemName=haskell.haskell) добавляет поддержку языка в VS Code:
     * диагностические сообщения об ошибках и предупреждениях от GHC
     * информация о типах и документация при наведении курсора
@@ -282,91 +280,49 @@ Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf
     * автодополнение кода
     * и другие возможности
     
-    Расширение может работать с различными серверами языка
+    Расширение может работать с различными серверами языка, установку начинаем в домашней папке `~/`:
     
-    <details><summary><a href="https://github.com/haskell/haskell-language-server">Haskell Language Server</a> - сервер по умолчанию, находится на ранней стадии разработки
-    </summary>
+    <a href="https://github.com/haskell/haskell-language-server">Haskell Language Server</a> - сервер по умолчанию, находится на ранней стадии разработки
     
     ```shell
     git clone https://github.com/haskell/haskell-language-server --recurse-submodules \
         && cd haskell-language-server
-
+    
     stack ./install.hs help
-    # Ждём несколько минут
-
+    # Ждём
+    
     stack ./install.hs hls -s
-    # Ждём несколько десятков минут :)
-
+    # Ждём ещё дольше :)
+    
     # проверяем
     haskell-language-server --version
-
+    
     # ставим vscode-расширение Haskell и делаем настройку
     "haskell.serverExecutablePath": "/home/wsl2/.local/bin/haskell-language-server",
     ```
     
-    </details>
     
-    <details><summary><a href="https://github.com/haskell/haskell-ide-engine#installation-from-source">Haskell IDE Engine</a> - стабильный и зрелый сервер, но фокус разработки сместился на Haskell Language Server
-    </summary>
+    <a href="https://github.com/haskell/haskell-ide-engine#installation-from-source">Haskell IDE Engine</a> - стабильный и зрелый сервер, но фокус разработки сместился на Haskell Language Server
     
     ```shell
     ~$ git clone https://github.com/haskell/haskell-ide-engine --recurse-submodules \
         && cd haskell-ide-engine
+    
     ~/haskell-ide-engine$ stack ./install.hs help
+    
     ~/haskell-ide-engine$ stack clean && stack ./install.hs latest -q
     ```
-    <!-- stack clean && stack ./install.hs hie-8.8.3 -s -j1 -->
     
-    Смотрим версию HIE
     ```shell
+    # Смотрим версию HIE
     ~/haskell-ide-engine$ hie --version
-    ```
     
-    Устанавливаем плагин в VS Code, в настройках "Haskell > Language Server Variant" выбираем HIE.
-    </details>
-
-
-1. [haskell-linter](https://marketplace.visualstudio.com/items?itemName=hoovercj.haskell-linter) - обёртка для `hlint`
-    ```shell
-    stack install hlint
-    hlint --version
-    
-    # ставим расширение haskell-linter и делаем настройку
-    "haskell.hlint.hints": ["Default", "Dollar", "Generalise"],
-    "haskell.hlint.ignore": ["Redundant do"],
-    "haskell.hlint.executablePath": "/home/wsl2/.local/bin/hlint",
+    # Устанавливаем плагин в VS Code, в настройках "Haskell > Language Server Variant" выбираем HIE.
     ```
 
-1. [Haskell GHCi Debug Adapter Phoityne](https://marketplace.visualstudio.com/items?itemName=phoityne.phoityne-vscode)
-    ```shell
-    ~$ stack install phoityne-vscode haskell-dap ghci-dap haskell-debug-adapter
-    ```
 
-<!-- https://blog.ssanj.net/posts/2019-10-19-running-hoogle-locally-for-haskell-dev.html
+## [ <kbd>↑</kbd> ](#up) <a name="step5">[Дополнение 2 - Что делать с ошибками при установке из исходников `stack ./install.hs <name> -q`?](#step5)</a>
 
-1. [hoogle-vscode](https://marketplace.visualstudio.com/items?itemName=jcanero.hoogle-vscode)
-Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
-```shell
-~/haskell-ide-engine$ cd ~
-~$ stack install hoogle
-```
-> Если видим ошибки `ConnectionTimeout` то перезапускаем установку `stack install hoogle`
-
-Генерируем индекс БД
-```shell
-~$ hoogle generate
-```
-
-Проверяем версию `hoogle`
-
-```shell
-$ hoogle -V
-```
--->
-
-
-<a name="step3err">[](#step3err)<details><summary>Что делать с ошибками при установке из исходников `stack ./install.hs <name> -q`?</summary>
-    
 В процессе сборки из исходников `Haskell IDE Engine` и других пакетов могут возникать различные ошибки:
 
 1. `ConnectionTimeout` - ошибка при скачивании пакета, например:
@@ -480,14 +436,34 @@ $ hoogle -V
     #
     # посмотреть snapshot`ы можно так
     stack ls snapshots
-    c1a15fc0b36d2421d56392128a038a0892298dfd1e8684abd4bd1bebb3fed454
-    7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112
     c352b9f5009757a56e2d06a1d0875761e27a83bbaaad58f33f65a494bfc4778d
+    7e2e539d650a4b2eb8906abda1478bb14e2d7d14161c7e710d2306de63636112
     c733b47589def700198e64ab41cee71169ccfacbb8a95176edcfff30ed0174e6
     ```
-</details>
 
 
+
+<!-- https://blog.ssanj.net/posts/2019-10-19-running-hoogle-locally-for-haskell-dev.html
+
+1. [hoogle-vscode](https://marketplace.visualstudio.com/items?itemName=jcanero.hoogle-vscode)
+Для работы подсказок ставим движок поиска по документации [Hoogle](https://github.com/ndmitchell/hoogle/blob/master/docs/Install.md), к которму обращается HIE:
+```shell
+~/haskell-ide-engine$ cd ~
+~$ stack install hoogle
+```
+> Если видим ошибки `ConnectionTimeout` то перезапускаем установку `stack install hoogle`
+
+Генерируем индекс БД
+```shell
+~$ hoogle generate
+```
+
+Проверяем версию `hoogle`
+
+```shell
+$ hoogle -V
+```
+-->
 
 <!--
 ## [ <kbd>↑</kbd> ](#up) <a name="step3">[Шаг 3](#step3)</a>
