@@ -47,3 +47,15 @@ curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh
 
 wsl --distribution ubuntu --user wsl2 --exec id -u
 HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Lxss\{GUID}
+
+# перезапуск
+wsl --terminate ubuntu ; wsl --distribution ubuntu --user wsl2
+
+# экспорт
+wsl --terminate ubuntu ; wsl --export ubuntu D:\ubuntu.tar
+
+# импорт
+wsl --terminate ubuntu
+wsl --unregister ubuntu
+wsl --import ubuntu C:\ubuntu D:\ubuntu.tar
+Set-WSLDefaultUser ubuntu wsl2  # custom function from profile
