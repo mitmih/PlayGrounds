@@ -321,7 +321,7 @@ Unpacked 2341 files and folders to /home/wsl2/.vscode-server/bin/58bb7b2331731bf
     ```
 
 
-## [ <kbd>↑</kbd> ](#up) <a name="step5">[Дополнение 2 - Что делать с ошибками при установке из исходников `stack ./install.hs <name> -q`?](#step5)</a>
+## [ <kbd>↑</kbd> ](#up) <a name="step5">[Дополнение 2 - Что делать с ошибками при установке из исходников?](#step5)</a>
 
 В процессе сборки из исходников `Haskell IDE Engine` и других пакетов могут возникать различные ошибки:
 
