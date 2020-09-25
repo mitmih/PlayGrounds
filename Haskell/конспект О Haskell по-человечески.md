@@ -1,3 +1,8 @@
+```shell
+# компиляция со всеми предупреждениями и ошибками
+stack clean && stack build --ghc-options="-Wall -Werror" && stack run
+```
+
 # Приготовимся
 
 Haskell — кроссплатформенный язык, работающий и в Linux, и в macOS OS X, и даже в Windows.
@@ -237,3 +242,260 @@ Haskell чисто функциональный язык (англ. purely funct
 
 ## Для любопытных
 В процессе работы Haskell-программы новые данные вычисляются на основе уже вычисленных, из-за этой особенности в памяти образуется множество уже не нужных данных. За своевременную уборку отвечает "сборщик мусора" (англ. garbage collector, GC), который встраивается в программу компилятором `GHC`.
+
+
+# Выбираем и возвращаемся
+
+## Выглянем во внешний мир
+
+```Haskell
+{-
+    многострочный комментарий
+-}
+
+main :: IO ()
+main = -- однострочный комментарий
+  putStrLn "Hello, world!"  -- вывод строки в консоль
+
+```
+
+
+## Выбор и выход
+
+```Haskell
+-- базовый вариант if CONDITION then EXPR1 else EXPR2
+checkLocalHost :: String -> String
+checkLocalHost ip =
+  if ip == "127.0.0.1" || ip == "0.0.0.0"
+    then "+ It`s localhost"
+    else "- No, it`s not a localhost"
+
+main :: IO ()
+main =
+  putStrLn
+    ( checkLocalHost "8.8.8.8"
+    )
+
+-- можно переписать так:
+main :: IO ()
+main =
+  putStrLn
+    ( if "8.8.8.8" == "127.0.0.1" || "8.8.8.8"  == "0.0.0.0"
+        then "It`s localhost"
+        else "No, it`s not a localhost"
+    )
+{-
+Т.е.
+"..." == "127.0.0.1" || "..."  == "0.0.0.0" редуцируется до True или False
+
+затем
+if True (или False)
+  then "It's a localhost!"
+  else "No, it's not a localhost."
+редуцируется до "It`s localhost" или "No, it`s not a localhost"
+-}
+```
+Каким бы сложным не было ветвление, в конечном итоге выражение будет вычислено, поэтому:
++ нельзя ограничится if-then, всегда должен быть else
++ из функции нельзя выйти в произвольном месте
+
+
+# Выбор и образцы
+
+## Не только из двух
+```Haskell
+{-# LANGUAGE MultiWayIf #-}
+-- указание расширения языка Haskell, прагмой LANGUAGE включили множественный if
+
+module Main where
+
+analyzeGold :: Int -> String
+analyzeGold standart =
+  if
+      | standart == 999 -> "wow! 999 is excelent!"
+      | standart == 750 -> "great! 750 is good too!"
+      | standart == 585 -> "not bad! 585"
+      | otherwise -> "don`t know this standart"
+
+main :: IO ()
+main = putStrLn (analyzeGold 999)
+```
+
+## Без Если и прагмы
+
+```Haskell
+module Main where
+
+analyzeGold :: Int -> String
+analyzeGold standart
+    | standart == 999 = "wow! 999 is excelent!"
+    | standart == 750 = "great! 750 is good too!"
+    | standart == 585 = "not bad! 585"
+    | otherwise = "don`t know this standart"
+
+-- можно развернуть в одну строку
+-- function arg  |    COND1     =      EXPR1     |    ...
+-- функция равна или тому или тому или ...
+
+main :: IO ()
+main = putStrLn (analyzeGold 751)
+```
+
+## Сравнение с образцом
+
+```Haskell
+module Main where
+
+ag :: Int -> String
+-- Сравнение с образцом
+ag 999 = "wow! 999 is excelent!"
+ag 750 = "great! 750 is good too!"
+ag 585 = "not bad! 585"
+ag _ = "don`t know this standart"
+-- '_' означает универсальный образец, сравнение с ним всегда True
+-- Сравнение с образцом всегда происходит сверху вниз
+-- поэтому '_' должен стоять последним
+
+main :: IO ()
+main = putStrLn (ag 585)
+```
+
+## case
+
+```Haskell
+module Main where
+
+ag :: Int -> String
+ag x =
+  case x of
+    999 -> "wow! 999 is excelent!"
+    750 -> "great! 750 is good too!"
+    585 -> "not bad! 585"
+    _ -> "don`t know this standart"
+
+main :: IO ()
+main = putStrLn (ag 987)
+```
+
+
+# Пусть будет там, Где…
+
+## Пусть / let
+
+```Haskell
+{-# LANGUAGE MultiWayIf #-}
+
+module Main where
+
+calcTime :: Int -> Int
+calcTime timeIn =
+  if
+      | timeIn < 40 -> timeIn + 120
+      | timeIn >= 40 -> timeIn + 8 + 120
+      | otherwise -> 0 -- Guards do not cover entire pattern space
+      {-
+          классический пример магических чисел, которых нужно избегать в коде и вводить временные выражения
+      -}
+
+main :: IO ()
+main = putStrLn "ok"
+```
+
+Исправляем магические числа на выражения через **let-in**
+```Haskell
+{-# LANGUAGE MultiWayIf #-}
+
+module Main where
+
+calcTime :: Int -> Int
+calcTime timeIn =
+  let threshold = 40
+      correction = 120
+      delta = 8
+   in if
+          | timeIn < threshold -> timeIn + correction
+          | otherwise -> timeIn + delta + correction
+
+{-
+    Конструкция let-in вводит поясняющие выражения по схеме:
+    let DECLARATIONS in EXPRESSION
+
+    Эта конструкция легко читается:
+    let    threshold  =      40       ... in ...
+
+    пусть  это        будет  этому        в  том
+        выражение  равно  выражению       выражении
+
+    При желании let-выражения можно записывать и в строчку:
+    let threshold = 40; correction = 120
+    
+    введённое конструкцией let-in выражение существует
+    лишь в рамках выражения, следующего за словом in
+-}
+
+main :: IO ()
+main = putStrLn "ok"
+```
+
+## Где / where
+```Haskell
+{-# LANGUAGE MultiWayIf #-}
+
+module Main where
+
+calcTime :: Int -> Int
+calcTime timeIn =
+  if
+      | timeIn < threshold -> timeIn + correction
+      | otherwise -> timeIn + delta + correction
+  where
+    threshold = 40
+    correction = 120
+    delta = 8
+
+main :: IO ()
+main = putStrLn "ok"
+
+--{-
+Ключевое слово where делает примерно то же, что и let, но промежуточные выражения задаются в конце функции. Такая конструкция читается подобно научной формуле:
+  S = V * t,      -- Выражение
+где
+  -- Всё то, что
+  -- используется
+  -- в выражении.
+  S = расстояние,
+  V = скорость,
+  t = время.
+
+В отличие от let, которое может быть использовано для введения супер-локального выражения (как в последнем примере с delta), все where-выражения доступны в любой части выражения, предшествующего ключевому слову where
+-}
+```
+
+## Вместе (бяка)
+Рекомендация: не смешивайте let-in и where без особой надобности, такой код читается тяжело, избыточно.
+```Haskell
+module Main where
+
+calcTime :: Int -> Int
+calcTime timeIn =
+  let delta = correction - 4
+      threshold = 40
+   in (if timeIn < threshold then timeIn + correction else timeIn + delta + correction)
+  where
+    -- правильно
+    correction = timeIn * 2
+    -- неправильно, ошибка компилирования Variable not in scope: threshold :: Int
+    -- where не видит threshold, который выражен в let
+    -- correction = timeIn * 2 * threshold
+
+main :: IO ()
+main = putStrLn "ok"
+```
+
+```Haskell
+```
+
+```Haskell
+```
+
+
